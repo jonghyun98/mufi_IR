@@ -2280,9 +2280,8 @@ const NavigationBar = styled.div`
   background-color: ${COLORS.WHITE};
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative; /* sticky에서 relative로 변경 */
+  z-index: 10; /* z-index 값 변경 */
   transition: all 0.3s ease;
   overflow-x: auto;
   
