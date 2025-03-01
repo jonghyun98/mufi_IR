@@ -16,21 +16,21 @@ export const ExpansionStrategy: React.FC = () => {
           <TimelineItem>
             <TimelinePoint />
             <TimelineContent>
-              <TimelineDate>2025-2026</TimelineDate>
+              <TimelineDate>2025</TimelineDate>
               <TimelineTitle>1단계: 초기 시장 침투</TimelineTitle>
               <TimelineDescription>
                 <TimelineList>
                   <TimelineListItem>
-                    서울 내 소규모 사업자 10-50개와 포토부스 임대 계약 체결
+                    서울 내 소규모 사업자 10개와 포토부스 임대 계약 체결 (연 10억 원)
                   </TimelineListItem>
                   <TimelineListItem>
                     대학생 소셜 플랫폼 베타 테스트 및 초기 사용자 확보
                   </TimelineListItem>
                   <TimelineListItem>
-                    대학생 대상 사진 기반 연락처 교환 기능 테스트
+                    손익분기점 달성 및 안정적 현금흐름 확보
                   </TimelineListItem>
                   <TimelineListItem>
-                    축제 시장에서 미디어 콘텐츠 통합 시범 운영
+                    AI 에이전트 초기 버전 개발 및 테스트 
                   </TimelineListItem>
                 </TimelineList>
               </TimelineDescription>
@@ -40,21 +40,21 @@ export const ExpansionStrategy: React.FC = () => {
           <TimelineItem>
             <TimelinePoint />
             <TimelineContent>
-              <TimelineDate>2027-2028</TimelineDate>
+              <TimelineDate>2026</TimelineDate>
               <TimelineTitle>2단계: 시장 확대</TimelineTitle>
               <TimelineDescription>
                 <TimelineList>
                   <TimelineListItem>
-                    전국으로 타겟 확장, 지역 사업자 협회와 파트너십 구축
+                    포토부스 설치 지점을 50개로 확대 (연 42억 원 매출)
                   </TimelineListItem>
                   <TimelineListItem>
-                    포토부스 설치 지점 200개 이상으로 확대
+                    소셜 플랫폼 정식 런칭 및 5만 사용자 확보
                   </TimelineListItem>
                   <TimelineListItem>
-                    데이터 수집 인프라 본격화, 초기 B2B 데이터 라이선스 제공 시작
+                    B2B 시장 진출 및 AI 솔루션 초기 계약 체결
                   </TimelineListItem>
                   <TimelineListItem>
-                    AI 에이전트 사업 확대 및 산업별 특화 솔루션 개발
+                    영업이익 5억 원 달성, 본격적인 서비스 확장 체제 구축
                   </TimelineListItem>
                 </TimelineList>
               </TimelineDescription>
@@ -64,21 +64,21 @@ export const ExpansionStrategy: React.FC = () => {
           <TimelineItem>
             <TimelinePoint />
             <TimelineContent>
-              <TimelineDate>2029 이후</TimelineDate>
-              <TimelineTitle>3단계: 국제 진출</TimelineTitle>
+              <TimelineDate>2027</TimelineDate>
+              <TimelineTitle>3단계: 성장 가속화</TimelineTitle>
               <TimelineDescription>
                 <TimelineList>
                   <TimelineListItem>
-                    일본, 동남아시아 시장 진출, 현지 파트너와 협력
+                    포토부스 설치 지점 200개 이상으로 확대 (연 100.8억 원 매출)
                   </TimelineListItem>
                   <TimelineListItem>
-                    문화적 적합성을 고려한 현지화 전략 수립
+                    소셜 플랫폼 사용자 20만 명 확보 (연 19.2억 원 매출)
                   </TimelineListItem>
                   <TimelineListItem>
-                    글로벌 데이터 수집 네트워크 구축
+                    B2B AI 솔루션 매출 42억 원 달성
                   </TimelineListItem>
                   <TimelineListItem>
-                    AI 기술 라이선스 사업 확대
+                    데이터 판매 수익 5억 원 확보 시작
                   </TimelineListItem>
                 </TimelineList>
               </TimelineDescription>

@@ -1,36 +1,389 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { COLORS } from '../../../constants/colors';
 import { MEDIA_QUERIES } from '../../../constants/breakpoints';
 
 export const BusinessModel: React.FC = () => {
+  const [animate, setAnimate] = useState(false);
+  
+  useEffect(() => {
+    // 컴포넌트가 마운트되면 애니메이션 활성화
+    setAnimate(true);
+  }, []);
+
   // 각 비즈니스 모델 수익 기여도 데이터 (2025-2027)
   const revenueContributionData = [
     {
       year: 2025,
-      photobooth: 84, // 84%
-      aiAgent: 16,    // 16%
-      social: 0,      // 0%
-      dataAsset: 0    // 0%
+      photobooth: 80, // 80% - 포토부스 중심의 초기 사업
+      aiAgent: 20,    // 20% - 초기 AI 솔루션 
+      social: 0,      // 0% - 아직 소셜 플랫폼 미운영
+      dataAsset: 0    // 0% - 아직 데이터 판매 미운영
     },
     {
       year: 2026,
-      photobooth: 60, // 60%
-      aiAgent: 24,    // 24%
-      social: 13,     // 13%
-      dataAsset: 3    // 3% 
+      photobooth: 70, // 70% - 포토부스 사업 확대
+      aiAgent: 22,    // 22% - AI 솔루션 확장
+      social: 7,      // 7% - 소셜 플랫폼 초기 단계
+      dataAsset: 1    // 1% - 데이터 활용 시작
     },
     {
       year: 2027,
-      photobooth: 48, // 48%
-      aiAgent: 28,    // 28%
-      social: 14,     // 14%
-      dataAsset: 10   // 10%
+      photobooth: 60, // 60% - 포토부스 임대 주력
+      aiAgent: 25,    // 25% - AI 솔루션 본격화
+      social: 12,     // 12% - 소셜 플랫폼 정착
+      dataAsset: 3    // 3% - 데이터 판매 시작
+    }
+  ];
+
+  // 시장 규모 데이터
+  const marketSizeData = [
+    { 
+      sector: '포토부스 시장', 
+      size2023: 5800, 
+      size2027: 8900, 
+      cagr: 11.2,
+      color: COLORS.RED,
+      icon: '📸'
+    },
+    { 
+      sector: 'AI 에이전트 시장', 
+      size2023: 1200, 
+      size2027: 3100, 
+      cagr: 26.8,
+      color: COLORS.BLUE,
+      icon: '🤖'
+    },
+    { 
+      sector: '소셜 플랫폼 시장', 
+      size2023: 7500, 
+      size2027: 14900, 
+      cagr: 18.5,
+      color: COLORS.GREEN,
+      icon: '👥'
+    },
+    { 
+      sector: '데이터 자산 시장', 
+      size2023: 1800, 
+      size2027: 4200, 
+      cagr: 23.6,
+      color: COLORS.YELLOW,
+      icon: '📊'
     }
   ];
 
   return (
     <SectionContent>
+      <MarketOverviewSection animate={animate}>
+        <SectionHeading>
+          <HeadingLine />
+          <HeadingText><HighlightText>시장 개요</HighlightText> 및 성장성</HeadingText>
+          <HeadingLine />
+        </SectionHeading>
+        
+        <MarketSummary>
+          MUFI는 <HighlightText>포토부스</HighlightText>, <HighlightText>AI 에이전트</HighlightText>, <HighlightText>소셜 플랫폼</HighlightText>, <HighlightText>데이터 자산</HighlightText> 네 가지 핵심 분야에서 
+          사업을 전개하고 있으며, 각 시장은 2023년부터 2027년까지 연평균 11.2~26.8%의 높은 성장률을 보일 것으로 전망됩니다.
+          특히 AI 에이전트 시장과 데이터 자산 시장의 성장세가 두드러지며, 이는 MUFI의 중장기 성장 전략과 완벽히 일치합니다.
+        </MarketSummary>
+        
+        <MarketSizeVisual>
+          <MarketSizeTitle>분야별 시장 규모 및 성장률 (2023-2027)</MarketSizeTitle>
+          
+          <MarketSizeGrid>
+            {marketSizeData.map((market, index) => (
+              <MarketSizeCard key={index} color={market.color} delay={index * 0.15} animate={animate}>
+                <MarketIconCircle color={market.color}>
+                  <MarketIcon>{market.icon}</MarketIcon>
+                </MarketIconCircle>
+                <MarketName>{market.sector}</MarketName>
+                <MarketGrowthBar>
+                  <MarketSizeIndicator 
+                    width="30%" 
+                    color={market.color} 
+                    opacity={0.4}
+                    animate={animate}
+                    delay={index * 0.15 + 0.3}
+                  >
+                    <MarketValue>{market.size2023}억 원</MarketValue>
+                    <MarketYear>2023</MarketYear>
+                  </MarketSizeIndicator>
+                  <MarketSizeIndicator 
+                    width="70%" 
+                    color={market.color} 
+                    opacity={0.8}
+                    animate={animate}
+                    delay={index * 0.15 + 0.5}
+                  >
+                    <MarketValue>{market.size2027}억 원</MarketValue>
+                    <MarketYear>2027</MarketYear>
+                  </MarketSizeIndicator>
+                </MarketGrowthBar>
+                <MarketCagr animate={animate} delay={index * 0.15 + 0.7}>
+                  <CagrLabel>CAGR</CagrLabel>
+                  <CagrValue color={market.color}>{market.cagr}%</CagrValue>
+                </MarketCagr>
+              </MarketSizeCard>
+            ))}
+          </MarketSizeGrid>
+        </MarketSizeVisual>
+        
+        <MarketTrends>
+          <MarketTrendsTitle>핵심 시장 트렌드 및 기회</MarketTrendsTitle>
+          <MarketTrendsGrid>
+            <TrendCard animate={animate} delay={0.2}>
+              <TrendIcon>🔍</TrendIcon>
+              <TrendTitle>개인화 경험 중시</TrendTitle>
+              <TrendDescription>
+                MZ세대 중심으로 개인화된 경험에 대한 수요가 증가하며, AI 기술을 활용한 
+                맞춤형 서비스 시장이 연 28% 성장 중
+              </TrendDescription>
+            </TrendCard>
+            
+            <TrendCard animate={animate} delay={0.4}>
+              <TrendIcon>📱</TrendIcon>
+              <TrendTitle>디지털-물리적 연결성</TrendTitle>
+              <TrendDescription>
+                오프라인과 온라인을 연결하는 O2O 서비스 가치 상승, 
+                포토부스와 소셜 플랫폼의 결합으로 사용자 참여도 42% 증가
+              </TrendDescription>
+            </TrendCard>
+            
+            <TrendCard animate={animate} delay={0.6}>
+              <TrendIcon>🎯</TrendIcon>
+              <TrendTitle>타겟 마케팅 효율화</TrendTitle>
+              <TrendDescription>
+                대학생 맞춤형 마케팅 채널 확보의 중요성 증대, 
+                정확한 타겟팅으로 광고 효율 68% 향상 및 프리미엄 가격 책정 가능
+              </TrendDescription>
+            </TrendCard>
+            
+            <TrendCard animate={animate} delay={0.8}>
+              <TrendIcon>💾</TrendIcon>
+              <TrendTitle>데이터 자산 가치화</TrendTitle>
+              <TrendDescription>
+                실제 사용자 행동 기반 데이터 수집 인프라의 중요성 증가, 
+                AI 학습용 데이터셋 가치 연 23.6% 상승 추세
+              </TrendDescription>
+            </TrendCard>
+          </MarketTrendsGrid>
+        </MarketTrends>
+        
+        <MarketCompetition>
+          <MarketCompetitionTitle>경쟁 환경 분석</MarketCompetitionTitle>
+          <CompetitionGrid>
+            <CompetitionSegment>
+              <CompetitionHeader>포토부스 시장</CompetitionHeader>
+              <CompetitionContent>
+                <CompetitionMetric>
+                  <MetricName>시장 경쟁 강도</MetricName>
+                  <MetricBar>
+                    <MetricFill width="65%" color={COLORS.RED} animate={animate} delay={0.3} />
+                  </MetricBar>
+                  <MetricValue>중간</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>진입 장벽</MetricName>
+                  <MetricBar>
+                    <MetricFill width="45%" color={COLORS.RED} animate={animate} delay={0.4} />
+                  </MetricBar>
+                  <MetricValue>낮음-중간</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>MUFI 경쟁 우위</MetricName>
+                  <MetricBar>
+                    <MetricFill width="75%" color={COLORS.RED} animate={animate} delay={0.5} />
+                  </MetricBar>
+                  <MetricValue>높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionInsight>
+                  AI 자율 관리로 인건비 52% 절감, 운영 효율화로 가격 경쟁력 확보
+                </CompetitionInsight>
+              </CompetitionContent>
+            </CompetitionSegment>
+            
+            <CompetitionSegment>
+              <CompetitionHeader>AI 에이전트 시장</CompetitionHeader>
+              <CompetitionContent>
+                <CompetitionMetric>
+                  <MetricName>시장 경쟁 강도</MetricName>
+                  <MetricBar>
+                    <MetricFill width="85%" color={COLORS.BLUE} animate={animate} delay={0.6} />
+                  </MetricBar>
+                  <MetricValue>높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>진입 장벽</MetricName>
+                  <MetricBar>
+                    <MetricFill width="80%" color={COLORS.BLUE} animate={animate} delay={0.7} />
+                  </MetricBar>
+                  <MetricValue>높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>MUFI 경쟁 우위</MetricName>
+                  <MetricBar>
+                    <MetricFill width="70%" color={COLORS.BLUE} animate={animate} delay={0.8} />
+                  </MetricBar>
+                  <MetricValue>중간-높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionInsight>
+                  독자적 실세계 데이터로 AI 정확도 23% 향상, 구현 시간 68% 단축
+                </CompetitionInsight>
+              </CompetitionContent>
+            </CompetitionSegment>
+            
+            <CompetitionSegment>
+              <CompetitionHeader>소셜 플랫폼 시장</CompetitionHeader>
+              <CompetitionContent>
+                <CompetitionMetric>
+                  <MetricName>시장 경쟁 강도</MetricName>
+                  <MetricBar>
+                    <MetricFill width="95%" color={COLORS.GREEN} animate={animate} delay={0.9} />
+                  </MetricBar>
+                  <MetricValue>매우 높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>진입 장벽</MetricName>
+                  <MetricBar>
+                    <MetricFill width="90%" color={COLORS.GREEN} animate={animate} delay={1.0} />
+                  </MetricBar>
+                  <MetricValue>매우 높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>MUFI 경쟁 우위</MetricName>
+                  <MetricBar>
+                    <MetricFill width="65%" color={COLORS.GREEN} animate={animate} delay={1.1} />
+                  </MetricBar>
+                  <MetricValue>중간</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionInsight>
+                  물리적 연결 경험과 디지털 결합, 대학 인증으로 신뢰도 87% 상승
+                </CompetitionInsight>
+              </CompetitionContent>
+            </CompetitionSegment>
+            
+            <CompetitionSegment>
+              <CompetitionHeader>데이터 자산 시장</CompetitionHeader>
+              <CompetitionContent>
+                <CompetitionMetric>
+                  <MetricName>시장 경쟁 강도</MetricName>
+                  <MetricBar>
+                    <MetricFill width="75%" color={COLORS.YELLOW} animate={animate} delay={1.2} />
+                  </MetricBar>
+                  <MetricValue>중간-높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>진입 장벽</MetricName>
+                  <MetricBar>
+                    <MetricFill width="85%" color={COLORS.YELLOW} animate={animate} delay={1.3} />
+                  </MetricBar>
+                  <MetricValue>높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionMetric>
+                  <MetricName>MUFI 경쟁 우위</MetricName>
+                  <MetricBar>
+                    <MetricFill width="80%" color={COLORS.YELLOW} animate={animate} delay={1.4} />
+                  </MetricBar>
+                  <MetricValue>높음</MetricValue>
+                </CompetitionMetric>
+                
+                <CompetitionInsight>
+                  독자적 데이터 수집 인프라로 차별화된 데이터셋 구축, 94% 마진율
+                </CompetitionInsight>
+              </CompetitionContent>
+            </CompetitionSegment>
+          </CompetitionGrid>
+        </MarketCompetition>
+        
+        <MarketPosition>
+          <PositionTitle>MUFI의 시장 포지셔닝</PositionTitle>
+          
+          <WordCloudAndStatement>
+            <VisualWrapper>
+              <WordCloudContainer animate={animate}>
+                <WordCloudItem size="large" color={COLORS.RED} top="25%" left="40%" delay={0.1}>물리적 포토부스</WordCloudItem>
+                <WordCloudItem size="large" color={COLORS.BLUE} top="45%" left="70%" delay={0.2}>디지털 소셜 플랫폼</WordCloudItem>
+                <WordCloudItem size="large" color={COLORS.GREEN} top="65%" left="45%" delay={0.3}>실세계 데이터</WordCloudItem>
+                <WordCloudItem size="large" color={COLORS.RED} top="70%" left="20%" delay={0.4}>AI 기술 역량</WordCloudItem>
+                <WordCloudItem size="medium" color={COLORS.BLACK} top="15%" left="20%" delay={0.5}>O2O 융합</WordCloudItem>
+                <WordCloudItem size="medium" color={COLORS.BLACK} top="30%" left="65%" delay={0.6}>통합 데이터</WordCloudItem>
+                <WordCloudItem size="medium" color={COLORS.BLACK} top="85%" left="65%" delay={0.7}>에코시스템</WordCloudItem>
+                <WordCloudItem size="small" color={COLORS.BLACK} top="10%" left="65%" delay={0.8}>MZ세대</WordCloudItem>
+                <WordCloudItem size="small" color={COLORS.BLACK} top="85%" left="25%" delay={0.9}>대학생 시장</WordCloudItem>
+                <WordCloudItem size="small" color={COLORS.BLACK} top="35%" left="85%" delay={1.0}>차별화</WordCloudItem>
+                
+                <MufiBubble animate={animate} delay={1.2}>
+                  <MufiLogo>M</MufiLogo>
+                </MufiBubble>
+              </WordCloudContainer>
+            </VisualWrapper>
+
+            <StatementWrapper animate={animate}>
+              <StatementText>
+                MUFI는 <HighlightText>물리적 포토부스와 디지털 소셜 플랫폼을 연결</HighlightText>하는 독보적인 O2O 융합 모델과
+                <HighlightText> 실세계 데이터 기반 AI 기술 역량</HighlightText>을 바탕으로, 
+                기존 사업자들이 제공하지 못하는 <HighlightText>통합 데이터 에코시스템</HighlightText>을 구축하여
+                MZ세대 대학생 시장에서 차별화된 가치를 제공합니다.
+              </StatementText>
+            </StatementWrapper>
+          </WordCloudAndStatement>
+          
+          <QuadrantSection>
+            <QuadrantTitle>경쟁사 대비 MUFI 포지셔닝</QuadrantTitle>
+            <QuadrantWrapper animate={animate}>
+              <QuadrantBox>
+                <QuadrantLabel top left>
+                  <span>기술 혁신</span>
+                </QuadrantLabel>
+                <QuadrantLabel top right>
+                  <span>통합 서비스</span>
+                </QuadrantLabel>
+                <QuadrantLabel bottom left>
+                  <span>단일 서비스</span>
+                </QuadrantLabel>
+                <QuadrantLabel bottom right>
+                  <span>대중 접근성</span>
+                </QuadrantLabel>
+                
+                <AxisLabel horizontal>사용자 경험</AxisLabel>
+                <AxisLabel vertical>기술 역량</AxisLabel>
+                
+                <CompetitorBubble top="25%" left="20%" size="50px" color="#EEEEEE" animate={animate} delay={0.2}>
+                  <BubbleIcon>📸</BubbleIcon>
+                  <BubbleLabel>일반<br/>포토부스</BubbleLabel>
+                </CompetitorBubble>
+                
+                <CompetitorBubble top="30%" left="75%" size="45px" color="#EEEEEE" animate={animate} delay={0.4}>
+                  <BubbleIcon>📱</BubbleIcon>
+                  <BubbleLabel>SNS 앱</BubbleLabel>
+                </CompetitorBubble>
+                
+                <CompetitorBubble top="65%" left="30%" size="40px" color="#EEEEEE" animate={animate} delay={0.6}>
+                  <BubbleIcon>🤖</BubbleIcon>
+                  <BubbleLabel>AI<br/>솔루션</BubbleLabel>
+                </CompetitorBubble>
+                
+                <CompetitorBubble top="20%" left="60%" size="60px" color={`${COLORS.RED}20`} borderColor={COLORS.RED} animate={animate} delay={0.8}>
+                  <MufiQuadrantLogo>M</MufiQuadrantLogo>
+                  <BubbleLabel>MUFI</BubbleLabel>
+                </CompetitorBubble>
+              </QuadrantBox>
+            </QuadrantWrapper>
+          </QuadrantSection>
+        </MarketPosition>
+      </MarketOverviewSection>
+      
       <SectionHeading>
         <HeadingLine />
         <HeadingText>통합 데이터 에코시스템 <HighlightText>비즈니스 모델</HighlightText></HeadingText>
@@ -56,22 +409,34 @@ export const BusinessModel: React.FC = () => {
                   height={`${yearData.photobooth}%`} 
                   color={COLORS.RED} 
                   tooltip={`포토부스 사업: ${yearData.photobooth}%`}
-                />
+                  animate={true}
+                >
+                  <BarLabel>{yearData.photobooth}%</BarLabel>
+                </BarSegment>
                 <BarSegment 
                   height={`${yearData.aiAgent}%`} 
                   color={COLORS.BLUE} 
                   tooltip={`AI 에이전트: ${yearData.aiAgent}%`}
-                />
+                  animate={true}
+                >
+                  <BarLabel>{yearData.aiAgent}%</BarLabel>
+                </BarSegment>
                 <BarSegment 
                   height={`${yearData.social}%`} 
                   color={COLORS.GREEN} 
                   tooltip={`소셜 플랫폼: ${yearData.social}%`}
-                />
+                  animate={true}
+                >
+                  {yearData.social > 0 && <BarLabel>{yearData.social}%</BarLabel>}
+                </BarSegment>
                 <BarSegment 
                   height={`${yearData.dataAsset}%`} 
                   color={COLORS.YELLOW} 
                   tooltip={`데이터 자산: ${yearData.dataAsset}%`}
-                />
+                  animate={true}
+                >
+                  {yearData.dataAsset > 0 && <BarLabel>{yearData.dataAsset}%</BarLabel>}
+                </BarSegment>
               </StackedBar>
             </YearColumn>
           ))}
@@ -79,19 +444,19 @@ export const BusinessModel: React.FC = () => {
         <ChartLegend>
           <LegendItem>
             <LegendColor color={COLORS.RED} />
-            <LegendText>포토부스 사업</LegendText>
+            <LegendText><strong>포토부스 사업</strong></LegendText>
           </LegendItem>
           <LegendItem>
             <LegendColor color={COLORS.BLUE} />
-            <LegendText>AI 에이전트</LegendText>
+            <LegendText><strong>AI 에이전트</strong></LegendText>
           </LegendItem>
           <LegendItem>
             <LegendColor color={COLORS.GREEN} />
-            <LegendText>소셜 플랫폼</LegendText>
+            <LegendText><strong>소셜 플랫폼</strong></LegendText>
           </LegendItem>
           <LegendItem>
             <LegendColor color={COLORS.YELLOW} />
-            <LegendText>데이터 자산</LegendText>
+            <LegendText><strong>데이터 자산</strong></LegendText>
           </LegendItem>
         </ChartLegend>
       </RevenueModelVisual>
@@ -442,40 +807,39 @@ const HighlightText = styled.span`
 `;
 
 const BusinessOverview = styled.div`
-  margin-bottom: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const OverviewText = styled.p`
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   line-height: 1.7;
   color: ${COLORS.BLACK};
-  opacity: 0.85;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+  opacity: 0.9;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 `;
 
 const RevenueModelVisual = styled.div`
-  background: ${COLORS.WHITE};
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
+  margin: 3rem 0;
 `;
 
 const RevenueModelTitle = styled.h3`
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  text-align: center;
   margin-bottom: 2rem;
   color: ${COLORS.BLACK};
+  text-align: center;
 `;
 
 const RevenueModelChart = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-  height: 250px;
+  height: 350px;
   margin-bottom: 2rem;
 `;
 
@@ -483,30 +847,31 @@ const YearColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px;
+  width: 100px;
 `;
 
 const YearLabel = styled.div`
+  font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: ${COLORS.BLACK};
 `;
 
 const StackedBar = styled.div`
-  width: 60px;
-  height: 200px;
-  position: relative;
   display: flex;
   flex-direction: column-reverse;
-  overflow: hidden;
+  width: 60px;
+  height: 300px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 interface BarSegmentProps {
   height: string;
   color: string;
-  tooltip: string;
+  animate?: boolean;
+  tooltip?: string;
 }
 
 const BarSegment = styled.div<BarSegmentProps>`
@@ -514,26 +879,30 @@ const BarSegment = styled.div<BarSegmentProps>`
   height: ${props => props.height};
   background-color: ${props => props.color};
   position: relative;
-  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.8s ease-out;
   
   &:hover {
     opacity: 0.8;
+    transform: scale(1.05);
   }
   
-  &:hover::after {
-    content: '${props => props.tooltip}';
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    white-space: nowrap;
-    z-index: 10;
-  }
+  ${props => props.animate && `
+    @keyframes growIn {
+      from { height: 0; }
+      to { height: ${props.height}; }
+    }
+    animation: growIn 1.5s ease-out;
+  `}
+`;
+
+const BarLabel = styled.div`
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
 `;
 
 const ChartLegend = styled.div`
@@ -541,23 +910,33 @@ const ChartLegend = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 1.5rem;
+  margin-top: 1rem;
 `;
 
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
-const LegendColor = styled.div<{ color: string }>`
-  width: 16px;
-  height: 16px;
-  background-color: ${props => props.color};
+interface LegendColorProps {
+  color: string;
+}
+
+const LegendColor = styled.div<LegendColorProps>`
+  width: 20px;
+  height: 20px;
   border-radius: 4px;
+  background-color: ${props => props.color};
 `;
 
-const LegendText = styled.span`
-  font-size: 0.875rem;
+const LegendText = styled.div`
+  font-size: 1rem;
   color: ${COLORS.BLACK};
 `;
 
@@ -637,8 +1016,8 @@ const MetricLabel = styled.span`
   opacity: 0.6;
 `;
 
-const MetricValue = styled.span`
-  font-size: 1rem;
+const MetricValue = styled.div`
+  font-size: 0.875rem;
   font-weight: 600;
   color: ${COLORS.BLACK};
 `;
@@ -809,4 +1188,734 @@ const DataMetricLabel = styled.div`
   color: ${COLORS.BLACK};
   opacity: 0.7;
   text-align: center;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const growWidth = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`;
+
+const growBar = (width: string) => keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: ${width};
+  }
+`;
+
+interface AnimateProps {
+  animate?: boolean;
+  delay?: number;
+}
+
+const MarketOverviewSection = styled.div<AnimateProps>`
+  margin-bottom: 4rem;
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: translateY(${props => (props.animate ? 0 : '20px')});
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+`;
+
+const MarketSummary = styled.p`
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: ${COLORS.BLACK};
+  opacity: 0.85;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 3rem;
+`;
+
+const MarketSizeVisual = styled.div`
+  margin: 3rem 0 4rem;
+`;
+
+const MarketSizeTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: ${COLORS.BLACK};
+  text-align: center;
+`;
+
+const MarketSizeGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+interface ColorProps {
+  color: string;
+  delay?: number;
+  animate?: boolean;
+}
+
+const MarketSizeCard = styled.div<ColorProps>`
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  border-top: 4px solid ${props => props.color};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: translateY(${props => (props.animate ? 0 : '30px')});
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+`;
+
+const MarketIconCircle = styled.div<{ color: string }>`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: ${props => props.color}20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+`;
+
+const MarketIcon = styled.div`
+  font-size: 2rem;
+`;
+
+const MarketName = styled.h4`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: ${COLORS.BLACK};
+  margin-bottom: 0.5rem;
+`;
+
+const MarketGrowthBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+`;
+
+interface IndicatorProps {
+  width: string;
+  color: string;
+  opacity: number;
+  animate?: boolean;
+  delay?: number;
+}
+
+const MarketSizeIndicator = styled.div<IndicatorProps>`
+  background-color: ${props => `${props.color}${props.opacity * 100}`};
+  height: 40px;
+  border-radius: 8px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: ${props => props.width};
+  position: relative;
+  
+  width: ${props => (props.animate ? props.width : '0')};
+  transition: width 1.2s ease-out;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+`;
+
+const MarketValue = styled.div`
+  font-weight: 700;
+  color: ${COLORS.BLACK};
+  z-index: 1;
+`;
+
+const MarketYear = styled.div`
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+  z-index: 1;
+`;
+
+const MarketCagr = styled.div<AnimateProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: scale(${props => (props.animate ? 1 : 0.8)});
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+`;
+
+const CagrLabel = styled.span`
+  font-size: 0.875rem;
+  color: ${COLORS.BLACK};
+  opacity: 0.7;
+`;
+
+const CagrValue = styled.span<{ color: string }>`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: ${props => props.color};
+  background-color: ${props => `${props.color}10`};
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+`;
+
+const MarketTrends = styled.div`
+  margin: 4rem 0;
+`;
+
+const MarketTrendsTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: ${COLORS.BLACK};
+  text-align: center;
+`;
+
+const MarketTrendsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+const TrendCard = styled.div<AnimateProps>`
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+  
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: translateY(${props => (props.animate ? 0 : '30px')});
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+`;
+
+const TrendIcon = styled.div`
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+`;
+
+const TrendTitle = styled.h4`
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: ${COLORS.BLACK};
+  margin-bottom: 1rem;
+`;
+
+const TrendDescription = styled.p`
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+`;
+
+const MarketCompetition = styled.div`
+  margin: 4rem 0;
+`;
+
+const MarketCompetitionTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: ${COLORS.BLACK};
+  text-align: center;
+`;
+
+const CompetitionGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const CompetitionSegment = styled.div`
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+`;
+
+const CompetitionHeader = styled.div`
+  background-color: ${COLORS.BLACK}05;
+  padding: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-bottom: 1px solid ${COLORS.BLACK}10;
+`;
+
+const CompetitionContent = styled.div`
+  padding: 1.5rem;
+`;
+
+const CompetitionMetric = styled.div`
+  margin-bottom: 1.25rem;
+`;
+
+const MetricName = styled.div`
+  font-size: 0.875rem;
+  color: ${COLORS.BLACK};
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+`;
+
+const MetricBar = styled.div`
+  height: 10px;
+  background-color: ${COLORS.BLACK}10;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 0.5rem;
+`;
+
+interface MetricFillProps {
+  width: string;
+  color: string;
+  animate?: boolean;
+  delay?: number;
+}
+
+const MetricFill = styled.div<MetricFillProps>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: ${props => props.color};
+  border-radius: 5px;
+  width: ${props => (props.animate ? props.width : '0')};
+  transition: width 1.2s ease-out;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+`;
+
+const MarketMetricValue = styled.div`
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: ${COLORS.BLACK};
+`;
+
+const CompetitionInsight = styled.div`
+  background-color: ${COLORS.BLACK}05;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 1rem;
+`;
+
+const MarketPosition = styled.div`
+  margin: 4rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`;
+
+const PositionTitle = styled.h3`
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+  text-align: center;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: ${COLORS.RED};
+    border-radius: 1.5px;
+  }
+`;
+
+const WordCloudAndStatement = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const VisualWrapper = styled.div`
+  height: 400px;
+  position: relative;
+  background-color: ${COLORS.WHITE}; 
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  order: 2;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    order: 1;
+  }
+  
+  ${MEDIA_QUERIES.MOBILE} {
+    height: 350px;
+  }
+`;
+
+const WordCloudContainer = styled.div<AnimateProps>`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transition: opacity 1s ease-out;
+`;
+
+interface WordCloudItemProps {
+  size: 'small' | 'medium' | 'large';
+  color: string;
+  top: string;
+  left: string;
+  delay: number;
+}
+
+const WordCloudItem = styled.div<WordCloudItemProps>`
+  position: absolute;
+  top: ${props => props.top};
+  left: ${props => props.left};
+  transform: translate(-50%, -50%) scale(0);
+  color: ${props => props.color};
+  font-weight: ${props => props.size === 'large' ? 700 : props.size === 'medium' ? 600 : 500};
+  font-size: ${props => props.size === 'large' ? '1.25rem' : props.size === 'medium' ? '1rem' : '0.875rem'};
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  z-index: 2;
+  animation: wordCloudAppear 0.8s forwards;
+  animation-delay: ${props => props.delay}s;
+  
+  @keyframes wordCloudAppear {
+    from {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 3;
+  }
+`;
+
+const MufiBubble = styled.div<AnimateProps>`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: linear-gradient(135deg, ${COLORS.RED}, #FF6B8B);
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(110, 124, 243, 0.3);
+  z-index: 1;
+  animation: mufiBubbleAppear 1s forwards;
+  animation-delay: ${props => props.delay}s;
+  
+  @keyframes mufiBubbleAppear {
+    from {
+      transform: translate(-50%, -50%) scale(0);
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  &:hover {
+    box-shadow: 0 6px 20px rgba(110, 124, 243, 0.4);
+  }
+`;
+
+const MufiLogo = styled.div`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${COLORS.RED};
+  font-weight: 900;
+  font-size: 2.5rem;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+`;
+
+const StatementWrapper = styled.div<AnimateProps>`
+  background: white;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  order: 1;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    order: 2;
+  }
+  
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: translateX(${props => (props.animate ? 0 : '-30px')});
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+`;
+
+const StatementText = styled.p`
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: ${COLORS.BLACK};
+  margin: 0;
+  word-break: keep-all;
+  text-align: left;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    font-size: 1.25rem;
+  }
+`;
+
+const QuadrantSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+`;
+
+const QuadrantTitle = styled.h4`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: ${COLORS.BLACK};
+  position: relative;
+  margin: 0 0 0.5rem;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background-color: ${COLORS.RED}40;
+  }
+`;
+
+const QuadrantWrapper = styled.div<AnimateProps>`
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 500px;
+  
+  opacity: ${props => (props.animate ? 1 : 0)};
+  transform: translateY(${props => (props.animate ? 0 : '30px')});
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+`;
+
+const QuadrantBox = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  border: 1px solid ${COLORS.BLACK}15;
+  border-radius: 12px;
+  background-color: white;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: ${COLORS.BLACK}15;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background-color: ${COLORS.BLACK}15;
+  }
+`;
+
+interface QuadrantLabelProps {
+  top?: boolean;
+  bottom?: boolean;
+  left?: boolean;
+  right?: boolean;
+}
+
+const QuadrantLabel = styled.div<QuadrantLabelProps>`
+  position: absolute;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: ${COLORS.BLACK};
+  opacity: 0.7;
+  z-index: 2;
+  
+  ${props => props.top && `top: 10px;`}
+  ${props => props.bottom && `bottom: 10px;`}
+  ${props => props.left && `left: 10px;`}
+  ${props => props.right && `right: 10px;`}
+  
+  span {
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+  }
+`;
+
+interface AxisLabelProps {
+  horizontal?: boolean;
+  vertical?: boolean;
+}
+
+const AxisLabel = styled.div<AxisLabelProps>`
+  position: absolute;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: ${COLORS.BLACK};
+  z-index: 2;
+  
+  ${props => props.horizontal && `
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  `}
+  
+  ${props => props.vertical && `
+    top: 50%;
+    left: -40px;
+    transform: translateY(-50%) rotate(-90deg);
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: max-content;
+  `}
+`;
+
+interface BubbleProps {
+  top: string;
+  left: string;
+  size: string;
+  color: string;
+  borderColor?: string;
+  animate?: boolean;
+  delay?: number;
+}
+
+const CompetitorBubble = styled.div<BubbleProps>`
+  position: absolute;
+  width: ${props => props.size};
+  height: ${props => props.size};
+  border-radius: 50%;
+  background-color: ${props => props.color};
+  border: ${props => props.borderColor ? `2px solid ${props.borderColor}` : 'none'};
+  top: ${props => props.top};
+  left: ${props => props.left};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(${props => (props.animate ? 1 : 0)});
+  transition: transform 0.6s ease-out, box-shadow 0.3s ease;
+  transition-delay: ${props => (props.delay ? `${props.delay}s` : '0s')};
+  
+  &:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) scale(1.05);
+    z-index: 4;
+  }
+`;
+
+const BubbleIcon = styled.div`
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+`;
+
+const BubbleLabel = styled.div`
+  line-height: 1.2;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: ${COLORS.BLACK};
+`;
+
+const MufiQuadrantLogo = styled.div`
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: ${COLORS.RED};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 2px;
 `; 

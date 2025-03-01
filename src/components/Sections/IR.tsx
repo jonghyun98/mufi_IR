@@ -1,3 +1,3 @@
-import { IR } from './IR/index';
+import { IR as IRComponent } from './IR/index';
 
-export { IR }; 
+export const IR = IRComponent; 

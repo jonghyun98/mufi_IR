@@ -82,22 +82,26 @@ export const InvestmentPlan: React.FC = () => {
       <FundingAllocation>
         <FundingTitle>투자금 활용 계획</FundingTitle>
         <FundingChart>
-          <svg width="100%" height="300" viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="100%" height="350" viewBox="0 0 600 350" fill="none" xmlns="http://www.w3.org/2000/svg">
             {/* 연구 개발 (35%) */}
-            <path d="M300 150 L300 0 A150 150 0 0 1 429.9 75 Z" fill={COLORS.RED} fillOpacity="0.8" />
-            <text x="350" y="60" fill={COLORS.BLACK} fontWeight="bold">R&D 35%</text>
+            <path d="M300 175 L300 0 A175 175 0 0 1 452 87.5 Z" fill={COLORS.RED} fillOpacity="0.9" />
+            <rect x="330" y="35" width="95" height="30" rx="15" fill="white" fillOpacity="0.85" />
+            <text x="350" y="55" fill={COLORS.BLACK} fontWeight="bold" fontSize="16">R&D 35%</text>
             
             {/* 사업 확장 (30%) */}
-            <path d="M300 150 L429.9 75 A150 150 0 0 1 429.9 225 Z" fill={COLORS.BLUE} fillOpacity="0.8" />
-            <text x="450" y="150" fill={COLORS.BLACK} fontWeight="bold">사업 확장 30%</text>
+            <path d="M300 175 L452 87.5 A175 175 0 0 1 452 262.5 Z" fill={COLORS.BLUE} fillOpacity="0.85" />
+            <rect x="440" y="140" width="110" height="30" rx="15" fill="white" fillOpacity="0.85" />
+            <text x="450" y="160" fill={COLORS.BLACK} fontWeight="bold" fontSize="16">사업 확장 30%</text>
             
             {/* 마케팅 (20%) */}
-            <path d="M300 150 L429.9 225 A150 150 0 0 1 300 300 Z" fill={COLORS.GREEN} fillOpacity="0.8" />
-            <text x="350" y="250" fill={COLORS.BLACK} fontWeight="bold">마케팅 20%</text>
+            <path d="M300 175 L452 262.5 A175 175 0 0 1 300 350 Z" fill={COLORS.GREEN} fillOpacity="0.85" />
+            <rect x="330" y="270" width="95" height="30" rx="15" fill="white" fillOpacity="0.85" />
+            <text x="340" y="290" fill={COLORS.BLACK} fontWeight="bold" fontSize="16">마케팅 20%</text>
             
             {/* 운영 비용 (15%) */}
-            <path d="M300 150 L300 300 A150 150 0 0 1 170.1 225 Z" fill={COLORS.YELLOW} fillOpacity="0.8" />
-            <text x="220" y="250" fill={COLORS.BLACK} fontWeight="bold">운영 비용 15%</text>
+            <path d="M300 175 L300 350 A175 175 0 0 1 148 262.5 Z" fill={COLORS.YELLOW} fillOpacity="0.85" />
+            <rect x="170" y="270" width="110" height="30" rx="15" fill="white" fillOpacity="0.85" />
+            <text x="180" y="290" fill={COLORS.BLACK} fontWeight="bold" fontSize="16">운영 비용 15%</text>
           </svg>
         </FundingChart>
         <FundingDetails>
@@ -182,6 +186,87 @@ export const InvestmentPlan: React.FC = () => {
           </ValueCard>
         </ValuePropositions>
       </InvestorValue>
+      
+      <VCConsiderations>
+        <VCConsiderationsTitle>VC 핵심 고려사항</VCConsiderationsTitle>
+        <VCConsiderationsDescription>
+          MUFI는 현재 벤처캐피탈이 가장 중요하게 생각하는 요소들을 충족하는 비즈니스 모델과 실행 계획을 갖추고 있습니다.
+          한국 및 글로벌 VC들이 투자를 결정할 때 중점적으로 보는 다음 요소들에 대한 MUFI의 강점을 소개합니다.
+        </VCConsiderationsDescription>
+        
+        <VCConsiderationsList>
+          <VCConsiderationItem>
+            <VCConsiderationIcon>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+              </svg>
+            </VCConsiderationIcon>
+            <VCConsiderationTitle>창업팀 역량 및 실행력</VCConsiderationTitle>
+            <VCConsiderationDescription>
+              MUFI 팀은 AI 기술, 하드웨어 개발, 마케팅, 운영 등 각 분야 전문가로 구성되어 있으며, 과거 관련 산업에서의 성공적인 경험을 보유하고 있습니다. 
+              특히 창업자들은, VC들이 가장 중요시하는 산업 경험과 해당 분야의 심도 있는 이해를 갖추고 있어 문제 해결 능력이 탁월합니다.
+              초기 MVP를 이미 성공적으로 구현하여 실행력을 입증하였습니다.
+            </VCConsiderationDescription>
+          </VCConsiderationItem>
+          
+          <VCConsiderationItem>
+            <VCConsiderationIcon>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" fill="currentColor"/>
+              </svg>
+            </VCConsiderationIcon>
+            <VCConsiderationTitle>트랙션 및 시장 검증</VCConsiderationTitle>
+            <VCConsiderationDescription>
+              초기 10대의 포토부스 운영을 통해 빠르게 시장 검증을 완료했으며, 월 120% 사용자 증가율을 기록하고 있습니다. 
+              단기간 내 초기 매출을 창출함으로써 비즈니스 모델의 실현 가능성을 입증했습니다. 
+              VC들이 최근 seed 투자 결정시 더욱 중요시하는 '초기 수익 창출'을 이미 달성했습니다.
+            </VCConsiderationDescription>
+          </VCConsiderationItem>
+          
+          <VCConsiderationItem>
+            <VCConsiderationIcon>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z" fill="currentColor"/>
+              </svg>
+            </VCConsiderationIcon>
+            <VCConsiderationTitle>시장 규모 및 성장성</VCConsiderationTitle>
+            <VCConsiderationDescription>
+              MUFI가 진출하는 포토부스 시장은 연 11.2% 성장 중이며, AI 솔루션 시장은 연 26.8%, 소셜 플랫폼 시장은 연 18.5%의 높은 성장률을 보이고 있습니다.
+              VC 투자 기준에 맞는 잠재적인 시장 규모(TAM)가 2027년 기준 10조원 이상으로 평가되어 높은 스케일업 가능성을 갖추고 있습니다.
+              충분히 큰 시장에서 독보적인 경쟁 우위를 확보할 수 있는 명확한 전략이 있습니다.
+            </VCConsiderationDescription>
+          </VCConsiderationItem>
+          
+          <VCConsiderationItem>
+            <VCConsiderationIcon>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z" fill="currentColor"/>
+              </svg>
+            </VCConsiderationIcon>
+            <VCConsiderationTitle>차별화 및 진입 장벽</VCConsiderationTitle>
+            <VCConsiderationDescription>
+              MUFI는 단순한 포토부스 서비스를 넘어 AI 기술과 소셜 플랫폼을 결합한 독자적인 비즈니스 모델을 구축했습니다. 
+              특히 우리만의 데이터 수집 및 분석 인프라는 시간이 지날수록 더 강력해지는 경쟁 우위이자 진입 장벽으로, 
+              VC들이 찾는 '지속 가능한 경쟁 우위'를 제공합니다.
+              특허 출원 중인 AI 알고리즘과 독보적인 데이터 자산은 모방이 어려운 자산입니다.
+            </VCConsiderationDescription>
+          </VCConsiderationItem>
+          
+          <VCConsiderationItem>
+            <VCConsiderationIcon>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" fill="currentColor"/>
+              </svg>
+            </VCConsiderationIcon>
+            <VCConsiderationTitle>수익성 및 비즈니스 모델</VCConsiderationTitle>
+            <VCConsiderationDescription>
+              MUFI는 초기부터 명확한 수익화 전략을 갖추고 있으며, 다양한 수익원(포토부스 임대, 프리미엄 구독, 데이터 판매)을 통해 안정적인 사업 확장이 가능합니다. 
+              현재 투자 환경에서 VC들이 더욱 중요시하는 '명확한 수익 경로와 단위 경제성'을 갖추고 있으며, 
+              2026년 손익분기점 달성 후 빠른 성장세를 보일 것으로 예상됩니다.
+            </VCConsiderationDescription>
+          </VCConsiderationItem>
+        </VCConsiderationsList>
+      </VCConsiderations>
       
       <ExitStrategy>
         <ExitStrategyTitle>투자금 회수 전략</ExitStrategyTitle>
@@ -327,7 +412,7 @@ const FundingChart = styled.div`
   margin-bottom: 2rem;
   
   svg {
-    max-height: 300px;
+    max-height: 350px;
     margin: 0 auto;
     display: block;
   }
@@ -499,6 +584,71 @@ const ExitOptionTitle = styled.h4`
 `;
 
 const ExitOptionDescription = styled.p`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+`;
+
+const VCConsiderations = styled.div`
+  margin-top: 1rem;
+`;
+
+const VCConsiderationsTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: ${COLORS.BLACK};
+`;
+
+const VCConsiderationsDescription = styled.p`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+`;
+
+const VCConsiderationsList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  
+  ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const VCConsiderationItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: ${COLORS.WHITE};
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+`;
+
+const VCConsiderationIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  color: ${COLORS.RED};
+  margin-bottom: 1rem;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const VCConsiderationTitle = styled.h4`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+`;
+
+const VCConsiderationDescription = styled.p`
   font-size: 1rem;
   line-height: 1.6;
   color: ${COLORS.BLACK};
