@@ -83,12 +83,13 @@ export const IR: React.FC = () => {
     if (section) {
       const offsetTop = section.offsetTop;
       
+      // 먼저 활성 섹션을 설정하여 네비게이션 바가 즉시 업데이트되도록 함
+      setActiveSection(sectionId);
+      
       window.scrollTo({
         top: offsetTop - 100, // 네비게이션 바 높이 고려
         behavior: 'smooth'
       });
-      
-      setActiveSection(sectionId);
     }
   };
 

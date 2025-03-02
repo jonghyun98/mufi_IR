@@ -14,6 +14,8 @@ const NAV_ITEMS = [
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -21,12 +23,29 @@ export const Navigation: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      
+      // IR 페이지에서만 네비게이션 바 숨김 처리
+      if (isIrPage) {
+        // 스크롤 방향 감지
+        if (currentScrollY > lastScrollY) {
+          // 아래로 스크롤할 때
+          if (currentScrollY > 100) { // 어느 정도 스크롤된 후에만 숨김
+            setIsNavVisible(false);
+          }
+        } else {
+          // 위로 스크롤할 때
+          setIsNavVisible(true);
+        }
+      }
+
+      setIsScrolled(currentScrollY > 50);
+      setLastScrollY(currentScrollY);
 
       if (isHomePage) {
         // 현재 보이는 섹션 감지
         const sections = NAV_ITEMS.map(item => document.getElementById(item.id));
-        const scrollPosition = window.scrollY + window.innerHeight / 3;
+        const scrollPosition = currentScrollY + window.innerHeight / 3;
 
         sections.forEach(section => {
           if (section) {
@@ -43,7 +62,7 @@ export const Navigation: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isHomePage]);
+  }, [isHomePage, isIrPage, lastScrollY]);
 
   const handleNavClick = (id: string) => {
     if (isHomePage) {
@@ -58,7 +77,11 @@ export const Navigation: React.FC = () => {
   };
 
   return (
-    <NavContainer isScrolled={isScrolled} isIrPage={isIrPage}>
+    <NavContainer 
+      isScrolled={isScrolled} 
+      isIrPage={isIrPage} 
+      isVisible={isNavVisible}
+    >
       <NavLogo as={Link} to="/">
         MUFI
       </NavLogo>
@@ -79,7 +102,7 @@ export const Navigation: React.FC = () => {
   );
 };
 
-const NavContainer = styled.nav<{ isScrolled: boolean; isIrPage: boolean }>`
+const NavContainer = styled.nav<{ isScrolled: boolean; isIrPage: boolean; isVisible: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -100,6 +123,8 @@ const NavContainer = styled.nav<{ isScrolled: boolean; isIrPage: boolean }>`
   transition: all 0.3s ease;
   z-index: 1000;
   box-shadow: ${props => props.isScrolled ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none'};
+  transform: translateY(${props => (props.isIrPage && !props.isVisible) ? '-100%' : '0'});
+  opacity: ${props => (props.isIrPage && !props.isVisible) ? '0' : '1'};
 `;
 
 const NavLogo = styled.div`
