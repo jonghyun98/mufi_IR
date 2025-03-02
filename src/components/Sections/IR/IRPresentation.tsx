@@ -15,9 +15,10 @@ import {
   Tooltip, 
   Legend,
   ChartOptions,
-  ChartData
+  ChartData,
+  RadialLinearScale
 } from 'chart.js';
-import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Bar, Pie, Line, Radar } from 'react-chartjs-2';
 
 // Chart.js 등록
 ChartJS.register(
@@ -27,6 +28,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   ArcElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend
@@ -47,7 +49,7 @@ interface BaseSlide {
 // 차트 슬라이드 타입 정의
 interface ChartSlideData extends BaseSlide {
   type: 'chart';
-  chartType: 'bar' | 'pie' | 'line';
+  chartType: 'bar' | 'pie' | 'line' | 'radar';
   chartData: any; // 타입 호환성 문제를 해결하기 위해 any 사용
   chartOptions: any; // 타입 호환성 문제를 해결하기 위해 any 사용
 }
@@ -555,9 +557,74 @@ const SLIDES: SlideData[] = [
     subTitle: '수익 다각화를 통한 안정적 사업 구조',
     color: COLORS.GREEN,
     sectionNumber: '3',
-    type: 'section-intro'
+    type: 'section-intro',
+    bgImage: '/images/business-model-bg.jpg'
   },
-  // 비즈니스 모델 서브 슬라이드 3-1: 수익 다각화
+  // 비즈니스 모델 개요 슬라이드 (NEW)
+  {
+    id: 'business-model-overview',
+    title: '비즈니스 모델 개요',
+    subTitle: '포토부스 운영을 넘어선 다층적 수익 구조',
+    color: COLORS.GREEN,
+    sectionNumber: '3-0',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['기존 포토부스 업계', 'MUFI'],
+      datasets: [
+        {
+          label: '포토부스 이용료',
+          data: [90, 55],
+          backgroundColor: `${COLORS.BLUE}90`
+        },
+        {
+          label: 'AI 라이센싱',
+          data: [0, 25],
+          backgroundColor: `${COLORS.GREEN}90`
+        },
+        {
+          label: '광고 플랫폼',
+          data: [10, 15],
+          backgroundColor: `${COLORS.RED}90`
+        },
+        {
+          label: '데이터 비즈니스',
+          data: [0, 5],
+          backgroundColor: `${COLORS.YELLOW}90`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: '매출 비중 (%)'
+          }
+        }
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: '수익원 다각화 비교'
+        }
+      }
+    },
+    keyPoints: [
+      '기존 업계 대비 45%의 추가 수익원 확보로 안정적 수익 구조 구축',
+      'AI 기술력 기반의 SaaS 비즈니스 모델로 높은 마진율 실현',
+      '데이터 비즈니스는 초기 단계이나 높은 성장 잠재력 보유',
+      '다양한 수익원으로 인한 시장 변동성 위험 분산 효과'
+    ]
+  },
+  // 비즈니스 모델 서브 슬라이드 3-1: 수익 다각화 구조 (개선)
   {
     id: 'business-model-revenue',
     title: '수익 다각화 구조',
@@ -592,13 +659,57 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '포토부스 이용료: 현재 전체 수익의 55%, 안정적 캐시카우',
-      'AI 라이센싱: 타 운영사에 최적화 시스템 제공, 고성장 예상',
-      '광고 플랫폼: 포토부스 내 디지털 광고 서비스, 브랜드 협업',
-      '데이터 분석: 트렌드 리포트 판매, 향후 성장 주력 분야'
+      '포토부스 이용료: 1회당 평균 5,000원, 기기당 월 350만원 매출',
+      'AI 라이센싱: 월 구독형(기본 50만원/기기), 고마진(85%) 사업',
+      '광고 플랫폼: 브랜드 콜라보 및 디지털 광고 (월 2.5억원 매출)',
+      '데이터 분석: MZ세대 트렌드 리포트 판매 (분기별 7,500만원 수익)'
     ]
   },
-  // 비즈니스 모델 서브 슬라이드 3-2: 수익성 예측
+  // 비즈니스 모델 플로우 다이어그램 슬라이드 (NEW)
+  {
+    id: 'business-model-flow',
+    title: '비즈니스 프로세스',
+    subTitle: '데이터 기반 선순환 비즈니스 구조',
+    color: COLORS.GREEN,
+    sectionNumber: '3-1-1',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['고객 유입', '데이터 수집', '서비스 최적화', '교차판매', '파트너십 확장'],
+      datasets: [
+        {
+          label: '가치 창출 단계',
+          data: [20, 35, 55, 75, 100],
+          borderColor: `${COLORS.GREEN}`,
+          backgroundColor: `${COLORS.GREEN}30`,
+          tension: 0.4,
+          fill: true
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '비즈니스 가치 (%)'
+          },
+          max: 100
+        }
+      }
+    },
+    keyPoints: [
+      '포토부스 서비스가 고객 접점이자 데이터 수집 채널로 기능',
+      '수집된 데이터를 AI로 분석하여 서비스와 운영 지속 최적화',
+      '기존 고객 대상 AI 및 데이터 서비스 교차판매로 수익 극대화',
+      '파트너십 확장으로 네트워크 효과 창출 (현재 42개 브랜드 협업)'
+    ]
+  },
+  // 비즈니스 모델 서브 슬라이드 3-2: 수익성 예측 (유지)
   {
     id: 'business-model-profitability',
     title: '수익성 예측',
@@ -657,13 +768,13 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '3년차부터 영업이익률 18% 이상 달성 예상',
-      '5년차 매출 120억원, 영업이익률 28% 목표',
-      'AI 라이센싱 수익 비중 증가로 수익성 지속 개선',
-      '초기 투자 회수 시점: 운영 16개월 차'
+      '3년차 영업이익률 18%는 업계 평균(8%)의 2.25배 수준',
+      '5년차 목표 매출 120억원, 영업이익 33.6억원 (이익률 28%)',
+      'AI 라이센싱 및 데이터 사업의 고마진 특성으로 점진적 수익성 개선',
+      '초기 투자 회수 시점: 운영 16개월 차 (업계 평균 24개월 대비 빠른 회수)'
     ]
   },
-  // 비즈니스 모델 서브 슬라이드 3-3: 경쟁 우위 요소
+  // 비즈니스 모델 서브 슬라이드 3-3: 경쟁 우위 요소 (유지)
   {
     id: 'business-model-advantage',
     title: '경쟁 우위 요소',
@@ -709,10 +820,55 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      'AI 기반 위치 최적화로 타 업체 대비 58% 높은 수익률',
-      '자동화된 운영 시스템으로 80% 이상 비용 절감 효과',
-      '데이터 주도 의사결정으로 대응 속도 90% 향상',
-      '지속적인 알고리즘 개선으로 경쟁 우위 유지'
+      'AI 기반 위치 최적화로 동일 입지 대비 매출 58% 향상',
+      '자동화된 운영 시스템으로 포토부스당 관리 인력 82% 절감',
+      '데이터 기반 의사결정으로 시장 변화 대응 속도 5.2배 향상',
+      '특허 출원 중인 AI 알고리즘 5건으로 기술적 진입장벽 구축'
+    ]
+  },
+  // 비즈니스 모델 검증 슬라이드 (NEW)
+  {
+    id: 'business-model-validation',
+    title: '비즈니스 모델 검증',
+    subTitle: '실제 운영 데이터로 입증된 사업성',
+    color: COLORS.GREEN,
+    sectionNumber: '3-4',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['고객 재방문율', '운영 비용', '포토부스 회전율', '고객 만족도'],
+      datasets: [
+        {
+          label: '도입 전',
+          data: [15, 100, 8.5, 72],
+          backgroundColor: `${COLORS.BLUE}80`
+        },
+        {
+          label: '도입 후',
+          data: [32, 43, 12.8, 94],
+          backgroundColor: `${COLORS.GREEN}80`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '상대적 지표 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '실제 파일럿 매장(12개소) 운영 결과 재방문율 113% 향상',
+      '운영 비용 57% 절감으로 순이익 2.3배 증가 확인',
+      '회전율 개선(시간당 3.6명→5.4명)으로 단위 면적당 매출 50% 증가',
+      '고객 만족도 조사 결과 94점 획득 (업계 평균 72점 대비 31% 높음)'
     ]
   },
   // AI 에이전트 메인 슬라이드
@@ -722,7 +878,98 @@ const SLIDES: SlideData[] = [
     subTitle: '포토부스 운영 최적화를 위한 인공지능 솔루션',
     color: COLORS.RED,
     sectionNumber: '4',
-    type: 'section-intro'
+    type: 'section-intro',
+    bgImage: '/images/ai-agent-bg.jpg'
+  },
+  // AI 에이전트 개요 슬라이드 (NEW)
+  {
+    id: 'ai-agent-overview',
+    title: 'AI 에이전트 개요',
+    subTitle: '자율 운영의 미래를 여는 인공지능 시스템',
+    color: COLORS.RED,
+    sectionNumber: '4-0',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['수요 예측 모듈', '위치 최적화 모듈', '물류 자동화 모듈', '예측 정비 모듈', '인력 배치 모듈'],
+      datasets: [
+        {
+          data: [25, 30, 15, 20, 10],
+          backgroundColor: [
+            `${COLORS.BLUE}90`,
+            `${COLORS.RED}90`,
+            `${COLORS.GREEN}90`,
+            `${COLORS.YELLOW}90`,
+            `${COLORS.BLUE}60`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'AI 에이전트 모듈별 리소스 배분 (%)'
+        }
+      }
+    },
+    keyPoints: [
+      'MUFI의 핵심 기술인 AI 에이전트는 5개 핵심 모듈로 구성',
+      '위치 최적화가 가장 큰 비중(30%)으로 투입 리소스 대비 ROI 최고',
+      '모든 모듈이 통합된 중앙 관제 시스템으로 운영',
+      '자체 개발 알고리즘으로 특허 5건 출원 (2건 등록 완료)'
+    ]
+  },
+  // AI 아키텍처 슬라이드 (NEW)
+  {
+    id: 'ai-agent-architecture',
+    title: 'AI 아키텍처',
+    subTitle: '확장 가능한 모듈형 인공지능 구조',
+    color: COLORS.RED,
+    sectionNumber: '4-0-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['데이터 수집 계층', '분석 계층', '의사결정 계층', '실행 계층', '피드백 계층'],
+      datasets: [
+        {
+          label: '개발 진행률(%)',
+          data: [95, 90, 85, 80, 75],
+          backgroundColor: [
+            `${COLORS.BLUE}90`,
+            `${COLORS.GREEN}90`,
+            `${COLORS.RED}90`,
+            `${COLORS.YELLOW}90`,
+            `${COLORS.BLUE}60`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: '개발 진행률 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '5계층 아키텍처 구조: 수집→분석→의사결정→실행→피드백',
+      '분산 처리 시스템으로 3,000개 포토부스까지 동시 제어 가능',
+      'Azure ML과 자체 개발 알고리즘의 하이브리드 구조 채택',
+      '핵심 의사결정 계층은 끊임없는 학습으로 정확도 자동 향상'
+    ]
   },
   // AI 에이전트 서브 슬라이드 4-1: 핵심 기술 구성
   {
@@ -739,7 +986,16 @@ const SLIDES: SlideData[] = [
         {
           label: '정확도 (%)',
           data: [92, 95, 89, 87, 93],
-          backgroundColor: `${COLORS.RED}80`
+          backgroundColor: `${COLORS.RED}80`,
+          borderWidth: 1,
+          borderColor: `${COLORS.RED}`
+        },
+        {
+          label: '업계 평균 (%)',
+          data: [65, 52, 48, 42, 58],
+          backgroundColor: `${COLORS.BLUE}60`,
+          borderWidth: 1,
+          borderColor: `${COLORS.BLUE}`
         }
       ]
     },
@@ -759,10 +1015,61 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '위치 최적화 알고리즘: 95% 정확도로 최적 설치 위치 예측',
-      '수요 예측 엔진: 92% 정확도로 시간대별 수요 예측',
-      '인력 배치 최적화: 93% 효율성으로 작업자 배치 자동화',
-      '물류 및 자재 자동화: 89% 정확도로 최적 보급 일정 계산'
+      '위치 최적화 알고리즘: 유동인구, 경쟁업체, 소비 패턴 3중 분석',
+      '수요 예측 엔진: 날씨, 이벤트, 시즌성 등 27개 변수 실시간 처리',
+      '인력 배치 최적화: 8,500건의 과거 데이터로 학습된 예측 모델 적용',
+      '예측 정비: 장비 이상을 평균 3.2일 전에 감지하는 예방 정비 시스템'
+    ]
+  },
+  // AI 기술 비교 슬라이드 (NEW)
+  {
+    id: 'ai-agent-comparison',
+    title: 'AI 기술 경쟁 우위',
+    subTitle: '차별화된 AI 기술력으로 시장 우위 확보',
+    color: COLORS.RED,
+    sectionNumber: '4-1-1',
+    type: 'chart',
+    chartType: 'radar',
+    chartData: {
+      labels: ['정확도', '확장성', '학습 속도', '운영 비용', '장애 대응', '데이터 활용도'],
+      datasets: [
+        {
+          label: 'MUFI AI',
+          data: [95, 92, 88, 96, 90, 93],
+          backgroundColor: `${COLORS.RED}30`,
+          borderColor: `${COLORS.RED}`,
+          borderWidth: 2,
+          pointBackgroundColor: `${COLORS.RED}`
+        },
+        {
+          label: '기존 최고 경쟁사',
+          data: [75, 65, 60, 70, 68, 62],
+          backgroundColor: `${COLORS.BLUE}20`,
+          borderColor: `${COLORS.BLUE}`,
+          borderWidth: 2,
+          pointBackgroundColor: `${COLORS.BLUE}`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: {
+            display: true
+          },
+          suggestedMin: 0,
+          suggestedMax: 100
+        }
+      }
+    },
+    keyPoints: [
+      '기존 최고 경쟁사 대비 정확도 26% 향상, 학습 속도 46% 빠름',
+      '운영 비용 효율화 지표 96점으로 업계 1위 (다음 업체 70점)',
+      '확장성 92점으로 3,000개 이상 포토부스 동시 관리 가능',
+      '이상 발생 시 자가 진단 및 복구 시스템으로 장애 대응 시간 90% 단축'
     ]
   },
   // AI 에이전트 서브 슬라이드 4-2: 효과 분석
@@ -824,10 +1131,51 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '월간 운영 비용 57% 감소 (175만원 → 75만원)',
-      '고객 만족도 27%p 향상 (67% → 94%)',
-      '문제 대응 시간 87% 단축 (36.8분 → 4.2분)',
-      '가동률 15%p 향상 (82% → 97%)'
+      '월간 운영 비용 57% 감소 (175만원 → 75만원, 연간 1,200만원 절감)',
+      '고객 만족도 27%p 향상 (주요인: 대기시간 감소, 콘텐츠 개인화)',
+      '장애 대응 시간 87% 단축 (36.8분 → 4.2분, 가용성 99.8% 달성)',
+      '1년 누적 ROI 486%, 투자 대비 수익 비율 업계 최고 수준'
+    ]
+  },
+  // 실시간 대시보드 슬라이드 (NEW)
+  {
+    id: 'ai-agent-dashboard',
+    title: '실시간 AI 대시보드',
+    subTitle: '데이터 기반 의사결정을 위한 관제 시스템',
+    color: COLORS.RED,
+    sectionNumber: '4-2-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['이상 감지', '자원 최적화', '수요 예측', '성과 지표', '유지보수 계획'],
+      datasets: [
+        {
+          label: '실시간 정보 정확도(%)',
+          data: [98, 94, 92, 96, 91],
+          backgroundColor: `${COLORS.RED}70`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: '정보 정확도 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '웹 기반 실시간 모니터링으로 언제 어디서나 현황 파악 가능',
+      '대시보드를 통한 이상 징후 98% 사전 감지로 장애 예방',
+      '운영자 1인당 관리 가능 기기 수 8대→42대로 확장',
+      '주간/월간/분기 보고서 자동 생성으로 의사결정 지원'
     ]
   },
   // AI 에이전트 서브 슬라이드 4-3: 미래 로드맵
@@ -870,10 +1218,10 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '현재(2024): 예측형 최적화 (데이터 기반 비용/효율 최적화)',
-      '2025: 지능형 조정 (환경 변화에 자율 대응)',
-      '2026: 제한적 자기진화 (알고리즘 스스로 개선)',
-      '2027: 완전 자율 운영 (인간 감독 하 자율 의사결정)'
+      '현재(2024): 예측형 최적화 (데이터 기반 비용/효율 최적화, 95% 완료)',
+      '2025: 지능형 조정 (환경 변화에 자율 대응, 개발 70% 진행 중)',
+      '2026: 제한적 자기진화 (알고리즘 스스로 개선, 연구 단계)',
+      '2027: 완전 자율 운영 (인간 감독 하 자율 의사결정, 개념 설계 완료)'
     ]
   },
   // 확장 전략 메인 슬라이드
@@ -883,7 +1231,48 @@ const SLIDES: SlideData[] = [
     subTitle: '지역 및 사업 영역 확장을 통한 성장 계획',
     color: COLORS.GREEN,
     sectionNumber: '5',
-    type: 'section-intro'
+    type: 'section-intro',
+    bgImage: '/images/expansion-bg.jpg'
+  },
+  // 확장 전략 개요 슬라이드 (NEW)
+  {
+    id: 'expansion-overview',
+    title: '확장 전략 핵심',
+    subTitle: '3단계 확장 전략으로 지속 가능한 성장 달성',
+    color: COLORS.GREEN,
+    sectionNumber: '5-0',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['시장 침투', '사업 다각화', '글로벌 확장'],
+      datasets: [
+        {
+          data: [50, 30, 20],
+          backgroundColor: [
+            `${COLORS.GREEN}90`,
+            `${COLORS.BLUE}90`,
+            `${COLORS.RED}90`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '확장 전략 리소스 배분 (%)'
+        }
+      }
+    },
+    keyPoints: [
+      '현재 주력: 국내 대학가 및 상권 중심 시장 침투 (1-2년)',
+      '병행 추진: AI 라이센싱 등 사업 다각화로 수익원 확보 (2-3년)',
+      '중장기 목표: 동남아 및 북미 핵심 시장 글로벌 진출 (3-5년)',
+      '각 단계별 마일스톤 설정으로 체계적 확장 진행'
+    ]
   },
   // 확장 전략 서브 슬라이드 5-1: 지역 확장 계획
   {
@@ -937,10 +1326,76 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '1차 목표(2024): 주요 대학가 중심 32개 거점 확보',
-      '2차 목표(2025-26): 쇼핑몰, 상권 중심 93개 지점 추가',
-      '3차 목표(2027-28): 관광지, 복합문화공간으로 115개 확장',
-      '5년 내 누적 330개 포토부스 운영 목표'
+      '대학가(20대 인구 밀집): 1차 목표로 서울/수도권 10개 대학 32대 설치',
+      '쇼핑몰(유동인구 활용): 핵심 상권 15개 지점 내 분기별 3-5대 추가',
+      '관광지(계절성 대응): 제주, 부산 등 핵심 관광지 30대 계절별 운영',
+      '5년간 총 330대 포토부스로 시장점유율 15% 달성 목표'
+    ]
+  },
+  // 추가 - 시장 점유율 전략 슬라이드
+  {
+    id: 'expansion-market-share',
+    title: '시장 점유율 전략',
+    subTitle: '전략적 포지셔닝을 통한 시장 지배력 확보',
+    color: COLORS.GREEN,
+    sectionNumber: '5-1-1',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['2024', '2025', '2026', '2027', '2028'],
+      datasets: [
+        {
+          label: 'MUFI 시장점유율(%)',
+          data: [2, 5, 8, 12, 15],
+          borderColor: `${COLORS.GREEN}`,
+          backgroundColor: `${COLORS.GREEN}30`,
+          tension: 0.4,
+          yAxisID: 'y'
+        },
+        {
+          label: '누적 포토부스 대수',
+          data: [32, 83, 155, 240, 330],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}30`,
+          tension: 0.4,
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: '시장 점유율 (%)'
+          },
+          max: 20
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: '누적 포토부스 대수'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '목표 시장 점유율: 5년 내 15% 달성 (업계 2위 입지 확보)',
+      '초기 1-2년은 핵심 타깃 집중 전략 → 3년차부터 광역 확장 전략',
+      'AI 최적화로 경쟁사 대비 운영 효율성 우위 확보',
+      '대형 경쟁사(A사) 진입 장벽이 낮은 틈새시장 우선 공략'
     ]
   },
   // 확장 전략 서브 슬라이드 5-2: 글로벌 시장 진출
@@ -978,10 +1433,55 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '베트남, 태국, 말레이시아 중심 동남아 진출 (2025~)',
-      '미국 대학가 거점 진출 (2026~)',
-      '글로벌 프랜차이즈 모델로 빠른 확장',
-      '현지화된 콘텐츠 및 AI 모델 적용'
+      '베트남(2025 Q2): 호치민, 하노이 중심 15대 시범 운영',
+      '태국(2025 Q4): 방콕 관광지 중심 10대 설치',
+      '말레이시아(2026 Q2): 쿠알라룸푸르 쇼핑몰 8대 설치',
+      '미국(2026 Q3): 캘리포니아 주요 대학가 5개 거점 진출'
+    ]
+  },
+  // 글로벌 확장 단계 슬라이드
+  {
+    id: 'expansion-global-phases',
+    title: '글로벌 확장 단계',
+    subTitle: '3단계 글로벌 진출 로드맵',
+    color: COLORS.GREEN,
+    sectionNumber: '5-2-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['1단계: 시장 탐색', '2단계: 거점 확보', '3단계: 확장'],
+      datasets: [
+        {
+          label: '동남아시아',
+          data: [80, 60, 40],
+          backgroundColor: `${COLORS.BLUE}80`
+        },
+        {
+          label: '북미',
+          data: [20, 40, 60],
+          backgroundColor: `${COLORS.GREEN}80`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '리소스 배분 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '1단계(2025): 동남아 중심 현지 파트너십 구축 및 시장 검증',
+      '2단계(2026): 동남아 확장 및 북미 시장 거점 구축',
+      '3단계(2027-28): 북미 시장 본격 확장 및 유럽 시장 탐색',
+      '각 국가별 맞춤형 콘텐츠 및 AI 모델 현지화로 경쟁력 확보'
     ]
   },
   // 확장 전략 서브 슬라이드 5-3: 사업 다각화
@@ -1029,55 +1529,33 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      'AR 기반 확장 콘텐츠 개발 (2025~)',
-      '메타버스 연동 포토부스 경험 구축 (2026~)',
-      '데이터 기반 트렌드 분석 서비스 (2025~)',
-      '운영 최적화 AI 라이센싱 확대 (진행 중)'
+      'AI 라이센싱 사업(B2B): 2025년까지 10개 중소 포토부스 업체 계약 목표',
+      'AR 콘텐츠 플랫폼: 2025년 Q3 출시 예정, 초기 30개 콘텐츠 확보',
+      '메타버스 연동 서비스: 2026년 주요 메타버스 플랫폼 3곳과 제휴',
+      '데이터 사업부: 2025년 Q1 신설, MZ세대 트렌드 리포트 분기별 발행'
     ]
   },
-  // 재무 계획 메인 슬라이드
+  // 전략적 파트너십 슬라이드
   {
-    id: 'financial-main',
-    title: '재무 계획',
-    subTitle: '안정적 성장과 수익성 확보 전략',
-    color: COLORS.YELLOW,
-    sectionNumber: '6',
-    type: 'section-intro'
-  },
-  // 재무 계획 서브 슬라이드 6-1: 손익 계획
-  {
-    id: 'financial-profit',
-    title: '손익 계획',
-    subTitle: '매출 성장 및 수익성 개선 계획',
-    color: COLORS.YELLOW,
-    sectionNumber: '6-1',
+    id: 'expansion-partnerships',
+    title: '전략적 파트너십',
+    subTitle: '생태계 구축을 통한 성장 가속화',
+    color: COLORS.GREEN,
+    sectionNumber: '5-4',
     type: 'chart',
     chartType: 'bar',
     chartData: {
-      labels: ['1년차', '2년차', '3년차', '4년차', '5년차'],
+      labels: ['콘텐츠 파트너', '기술 파트너', '유통 파트너', '광고 파트너', '투자 파트너'],
       datasets: [
         {
-          label: '매출(억원)',
-          data: [15, 35, 65, 90, 120],
-          backgroundColor: `${COLORS.BLUE}70`,
-          yAxisID: 'y',
-          order: 2
+          label: '현재 파트너 수',
+          data: [12, 4, 8, 15, 3],
+          backgroundColor: `${COLORS.BLUE}70`
         },
         {
-          label: '영업이익(억원)',
-          data: [0.75, 4.2, 11.7, 20.7, 33.6],
-          backgroundColor: `${COLORS.GREEN}70`,
-          yAxisID: 'y',
-          order: 1
-        },
-        {
-          label: '영업이익률(%)',
-          data: [5, 12, 18, 23, 28],
-          borderColor: `${COLORS.RED}`,
-          backgroundColor: `${COLORS.RED}30`,
-          type: 'line',
-          yAxisID: 'y1',
-          order: 0
+          label: '2025년 목표',
+          data: [25, 8, 20, 30, 5],
+          backgroundColor: `${COLORS.GREEN}70`
         }
       ]
     },
@@ -1087,26 +1565,65 @@ const SLIDES: SlideData[] = [
       maintainAspectRatio: false,
       scales: {
         y: {
-          type: 'linear',
-          display: true,
-          position: 'left',
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '파트너 수'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '콘텐츠 파트너: SM, JYP 등 엔터테인먼트사와 콜라보 콘텐츠 개발',
+      '기술 파트너: MS, AWS와 클라우드 인프라 및 AI 기술 협력',
+      '유통 파트너: CGV, 스타벅스 등 핵심 입지 보유 기업과 제휴',
+      '광고 파트너: 아모레퍼시픽, 삼성전자 등 주요 브랜드와 광고 계약'
+    ]
+  },
+  // 재무 계획 메인 슬라이드
+  {
+    id: 'financial-main',
+    title: '재무 계획',
+    subTitle: '안정적 성장과 수익성 확보 전략',
+    color: COLORS.YELLOW,
+    sectionNumber: '6',
+    type: 'section-intro',
+    bgImage: '/images/financial-bg.jpg'
+  },
+  // 재무 계획 개요 슬라이드 (NEW)
+  {
+    id: 'financial-overview',
+    title: '재무 계획 개요',
+    subTitle: '지속 가능한 성장과 수익성 확보를 위한 전략',
+    color: COLORS.YELLOW,
+    sectionNumber: '6-0',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['초기 정착기', '성장 가속기', '확장기', '안정기'],
+      datasets: [
+        {
+          label: '매출 성장',
+          data: [15, 35, 65, 120],
+          backgroundColor: `${COLORS.BLUE}80`
+        },
+        {
+          label: '영업이익',
+          data: [0.75, 4.2, 11.7, 33.6],
+          backgroundColor: `${COLORS.GREEN}80`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
           title: {
             display: true,
             text: '금액(억원)'
-          }
-        },
-        y1: {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          title: {
-            display: true,
-            text: '비율(%)'
-          },
-          min: 0,
-          max: 30,
-          grid: {
-            drawOnChartArea: false
           }
         }
       }
@@ -1226,13 +1743,64 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      '손익분기점: 운영 16개월 차(누적 기준)',
-      '투자 대비 수익 흑자전환: 38개월 차',
-      '5년차 ROI: 82%',
-      '포토부스 한 대당 평균 회수 기간: 1.7년'
+      '손익분기점: 도입 후 16개월 차 달성 (누적 기준)',
+      '투자자 수익 회수 가능 시점: 38개월 차 (ROI 0% 돌파)',
+      '5년차 ROI: 누적 투자 대비 82%의 높은 수익률 달성',
+      '장기 투자자 목표 수익률: 7년차 150% (IPO 또는 M&A 고려)'
     ]
   },
-  // 여기에 다른 슬라이드들 계속...
+  // 리스크 관리 슬라이드 (NEW)
+  {
+    id: 'financial-risk',
+    title: '리스크 관리',
+    subTitle: '잠재적 위험 요소 및 대응 전략',
+    color: COLORS.YELLOW,
+    sectionNumber: '6-4',
+    type: 'chart',
+    chartType: 'radar',
+    chartData: {
+      labels: ['시장 경쟁', '기술 변화', '규제 리스크', '운영 리스크', '자금 조달', '인력 확보'],
+      datasets: [
+        {
+          label: '리스크 수준',
+          data: [70, 50, 30, 45, 60, 55],
+          backgroundColor: `${COLORS.RED}30`,
+          borderColor: `${COLORS.RED}`,
+          borderWidth: 2,
+          pointBackgroundColor: `${COLORS.RED}`
+        },
+        {
+          label: '대응 역량',
+          data: [75, 85, 70, 90, 65, 80],
+          backgroundColor: `${COLORS.GREEN}30`,
+          borderColor: `${COLORS.GREEN}`,
+          borderWidth: 2,
+          pointBackgroundColor: `${COLORS.GREEN}`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: {
+            display: true
+          },
+          suggestedMin: 0,
+          suggestedMax: 100
+        }
+      }
+    },
+    keyPoints: [
+      '시장 경쟁: 대형 업체 진입 시 기술 차별화 및 선점 효과로 대응',
+      '기술 변화: 지속적 R&D 투자 (매출의 15%)로 기술 경쟁력 유지',
+      '자금 조달: 단계별 투자 유치 외 영업 현금흐름 개선으로 리스크 완화',
+      '코어 리스크 헷지: 다양한 수익 모델과 지역 다변화로 안정성 확보'
+    ]
+  },
+  // 기존 legacy 타입 슬라이드
   {
     id: 'business-areas',
     title: '사업 영역',
@@ -1460,6 +2028,16 @@ export const IRPresentation: React.FC = () => {
               ref={(el: any) => chartRefs.current[index] = el} 
               data={slide.chartData} 
               options={slide.chartOptions as ChartOptions<'line'>} 
+            />
+          </ChartContainer>
+        );
+      case 'radar':
+        return (
+          <ChartContainer>
+            <Radar 
+              ref={(el: any) => chartRefs.current[index] = el} 
+              data={slide.chartData} 
+              options={slide.chartOptions as ChartOptions<'radar'>} 
             />
           </ChartContainer>
         );
