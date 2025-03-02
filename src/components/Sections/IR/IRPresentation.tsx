@@ -1821,9 +1821,9 @@ const SLIDES: SlideData[] = [
     sectionNumber: '7-1',
     type: 'product-demo',
     demoImages: [
-      '/images/demo/photobooth-ui-1.jpg',
-      '/images/demo/photobooth-ui-2.jpg',
-      '/images/demo/photobooth-ui-3.jpg'
+      '/images/demo/placeholder-1.jpg',
+      '/images/demo/placeholder-2.jpg',
+      '/images/demo/placeholder-3.jpg'
     ],
     descriptions: [
       '직관적인 UI로 누구나 쉽게 이용할 수 있는 터치스크린 인터페이스',
@@ -1846,9 +1846,9 @@ const SLIDES: SlideData[] = [
     sectionNumber: '7-2',
     type: 'product-demo',
     demoImages: [
-      '/images/demo/ai-dashboard-1.jpg',
-      '/images/demo/ai-dashboard-2.jpg',
-      '/images/demo/ai-dashboard-3.jpg'
+      '/images/demo/placeholder-4.jpg',
+      '/images/demo/placeholder-5.jpg',
+      '/images/demo/placeholder-6.jpg'
     ],
     descriptions: [
       '실시간 매출, 이용객 수, 인기 테마 등 핵심 지표 모니터링',
@@ -1871,10 +1871,10 @@ const SLIDES: SlideData[] = [
     sectionNumber: '7-3',
     type: 'product-demo',
     demoImages: [
-      '/images/demo/user-journey-1.jpg',
-      '/images/demo/user-journey-2.jpg',
-      '/images/demo/user-journey-3.jpg',
-      '/images/demo/user-journey-4.jpg'
+      '/images/demo/placeholder-7.jpg',
+      '/images/demo/placeholder-8.jpg',
+      '/images/demo/placeholder-9.jpg',
+      '/images/demo/placeholder-0.jpg'
     ],
     descriptions: [
       '① 접근: AI 위치 최적화로 유동인구가 많은 곳에 배치',
@@ -1903,6 +1903,8 @@ const SLIDES: SlideData[] = [
 export const IRPresentation: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
   const chartRefs = useRef<(HTMLCanvasElement | null)[]>([]);
 
@@ -1912,22 +1914,28 @@ export const IRPresentation: React.FC = () => {
       // 전환 중이면 무시
       if (isTransitioning) return;
 
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
         if (currentSlide < SLIDES.length - 1) {
           setIsTransitioning(true);
           setCurrentSlide(prev => prev + 1);
         }
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'Backspace') {
         if (currentSlide > 0) {
           setIsTransitioning(true);
           setCurrentSlide(prev => prev - 1);
         }
+      } else if (e.key === 'Home') {
+        setIsTransitioning(true);
+        setCurrentSlide(0);
+      } else if (e.key === 'End') {
+        setIsTransitioning(true);
+        setCurrentSlide(SLIDES.length - 1);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentSlide, isTransitioning]);
+  }, [currentSlide, isTransitioning, SLIDES.length]);
 
   // 전환 효과 종료 후 상태 업데이트
   useEffect(() => {
@@ -1938,8 +1946,13 @@ export const IRPresentation: React.FC = () => {
     return () => clearTimeout(timer);
   }, [currentSlide]);
 
-  // 휠 이벤트 처리
+  // 휠 이벤트 처리 - 적정 딜레이 추가
   useEffect(() => {
+    // 디바운스 처리를 위한 변수
+    let wheelTimeout: NodeJS.Timeout | null = null;
+    let lastWheelTime = 0;
+    const WHEEL_DELAY = 500; // 휠 이벤트 사이의 최소 간격 (ms)
+    
     const handleWheel = (e: WheelEvent) => {
       // 전환 중이면 무시
       if (isTransitioning) return;
@@ -1948,6 +1961,37 @@ export const IRPresentation: React.FC = () => {
       if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
       
       e.preventDefault();
+      
+      // 지난 휠 이벤트와의 시간 차이 확인
+      const now = Date.now();
+      if (now - lastWheelTime < WHEEL_DELAY) {
+        // 아직 충분한 시간이 지나지 않았으면 무시
+        if (wheelTimeout) clearTimeout(wheelTimeout);
+        
+        // 마지막 휠 이벤트를 약간의 딜레이 후에 처리
+        wheelTimeout = setTimeout(() => {
+          lastWheelTime = Date.now();
+          
+          if (e.deltaY > 0) {
+            // 아래로 스크롤
+            if (currentSlide < SLIDES.length - 1) {
+              setIsTransitioning(true);
+              setCurrentSlide(prev => prev + 1);
+            }
+          } else {
+            // 위로 스크롤
+            if (currentSlide > 0) {
+              setIsTransitioning(true);
+              setCurrentSlide(prev => prev - 1);
+            }
+          }
+        }, WHEEL_DELAY - (now - lastWheelTime));
+        
+        return;
+      }
+      
+      // 충분한 시간이 지났으면 즉시 처리
+      lastWheelTime = now;
       
       if (e.deltaY > 0) {
         // 아래로 스크롤
@@ -1967,8 +2011,47 @@ export const IRPresentation: React.FC = () => {
     const wheelListener = (e: WheelEvent) => handleWheel(e);
     window.addEventListener('wheel', wheelListener, { passive: false });
     
-    return () => window.removeEventListener('wheel', wheelListener);
-  }, [currentSlide, isTransitioning]);
+    return () => {
+      window.removeEventListener('wheel', wheelListener);
+      if (wheelTimeout) clearTimeout(wheelTimeout);
+    };
+  }, [currentSlide, isTransitioning, SLIDES.length]);
+
+  // 터치 이벤트 처리
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStart(e.targetTouches[0].clientY);
+    setTouchEnd(null);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEnd(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isSignificant = Math.abs(distance) > 50; // 최소 스와이프 거리
+    
+    if (!isTransitioning && isSignificant) {
+      if (distance > 0) {
+        // 위로 스와이프
+        if (currentSlide < SLIDES.length - 1) {
+          setIsTransitioning(true);
+          setCurrentSlide(prev => prev + 1);
+        }
+      } else {
+        // 아래로 스와이프
+        if (currentSlide > 0) {
+          setIsTransitioning(true);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }
+    }
+    
+    // 상태 리셋
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   // 특정 슬라이드로 이동하는 함수
   const goToSlide = (index: number) => {
@@ -1977,6 +2060,9 @@ export const IRPresentation: React.FC = () => {
       setCurrentSlide(index);
     }
   };
+
+  // 진행 상황 표시
+  const progressPercent = ((currentSlide + 1) / SLIDES.length) * 100;
 
   // 차트 렌더링 컴포넌트
   const renderChart = (slide: ChartSlideData, index: number) => {
@@ -2175,10 +2261,24 @@ export const IRPresentation: React.FC = () => {
             <DemoContent>
               <DemoImagesContainer>
                 {demoSlide.demoImages && demoSlide.demoImages.map((imgSrc, i) => (
-                  <DemoImageWrapper key={i} delay={i * 0.15}>
-                    <DemoImage src={imgSrc} alt={`Demo ${i+1}`} />
+                  <DemoImageWrapper 
+                    key={i} 
+                    delay={i * 0.15}
+                    onClick={() => console.log(`Demo clicked: ${demoSlide.descriptions && demoSlide.descriptions[i]}`)}
+                  >
+                    <DemoImage 
+                      src={imgSrc || `/images/demo/placeholder-${i + 1}.jpg`} 
+                      alt={`Demo ${i+1}`} 
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 대체 이미지 사용
+                        (e.target as HTMLImageElement).src = `/images/demo/placeholder-${i % 4 + 1}.jpg`;
+                      }}
+                    />
                     {demoSlide.descriptions && demoSlide.descriptions[i] && (
-                      <DemoImageCaption>{demoSlide.descriptions[i]}</DemoImageCaption>
+                      <DemoImageCaption>
+                        {demoSlide.descriptions[i]}
+                        <ActionButton color={demoSlide.color}>자세히 보기 →</ActionButton>
+                      </DemoImageCaption>
                     )}
                   </DemoImageWrapper>
                 ))}
@@ -2223,7 +2323,11 @@ export const IRPresentation: React.FC = () => {
   };
 
   return (
-    <PresentationContainer>
+    <PresentationContainer
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <SlidesWrapper style={{ transform: `translateY(-${currentSlide * 100}%)` }}>
         {SLIDES.map((slide, index) => (
           <SlideContainer 
@@ -2281,6 +2385,15 @@ export const IRPresentation: React.FC = () => {
           </ControlButton>
         </SlideControls>
       </Navigation>
+      
+      {/* 진행 상황 표시 바 */}
+      <ProgressBar percent={progressPercent} color={SLIDES[currentSlide].color} />
+      
+      {/* 현재 슬라이드 제목 표시 */}
+      <CurrentSlideInfo show={currentSlide > 0}>
+        <CurrentSection>{SLIDES[currentSlide].sectionNumber?.split('-')[0] || ''}</CurrentSection>
+        <CurrentTitle>{SLIDES[currentSlide].title}</CurrentTitle>
+      </CurrentSlideInfo>
     </PresentationContainer>
   );
 };
@@ -2291,7 +2404,7 @@ const PresentationContainer = styled.div`
   height: 100vh;
   overflow: hidden;
   position: relative;
-  background-color: #0a0a14;
+  background-color: #111120; /* 약간 더 밝은 다크 배경 */
   color: #fff;
 `;
 
@@ -2312,10 +2425,11 @@ const SlideContainer = styled.div<SlideProps>`
   height: 100vh;
   scroll-snap-align: start;
   overflow: hidden;
-  background-color: #0a0a14;
+  background-color: #111120; /* 약간 더 밝은 다크 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 70px; /* 하단 네비게이션 바 높이보다 큰 패딩 추가 */
   
   &::before {
     content: '';
@@ -2339,8 +2453,8 @@ const SlideContainer = styled.div<SlideProps>`
     right: 0;
     bottom: 0;
     background: ${props => props.bgImage ? 
-      `linear-gradient(135deg, rgba(10, 10, 20, 0.7) 0%, rgba(10, 10, 20, 0.9) 100%)` : 
-      'linear-gradient(135deg, rgba(10, 10, 20, 0.3) 0%, rgba(10, 10, 20, 0.1) 100%)'};
+      `linear-gradient(135deg, rgba(17, 17, 32, 0.7) 0%, rgba(17, 17, 32, 0.9) 100%)` : 
+      'linear-gradient(135deg, rgba(17, 17, 32, 0.3) 0%, rgba(17, 17, 32, 0.1) 100%)'};
     z-index: 1;
   }
 `;
@@ -2527,15 +2641,15 @@ const ChartWrapper = styled.div`
   height: 400px;
   margin-bottom: 2rem;
   position: relative;
-  background-color: rgba(20, 20, 35, 0.5);
+  background-color: rgba(30, 30, 50, 0.7);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
   transform: translateY(30px);
   opacity: 0;
   animation: fadeInUp 1s ease forwards 0.3s;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   
   @media (max-width: 768px) {
     height: 300px;
@@ -2582,16 +2696,18 @@ const CompetitorsContainer = styled.div`
 `;
 
 const CompetitorCard = styled.div`
-  background-color: rgba(20, 20, 35, 0.5);
+  background-color: rgba(30, 30, 50, 0.7);
   border-radius: 16px;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 `;
 
@@ -2683,7 +2799,7 @@ const ProductDemoSlide = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
-  padding: 3rem 2rem;
+  padding: 3rem 2rem 5rem 2rem; /* 하단 패딩 증가 */
   max-width: 1200px;
   margin: 0 auto;
   
@@ -2694,7 +2810,7 @@ const ProductDemoSlide = styled.div`
     left: -10%;
     width: 30%;
     height: 60%;
-    background: radial-gradient(ellipse at center, rgba(93, 255, 170, 0.05) 0%, rgba(93, 255, 170, 0) 70%);
+    background: radial-gradient(ellipse at center, rgba(93, 255, 170, 0.08) 0%, rgba(93, 255, 170, 0) 70%);
     z-index: -1;
     border-radius: 50%;
     filter: blur(40px);
@@ -2725,15 +2841,16 @@ interface DemoImageProps {
 const DemoImageWrapper = styled.div<DemoImageProps>`
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   transition: all 0.5s ease;
   position: relative;
   animation: fadeInUp 0.8s ease forwards;
   animation-delay: ${props => props.delay}s;
   opacity: 0;
   transform: translateY(30px);
-  background-color: rgba(20, 20, 35, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(30, 30, 50, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer; /* 커서를 포인터로 변경하여 인터랙티브함을 암시 */
   
   @keyframes fadeInUp {
     to {
@@ -2744,11 +2861,16 @@ const DemoImageWrapper = styled.div<DemoImageProps>`
   
   &:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 32px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 32px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    border-color: rgba(255, 255, 255, 0.2);
     
     &::after {
       opacity: 1;
+    }
+    
+    img {
+      transform: scale(1.05);
     }
   }
   
@@ -2772,6 +2894,7 @@ const DemoImage = styled.img`
   height: auto;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
 `;
 
 const DemoImageCaption = styled.div`
@@ -2779,12 +2902,12 @@ const DemoImageCaption = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(10, 10, 20, 0.9), rgba(10, 10, 20, 0));
+  background: linear-gradient(to top, rgba(10, 10, 20, 0.95), rgba(10, 10, 20, 0));
   color: white;
-  padding: 1.5rem 1rem 1rem;
-  font-size: 0.9rem;
+  padding: 1.8rem 1.2rem 1.2rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.5;
 `;
 
 // 일반 콘텐츠 슬라이드
@@ -2991,6 +3114,7 @@ const SlideTitle = styled.h3<ColorProps>`
   transform: translateY(-15px);
   opacity: 0;
   animation: fadeInUp 1s ease forwards 0.1s;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   
   &::after {
     content: '';
@@ -3027,6 +3151,17 @@ const KeyPointsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 70px; /* 하단에 추가 마진 */
+  
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 90px; /* 모바일에서 더 큰 마진 */
+  }
 `;
 
 interface KeyPointProps {
@@ -3036,7 +3171,7 @@ interface KeyPointProps {
 const KeyPoint = styled.div<KeyPointProps>`
   display: flex;
   align-items: flex-start;
-  background-color: rgba(20, 20, 35, 0.5);
+  background-color: rgba(30, 30, 50, 0.7); /* 더 밝은 배경색 */
   border-radius: 12px;
   padding: 1rem 1.2rem;
   transform: translateY(20px);
@@ -3044,13 +3179,13 @@ const KeyPoint = styled.div<KeyPointProps>`
   animation: fadeInUp 0.8s ease forwards;
   animation-delay: ${props => props.delay}s;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   
   &:hover {
-    background-color: rgba(30, 30, 50, 0.6);
+    background-color: rgba(40, 40, 70, 0.8);
     transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -3073,7 +3208,7 @@ const KeyPointNumber = styled.div<ColorProps>`
 const KeyPointText = styled.div`
   font-size: 1rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95); /* 텍스트 색상 더 밝게 */
   line-height: 1.5;
 `;
 
@@ -3088,10 +3223,15 @@ const Navigation = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  background-color: rgba(10, 10, 20, 0.8);
+  background-color: rgba(17, 17, 32, 0.9);
   backdrop-filter: blur(10px);
   z-index: 100;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 const NavBackButton = styled(Link)`
@@ -3101,7 +3241,7 @@ const NavBackButton = styled(Link)`
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
   
   svg {
     width: 20px;
@@ -3111,6 +3251,14 @@ const NavBackButton = styled(Link)`
   
   &:hover {
     color: rgba(255, 255, 255, 1);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0;
+    
+    svg {
+      margin-right: 0;
+    }
   }
 `;
 
@@ -3193,5 +3341,80 @@ const ControlButton = styled.button<ButtonProps>`
   
   &:active {
     transform: ${props => props.disabled ? 'none' : 'scale(0.95)'};
+  }
+`;
+
+// 데모 액션 버튼 추가
+const ActionButton = styled.button<ColorProps>`
+  background: none;
+  border: none;
+  color: ${props => props.color};
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  text-align: right;
+  width: 100%;
+  
+  &:hover {
+    color: white;
+    transform: translateX(5px);
+  }
+`;
+
+// 진행 상황 표시 바
+interface ProgressBarProps {
+  percent: number;
+  color: string;
+}
+
+const ProgressBar = styled.div<ProgressBarProps>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: ${props => props.percent}%;
+  height: 3px;
+  background-color: ${props => props.color};
+  z-index: 100;
+  transition: width 0.5s ease, background-color 0.5s ease;
+`;
+
+// 현재 슬라이드 정보
+interface CurrentSlideInfoProps {
+  show: boolean;
+}
+
+const CurrentSlideInfo = styled.div<CurrentSlideInfoProps>`
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  opacity: ${props => props.show ? 0.7 : 0};
+  transform: translateY(${props => props.show ? 0 : -20}px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 99;
+  pointer-events: none;
+`;
+
+const CurrentSection = styled.div`
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin-right: 1rem;
+  opacity: 0.7;
+`;
+
+const CurrentTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  opacity: 0.7;
+  
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
