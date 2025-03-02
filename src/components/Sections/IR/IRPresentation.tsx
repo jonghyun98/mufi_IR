@@ -232,6 +232,7 @@ const SLIDES: SlideData[] = [
     title: '비즈니스 모델',
     subTitle: '수익 다각화를 통한 안정적 사업 구조',
     color: COLORS.GREEN,
+    type: 'legacy',
     key: [
       '직접 운영 수익: 포토부스 이용료',
       '광고 수익: 디지털 광고 플랫폼',
@@ -244,6 +245,7 @@ const SLIDES: SlideData[] = [
     title: 'AI 에이전트',
     subTitle: '운영 최적화 및 자동화 시스템',
     color: COLORS.RED,
+    type: 'legacy',
     key: [
       '물류 비용 62% 절감 (월 26만원/대)',
       '업무 효율성 93%로 향상',
@@ -256,6 +258,7 @@ const SLIDES: SlideData[] = [
     title: '사업 구조도',
     subTitle: '다양한 파트너십 기반의 사업 생태계',
     color: COLORS.BLUE,
+    type: 'legacy',
     key: [
       '카페, 쇼핑몰 등 설치 파트너',
       '광고주 및 브랜드 협력',
@@ -268,6 +271,7 @@ const SLIDES: SlideData[] = [
     title: '확장 전략',
     subTitle: '지역 확장 및 신규 사업 영역 개척',
     color: COLORS.GREEN,
+    type: 'legacy',
     key: [
       '주요 대학가 중심 초기 진출',
       '쇼핑몰, 관광지로 2차 확장',
@@ -280,6 +284,7 @@ const SLIDES: SlideData[] = [
     title: '재무 계획',
     subTitle: '안정적인 성장과 수익성 확보',
     color: COLORS.YELLOW,
+    type: 'legacy',
     key: [
       '초기 투자: 5억원 (설비 및 시스템 개발)',
       '손익분기점: 운영 16개월 차',
@@ -292,6 +297,7 @@ const SLIDES: SlideData[] = [
     title: '투자 계획',
     subTitle: '단계별 자금 조달 및 활용 방안',
     color: COLORS.RED,
+    type: 'legacy',
     key: [
       'Seed: 2억원 (2023 자체조달)',
       'Series A: 10억원 (2024 외부투자)',
@@ -304,6 +310,7 @@ const SLIDES: SlideData[] = [
     title: '팀 구성',
     subTitle: '다양한 배경과 전문성을 갖춘 창업팀',
     color: COLORS.BLUE,
+    type: 'legacy',
     key: [
       '포토부스 운영 5년 경력 보유',
       'AI 및 데이터 분석 전문가',
@@ -316,6 +323,7 @@ const SLIDES: SlideData[] = [
     title: '문의하기',
     subTitle: '투자 및 협력 문의를 환영합니다',
     color: COLORS.RED,
+    type: 'legacy',
     key: [
       '이메일: invest@mufi.co.kr',
       '전화: 02-123-4567',
