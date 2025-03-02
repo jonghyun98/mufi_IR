@@ -87,6 +87,32 @@ export const IR: React.FC = () => {
     return activeItem ? activeItem.color : COLORS.RED;
   };
 
+  // 이전/다음 섹션으로 이동하는 함수
+  const navigateToNextSection = () => {
+    const currentIndex = SECTIONS.findIndex(section => section.id === activeSection);
+    if (currentIndex < SECTIONS.length - 1) {
+      scrollToSection(SECTIONS[currentIndex + 1].id);
+    }
+  };
+
+  const navigateToPrevSection = () => {
+    const currentIndex = SECTIONS.findIndex(section => section.id === activeSection);
+    if (currentIndex > 0) {
+      scrollToSection(SECTIONS[currentIndex - 1].id);
+    }
+  };
+
+  // 현재 활성 섹션의 제목 가져오기
+  const getActiveSectionTitle = () => {
+    const activeItem = SECTIONS.find(section => section.id === activeSection);
+    return activeItem ? activeItem.title : '';
+  };
+
+  // 현재 활성 섹션의 인덱스 가져오기
+  const getActiveSectionIndex = () => {
+    return SECTIONS.findIndex(section => section.id === activeSection) + 1;
+  };
+
   return (
     <Section>
       <Container>
@@ -96,16 +122,32 @@ export const IR: React.FC = () => {
         </Header>
         
         <IRNavigationBar activeColor={getActiveColor()}>
-          {SECTIONS.map((section) => (
-            <NavItem 
-              key={section.id} 
-              onClick={() => scrollToSection(section.id)}
-              active={activeSection === section.id}
-              activeColor={getActiveColor()}
-            >
-              {section.title}
-            </NavItem>
-          ))}
+          <NavigationArrow 
+            onClick={navigateToPrevSection} 
+            disabled={getActiveSectionIndex() === 1}
+            activeColor={getActiveColor()}
+          >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+            </svg>
+          </NavigationArrow>
+          
+          <SectionIndicator>
+            <SectionNumber activeColor={getActiveColor()}>
+              {getActiveSectionIndex()} / {SECTIONS.length}
+            </SectionNumber>
+            <SectionTitle>{getActiveSectionTitle()}</SectionTitle>
+          </SectionIndicator>
+          
+          <NavigationArrow 
+            onClick={navigateToNextSection} 
+            disabled={getActiveSectionIndex() === SECTIONS.length}
+            activeColor={getActiveColor()}
+          >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+            </svg>
+          </NavigationArrow>
         </IRNavigationBar>
         
         <Content ref={sectionRefs.current['market-analysis']}>
@@ -160,10 +202,11 @@ interface NavigationBarProps {
 const IRNavigationBar = styled.div<NavigationBarProps>`
   display: flex;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 2rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background-color: ${COLORS.WHITE};
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -171,63 +214,78 @@ const IRNavigationBar = styled.div<NavigationBarProps>`
   top: 70px; /* 메인 네비게이션 바 아래에 오도록 위치 조정 */
   z-index: 50; /* 메인 네비게이션 바(z-index: 1000) 보다 낮게 설정 */
   transition: all 0.3s ease;
-  overflow-x: auto;
   border-top: 3px solid ${props => props.activeColor};
   
-  &::-webkit-scrollbar {
-    height: 3px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: ${props => props.activeColor};
-    border-radius: 10px;
-  }
-  
   ${MEDIA_QUERIES.MOBILE} {
-    justify-content: flex-start;
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
     top: 60px; /* 모바일에서는 더 작은 위치 */
   }
 `;
 
-interface NavItemProps {
-  active: boolean;
+interface ArrowProps {
+  disabled: boolean;
   activeColor: string;
 }
 
-const NavItem = styled.div<NavItemProps>`
-  display: inline-block;
-  padding: 0.75rem 1rem;
-  background-color: ${props => props.active ? props.activeColor : COLORS.WHITE};
-  color: ${props => props.active ? COLORS.WHITE : COLORS.BLACK};
-  border: 1px solid ${props => props.active ? props.activeColor : 'rgba(0, 0, 0, 0.1)'};
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  cursor: pointer;
+const NavigationArrow = styled.div<ArrowProps>`
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.05)' : `${props.activeColor}10`};
+  color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.2)' : props.activeColor};
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  transition: all 0.2s ease;
   
   &:hover {
-    background-color: ${props => props.active ? props.activeColor : `${props.activeColor}20`};
-    color: ${props => props.active ? COLORS.WHITE : props.activeColor};
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    background-color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.05)' : `${props.activeColor}20`};
+    transform: ${props => props.disabled ? 'none' : 'scale(1.1)'};
   }
   
-  &:active {
-    transform: translateY(0);
+  svg {
+    width: 24px;
+    height: 24px;
   }
   
   ${MEDIA_QUERIES.MOBILE} {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.75rem;
-    white-space: nowrap;
+    width: 30px;
+    height: 30px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
+const SectionIndicator = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+`;
+
+interface SectionNumberProps {
+  activeColor: string;
+}
+
+const SectionNumber = styled.div<SectionNumberProps>`
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: ${props => props.activeColor};
+  margin-bottom: 0.25rem;
+`;
+
+const SectionTitle = styled.div`
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: ${COLORS.BLACK};
+  
+  ${MEDIA_QUERIES.MOBILE} {
+    font-size: 1rem;
   }
 `; 
