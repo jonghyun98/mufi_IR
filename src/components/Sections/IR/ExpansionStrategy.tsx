@@ -2,8 +2,32 @@ import React from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/colors';
 import { MEDIA_QUERIES } from '../../../constants/breakpoints';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export const ExpansionStrategy: React.FC = () => {
+  // 대학 파트너십 데이터
+  const universityPartnerships = [
+    { name: '서울대학교', students: 16000, festivalSize: 'Large', conversionRate: 22, revenue: 2880 },
+    { name: '연세대학교', students: 15000, festivalSize: 'Large', conversionRate: 20, revenue: 2400 },
+    { name: '고려대학교', students: 18000, festivalSize: 'Large', conversionRate: 18, revenue: 2590 },
+    { name: '성균관대학교', students: 12000, festivalSize: 'Medium', conversionRate: 15, revenue: 1440 },
+    { name: '경희대학교', students: 11000, festivalSize: 'Medium', conversionRate: 16, revenue: 1410 },
+    { name: '건국대학교', students: 10000, festivalSize: 'Medium', conversionRate: 14, revenue: 1120 },
+    { name: '동국대학교', students: 10500, festivalSize: 'Medium', conversionRate: 15, revenue: 1260 },
+    { name: '삼육대학교', students: 7000, festivalSize: 'Small', conversionRate: 17, revenue: 950 },
+    { name: '충북대학교', students: 8500, festivalSize: 'Medium', conversionRate: 13, revenue: 880 },
+    { name: '서원대학교', students: 5000, festivalSize: 'Small', conversionRate: 12, revenue: 480 },
+    { name: '청주대학교', students: 6500, festivalSize: 'Small', conversionRate: 14, revenue: 730 }
+  ];
+  
+  // 대학 확장 계획 데이터
+  const universityExpansionData = [
+    { name: '2024', universities: 11, revenue: 16140 },
+    { name: '2025', universities: 25, revenue: 32800 },
+    { name: '2026', universities: 45, revenue: 58700 },
+    { name: '2027', universities: 60, revenue: 78400 }
+  ];
+
   return (
     <SectionContent>
       <Paragraph>
@@ -86,6 +110,88 @@ export const ExpansionStrategy: React.FC = () => {
           </TimelineItem>
         </Timeline>
       </TimelineContainer>
+      
+      <UniversityPartnershipSection>
+        <UniversityPartnershipTitle>대학 파트너십 확장 계획</UniversityPartnershipTitle>
+        <UniversityPartnershipDescription>
+          MUFI의 주요 타겟 고객인 대학생들에게 접근하기 위해 국내 유수 대학교들과의 파트너십을 적극적으로 확대하고 있습니다. 
+          2024년 현재 11개 대학과 파트너십을 체결하였으며, 2027년까지 60개 대학으로 확장할 계획입니다.
+        </UniversityPartnershipDescription>
+        
+        <ExpansionChartContainer>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={universityExpansionData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis yAxisId="left" orientation="left" stroke={COLORS.RED} />
+              <YAxis yAxisId="right" orientation="right" stroke={COLORS.BLUE} />
+              <Tooltip formatter={(value, name) => {
+                if (name === 'universities') return [`${value}개`, '대학교 수'];
+                if (name === 'revenue') return [`${value.toLocaleString()}만원`, '예상 매출'];
+                return [value, name];
+              }} />
+              <Bar yAxisId="left" dataKey="universities" fill={COLORS.RED} name="대학교 수">
+                {universityExpansionData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS.RED} />
+                ))}
+              </Bar>
+              <Bar yAxisId="right" dataKey="revenue" fill={COLORS.BLUE} name="예상 매출">
+                {universityExpansionData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS.BLUE} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ExpansionChartContainer>
+        
+        <UniversityPartnershipsTable>
+          <UniversityTableHeader>
+            <UniversityHeaderCell>대학명</UniversityHeaderCell>
+            <UniversityHeaderCell>학생 수</UniversityHeaderCell>
+            <UniversityHeaderCell>축제 규모</UniversityHeaderCell>
+            <UniversityHeaderCell>매칭 서비스 전환율</UniversityHeaderCell>
+            <UniversityHeaderCell>예상 월 매출</UniversityHeaderCell>
+          </UniversityTableHeader>
+          
+          <UniversityTableBody>
+            {universityPartnerships.map((university, index) => (
+              <UniversityTableRow key={index}>
+                <UniversityCell>{university.name}</UniversityCell>
+                <UniversityCell>{university.students.toLocaleString()}명</UniversityCell>
+                <UniversityCell>
+                  {university.festivalSize === 'Large' ? '대규모' : 
+                   university.festivalSize === 'Medium' ? '중규모' : '소규모'}
+                </UniversityCell>
+                <UniversityCell>{university.conversionRate}%</UniversityCell>
+                <UniversityCell>{university.revenue.toLocaleString()}만원</UniversityCell>
+              </UniversityTableRow>
+            ))}
+          </UniversityTableBody>
+        </UniversityPartnershipsTable>
+        
+        <PartnershipBenefits>
+          <PartnershipBenefit>
+            <BenefitTitle>주요 혜택 및 협력 방식</BenefitTitle>
+            <BenefitContent>
+              <BenefitItem>각 대학 축제 및 행사 시 포토부스 우선 설치권 확보</BenefitItem>
+              <BenefitItem>학내 상설 포토부스 설치 및 운영 (도서관, 학생회관 등)</BenefitItem>
+              <BenefitItem>대학생 대상 매칭/소개팅 서비스 우선 접근권 제공</BenefitItem>
+              <BenefitItem>대학별 특화 콘텐츠 및 필터 제작 협업</BenefitItem>
+              <BenefitItem>학생회 및 동아리 연계 마케팅 프로그램 운영</BenefitItem>
+            </BenefitContent>
+          </PartnershipBenefit>
+          
+          <PartnershipBenefit>
+            <BenefitTitle>대학별 맞춤형 전략</BenefitTitle>
+            <BenefitContent>
+              <BenefitItem><Strong>대형 대학:</Strong> 여러 단과대학에 분산 설치, 대규모 축제 참여, 전용 필터 개발</BenefitItem>
+              <BenefitItem><Strong>중소형 대학:</Strong> 집중 거점 확보, 학교 특성에 맞는 이벤트 기획</BenefitItem>
+              <BenefitItem><Strong>지방 대학:</Strong> 지역 특성을 반영한 콘텐츠, 기숙사 중심 서비스 개발</BenefitItem>
+              <BenefitItem><Strong>특성화 대학:</Strong> 전공 특성에 맞는 테마형 서비스 제공 (예술대학-창작 필터 등)</BenefitItem>
+            </BenefitContent>
+          </PartnershipBenefit>
+        </PartnershipBenefits>
+      </UniversityPartnershipSection>
       
       <ExpansionStrategies>
         <ExpansionStrategyCard>
@@ -420,4 +526,93 @@ const RiskSolution = styled.p`
     font-weight: 600;
     opacity: 1;
   }
+`;
+
+const UniversityPartnershipSection = styled.div`
+  margin-top: 2rem;
+  padding: 2rem;
+  background: ${COLORS.WHITE};
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+`;
+
+const UniversityPartnershipTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: ${COLORS.BLACK};
+`;
+
+const UniversityPartnershipDescription = styled.p`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+  margin-bottom: 1rem;
+`;
+
+const ExpansionChartContainer = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const UniversityPartnershipsTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+`;
+
+const UniversityTableHeader = styled.thead`
+  background: ${COLORS.RED};
+  color: white;
+`;
+
+const UniversityHeaderCell = styled.th`
+  padding: 0.75rem;
+  text-align: left;
+`;
+
+const UniversityTableBody = styled.tbody`
+  background: ${COLORS.WHITE};
+`;
+
+const UniversityTableRow = styled.tr`
+  &:nth-child(even) {
+    background: ${COLORS.WHITE};
+  }
+`;
+
+const UniversityCell = styled.td`
+  padding: 0.75rem;
+  text-align: left;
+`;
+
+const PartnershipBenefits = styled.div`
+  margin-top: 2rem;
+`;
+
+const PartnershipBenefit = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const BenefitTitle = styled.h4`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: ${COLORS.BLACK};
+`;
+
+const BenefitContent = styled.div`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+  opacity: 0.8;
+`;
+
+const BenefitItem = styled.p`
+  margin-bottom: 0.5rem;
+`;
+
+const Strong = styled.strong`
+  font-weight: 600;
+  opacity: 1;
 `; 

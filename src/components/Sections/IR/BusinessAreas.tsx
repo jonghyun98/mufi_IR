@@ -12,10 +12,35 @@ import {
   CartesianGrid, 
   Tooltip, 
   Legend, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  LineChart,
+  Line
 } from 'recharts';
 
 export const BusinessAreas: React.FC = () => {
+  // 경쟁 우위 비교 데이터
+  const competitiveData = [
+    { subject: 'AI 기술', MUFI: 9, 일반포토부스: 3, 온라인앱: 6, fullMark: 10 },
+    { subject: '데이터 수집', MUFI: 8, 일반포토부스: 2, 온라인앱: 5, fullMark: 10 },
+    { subject: '소셜 연계', MUFI: 10, 일반포토부스: 1, 온라인앱: 8, fullMark: 10 },
+    { subject: '시장 확장성', MUFI: 8, 일반포토부스: 5, 온라인앱: 6, fullMark: 10 },
+    { subject: '수익 다변화', MUFI: 9, 일반포토부스: 3, 온라인앱: 5, fullMark: 10 },
+    { subject: '고객 충성도', MUFI: 8, 일반포토부스: 6, 온라인앱: 7, fullMark: 10 },
+  ];
+
+  // 연간 성장률 예측 데이터
+  const growthData = [
+    { name: '2025', 포토부스: 40, AI에이전트: 55, 소셜플랫폼: 30 },
+    { name: '2026', 포토부스: 60, AI에이전트: 75, 소셜플랫폼: 60 },
+    { name: '2027', 포토부스: 80, AI에이전트: 100, 소셜플랫폼: 85 },
+    { name: '2028', 포토부스: 110, AI에이전트: 135, 소셜플랫폼: 120 },
+  ];
+
   return (
     <StrategySection>
       <StrategyTitle>현재 사업 영역</StrategyTitle>
@@ -198,6 +223,97 @@ export const BusinessAreas: React.FC = () => {
       
       <SynergySection>
         <SynergyTitle>사업 간 시너지 효과 및 시장 검증</SynergyTitle>
+        
+        <CompetitiveAnalysisSection>
+          <CompetitiveAnalysisTitle>경쟁 우위 분석</CompetitiveAnalysisTitle>
+          <CompetitiveAnalysisDescription>
+            MUFI는 기존 포토부스 사업자와 온라인 앱 서비스 대비 AI 기술, 데이터 수집, 소셜 연계, 시장 확장성, 수익 다변화, 고객 충성도 측면에서 차별화된 경쟁 우위를 보유하고 있습니다.
+          </CompetitiveAnalysisDescription>
+          
+          <RadarChartContainer>
+            <ResponsiveContainer width="100%" height={400}>
+              <RadarChart outerRadius={150} data={competitiveData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: COLORS.BLACK, fontSize: 12 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 10]} tick={{ fill: COLORS.BLACK, fontSize: 10 }} />
+                <Radar name="MUFI" dataKey="MUFI" stroke={COLORS.RED} fill={COLORS.RED} fillOpacity={0.5} />
+                <Radar name="일반포토부스" dataKey="일반포토부스" stroke={COLORS.BLUE} fill={COLORS.BLUE} fillOpacity={0.5} />
+                <Radar name="온라인앱" dataKey="온라인앱" stroke={COLORS.GREEN} fill={COLORS.GREEN} fillOpacity={0.5} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </RadarChartContainer>
+          
+          <CompetitiveAdvantages>
+            <CompetitiveAdvantage>
+              <CompetitiveAdvantageTitle>AI 기술 강점</CompetitiveAdvantageTitle>
+              <CompetitiveAdvantageContent>
+                독자 개발된 이미지 인식 및 처리 알고리즘으로 사용자 경험을 획기적으로 개선합니다. 포즈 추천, 자동 보정, 개인화 필터 등 고급 AI 기능을 통해 사용자의 만족도와 부가가치를 높입니다.
+              </CompetitiveAdvantageContent>
+            </CompetitiveAdvantage>
+            
+            <CompetitiveAdvantage>
+              <CompetitiveAdvantageTitle>데이터 기반 비즈니스</CompetitiveAdvantageTitle>
+              <CompetitiveAdvantageContent>
+                포토부스의 사용자 행동 데이터, 소셜 플랫폼의 상호작용 데이터를 활용한 머신러닝 기반 서비스 최적화가 가능합니다. 이를 통해 지속적인 서비스 개선 및 신규 비즈니스 기회를 발굴합니다.
+              </CompetitiveAdvantageContent>
+            </CompetitiveAdvantage>
+            
+            <CompetitiveAdvantage>
+              <CompetitiveAdvantageTitle>통합 생태계 구축</CompetitiveAdvantageTitle>
+              <CompetitiveAdvantageContent>
+                오프라인(포토부스)과 온라인(소셜 플랫폼)을 AI로 연결하는 통합 생태계를 구축하여 경쟁사가 쉽게 모방할 수 없는 비즈니스 모델을 완성합니다. 이 통합 접근법은 사용자 락인(Lock-in) 효과와 크로스셀링 기회를 극대화합니다.
+              </CompetitiveAdvantageContent>
+            </CompetitiveAdvantage>
+          </CompetitiveAdvantages>
+        </CompetitiveAnalysisSection>
+        
+        <GrowthForecastSection>
+          <GrowthForecastTitle>연간 성장률 예측</GrowthForecastTitle>
+          <GrowthForecastDescription>
+            MUFI의 세 가지 핵심 사업 영역은 향후 4년간 지속적인 성장이 예상됩니다. 특히 AI 에이전트 사업은 급성장하는 생성형 AI 시장과 함께 가장 높은 성장률을 보일 것으로 전망됩니다.
+          </GrowthForecastDescription>
+          
+          <LineChartContainer>
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={growthData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" tick={{ fill: COLORS.BLACK }} />
+                <YAxis tick={{ fill: COLORS.BLACK }} />
+                <Tooltip formatter={(value) => [`${value}%`, '']} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Line type="monotone" dataKey="포토부스" stroke={COLORS.RED} strokeWidth={2} activeDot={{ r: 8 }} />
+                <Line type="monotone" dataKey="AI에이전트" stroke={COLORS.BLUE} strokeWidth={2} activeDot={{ r: 8 }} />
+                <Line type="monotone" dataKey="소셜플랫폼" stroke={COLORS.GREEN} strokeWidth={2} activeDot={{ r: 8 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </LineChartContainer>
+          
+          <GrowthStrategies>
+            <GrowthStrategy>
+              <GrowthStrategyTitle>포토부스 성장 전략</GrowthStrategyTitle>
+              <GrowthStrategyContent>
+                대학 파트너십을 통한 캠퍼스 내 설치 확대, 대형 유통 및 엔터테인먼트 기업과의 전략적 제휴를 통한 거점 확보, 프랜차이즈 모델 도입을 통한 빠른 확장을 추진합니다.
+              </GrowthStrategyContent>
+            </GrowthStrategy>
+            
+            <GrowthStrategy>
+              <GrowthStrategyTitle>AI 에이전트 성장 전략</GrowthStrategyTitle>
+              <GrowthStrategyContent>
+                포토부스에서 검증된 기술을 B2B 솔루션으로 확장하고, 도메인 특화 AI로 전문성을 강화하며, API 접근성 제공을 통한 개발자 생태계 활성화를 통해 급성장하는 AI 시장을 선점합니다.
+              </GrowthStrategyContent>
+            </GrowthStrategy>
+            
+            <GrowthStrategy>
+              <GrowthStrategyTitle>소셜 플랫폼 성장 전략</GrowthStrategyTitle>
+              <GrowthStrategyContent>
+                포토부스 이용자의 자연스러운 유입 유도, 대학별 특화 콘텐츠 제공, 프리미엄 멤버십 모델 도입으로 사용자 락인(Lock-in) 효과를 극대화하고 지속적인 수익을 창출합니다.
+              </GrowthStrategyContent>
+            </GrowthStrategy>
+          </GrowthStrategies>
+        </GrowthForecastSection>
+        
         <SynergyDescription>
           MUFI의 세 가지 사업 영역은 개별적으로도 높은 수익성을 갖추고 있지만, 통합되었을 때 더욱 강력한 경쟁 우위를 창출합니다.
           <br/><br/>
@@ -1615,4 +1731,126 @@ const RoadmapNote = styled.p`
   opacity: 0.7;
   font-style: italic;
   margin-top: 1.5rem;
-`; 
+`;
+
+// 경쟁 우위 분석 스타일
+const CompetitiveAnalysisSection = styled.div`
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+`;
+
+const CompetitiveAnalysisTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+`;
+
+const CompetitiveAnalysisDescription = styled.p`
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  color: ${COLORS.BLACK};
+`;
+
+const RadarChartContainer = styled.div`
+  margin: 2rem 0;
+  width: 100%;
+  
+  @media ${MEDIA_QUERIES.TABLET} {
+    max-width: 600px;
+    margin: 2rem auto;
+  }
+`;
+
+const CompetitiveAdvantages = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  
+  @media ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const CompetitiveAdvantage = styled.div`
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const CompetitiveAdvantageTitle = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+`;
+
+const CompetitiveAdvantageContent = styled.p`
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+`;
+
+// 성장률 예측 스타일
+const GrowthForecastSection = styled.div`
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+`;
+
+const GrowthForecastTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+`;
+
+const GrowthForecastDescription = styled.p`
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  color: ${COLORS.BLACK};
+`;
+
+const LineChartContainer = styled.div`
+  margin: 2rem 0;
+  width: 100%;
+  
+  @media ${MEDIA_QUERIES.TABLET} {
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+`;
+
+const GrowthStrategies = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  
+  @media ${MEDIA_QUERIES.TABLET} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const GrowthStrategy = styled.div`
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const GrowthStrategyTitle = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: ${COLORS.BLACK};
+`;
+
+const GrowthStrategyContent = styled.p`
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: ${COLORS.BLACK};
+`;
