@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/mufi_IR/static/js/main.031d0391.js",
+    "main.js": "/mufi_IR/static/js/main.cd2f9070.js",
     "static/js/453.8e3a0cc9.chunk.js": "/mufi_IR/static/js/453.8e3a0cc9.chunk.js",
     "index.html": "/mufi_IR/index.html",
-    "main.031d0391.js.map": "/mufi_IR/static/js/main.031d0391.js.map",
+    "main.cd2f9070.js.map": "/mufi_IR/static/js/main.cd2f9070.js.map",
     "453.8e3a0cc9.chunk.js.map": "/mufi_IR/static/js/453.8e3a0cc9.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.031d0391.js"
+    "static/js/main.cd2f9070.js"
   ]
 }
