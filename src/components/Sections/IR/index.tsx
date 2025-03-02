@@ -31,31 +31,49 @@ const SECTIONS = [
 export const IR: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
   const sectionRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // 스크롤 이벤트 처리 및 활성 섹션 설정
+  // IntersectionObserver 설정 및 활성 섹션 감지
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100; // 헤더 높이를 고려한 offset
-      
-      // 각 섹션을 확인하고 현재 보이는 섹션을 활성화
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const section = sectionRefs.current[SECTIONS[i].id];
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(SECTIONS[i].id);
-          break;
+    // 이전 observer 제거
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    // 새 observer 생성
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // visibility가 가장 높은 섹션 찾기
+        const visibleSections = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleSections.length > 0) {
+          const targetId = visibleSections[0].target.id;
+          if (targetId) {
+            console.log('섹션 변경:', targetId);
+            setActiveSection(targetId);
+          }
         }
+      },
+      {
+        root: null, // viewport 기준
+        rootMargin: '-100px 0px -300px 0px', // 상단 100px, 하단 300px 마진 적용
+        threshold: [0.1, 0.2, 0.3, 0.4, 0.5] // 10%, 20%, 30%, 40%, 50% 가시성 기준점
       }
-    };
-    
-    // 스크롤 이벤트 리스너 등록
-    window.addEventListener('scroll', handleScroll);
-    
-    // 초기 실행
-    setTimeout(handleScroll, 500); // 페이지 로드 후 약간의 지연을 두고 실행
-    
-    // 클린업 함수
+    );
+
+    // 각 섹션 관찰
+    Object.values(sectionRefs.current).forEach(section => {
+      if (section) {
+        observer.observe(section);
+      }
+    });
+
+    observerRef.current = observer;
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
     };
   }, []);
 
@@ -66,7 +84,7 @@ export const IR: React.FC = () => {
       const offsetTop = section.offsetTop;
       
       window.scrollTo({
-        top: offsetTop - 80, // 네비게이션 바 높이 고려
+        top: offsetTop - 100, // 네비게이션 바 높이 고려
         behavior: 'smooth'
       });
       
@@ -108,7 +126,7 @@ export const IR: React.FC = () => {
 
   // 화면에 표시되는 진행 상태 콘솔에 출력 (디버깅용)
   useEffect(() => {
-    console.log('현재 섹션:', activeSection, '인덱스:', getActiveSectionIndex());
+    console.log('활성 섹션 변경:', activeSection, '인덱스:', getActiveSectionIndex());
   }, [activeSection]);
 
   return (
@@ -226,6 +244,7 @@ export const IR: React.FC = () => {
 const SectionContainer = styled.div`
   margin-bottom: 4rem;
   scroll-margin-top: 140px;
+  min-height: 400px; /* 최소 높이 설정하여 작은 컨텐츠도 감지되도록 함 */
 `;
 
 // 네비게이션 바 스타일
