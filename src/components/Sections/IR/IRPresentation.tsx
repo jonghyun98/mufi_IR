@@ -223,6 +223,43 @@ const SLIDES: SlideData[] = [
     sectionNumber: '2',
     type: 'section-intro'
   },
+  // 사업 영역 개요 도식화 슬라이드 (NEW)
+  {
+    id: 'business-areas-overview',
+    title: '사업 영역 통합 비전',
+    subTitle: '데이터와 AI로 포토부스 산업을 재정의하다',
+    color: COLORS.RED,
+    sectionNumber: '2-0',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['데이터 수집', '분석 및 최적화', '가치 창출', '신규 사업 확장'],
+      datasets: [
+        {
+          label: '현재 발전 단계 (%)',
+          data: [85, 75, 65, 30],
+          backgroundColor: `${COLORS.RED}90`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'MUFI 사업 영역 발전 단계'
+        }
+      }
+    },
+    keyPoints: [
+      '포토부스는 단순 서비스가 아닌 데이터 수집의 전초기지',
+      'AI 기술로 운영의 모든 단계를 최적화하는 기술 기업',
+      '수집-분석-최적화-가치창출의 선순환 구조 확립',
+      '축적된 데이터와 AI 역량으로 신규 사업 확장성 확보'
+    ]
+  },
   // 사업 영역 서브 슬라이드 2-1: 포토부스 설치 및 운영
   {
     id: 'business-areas-photobooth',
@@ -239,6 +276,11 @@ const SLIDES: SlideData[] = [
           label: '설치 비중(%)',
           data: [35, 25, 20, 15, 5],
           backgroundColor: `${COLORS.RED}90`
+        },
+        {
+          label: '매출 기여도(%)',
+          data: [42, 28, 18, 10, 2],
+          backgroundColor: `${COLORS.BLUE}90`
         }
       ]
     },
@@ -249,15 +291,66 @@ const SLIDES: SlideData[] = [
       plugins: {
         title: {
           display: true,
-          text: '설치 위치별 포토부스 분포'
+          text: '설치 위치별 포토부스 분포 및 매출 기여도'
         }
       }
     },
     keyPoints: [
-      '1차 타겟: 유동인구 많은 대학가 중심 배치 (35%)',
-      '프리미엄 모델: 쇼핑몰, 고급 카페 위주 설치',
-      '계절별 전략: 관광지 성수기 집중 배치 운영',
-      '원격 관리: AI 기반 모니터링으로 효율적 운영'
+      '데이터 기반 위치 선정으로 대학가 매출 기여도 42% 달성',
+      '프리미엄 모델: 쇼핑몰, 고급 카페 위주로 고객당 매출 35% 향상',
+      '계절별 전략: 관광지 성수기 집중 배치로 자산 활용률 95% 달성',
+      '위치 데이터 학습: 신규 포토부스 위치 예측 정확도 92%'
+    ]
+  },
+  // 사업모델 통합 프로세스 도식화 슬라이드 (NEW)
+  {
+    id: 'business-areas-process',
+    title: '통합 비즈니스 프로세스',
+    subTitle: '데이터 기반 선순환 구조의 포토부스 생태계',
+    color: COLORS.RED,
+    sectionNumber: '2-1-1',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['데이터 수집', '인사이트 도출', '운영 최적화', '고객 경험 향상', '추가 데이터 수집'],
+      datasets: [
+        {
+          label: '비즈니스 가치 창출',
+          data: [30, 45, 65, 85, 100],
+          borderColor: `${COLORS.RED}`,
+          backgroundColor: `${COLORS.RED}30`,
+          tension: 0.4,
+          fill: true
+        },
+        {
+          label: '운영 효율성',
+          data: [20, 40, 70, 85, 95],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}30`,
+          tension: 0.4,
+          fill: true
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '달성률 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '포토부스 → 사용자 데이터 수집 → AI 분석 → 서비스 개선의 선순환',
+      '매장별 실시간 데이터 분석으로 운영 최적화 달성률 95%',
+      '고객 경험 향상으로 재방문율 32% 증가, 객단가 15% 상승',
+      '지속적 데이터 축적으로 AI 모델 정확도 분기별 5% 향상'
     ]
   },
   // 사업 영역 서브 슬라이드 2-2: AI 최적화 플랫폼
@@ -303,10 +396,51 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      'AI 기반 예측 정비로 유지보수 비용 60% 절감',
-      '최적화된 자재 공급망 관리로 물류비용 62% 감소',
-      '인력 배치 최적화로 인건비 55% 절감 효과',
-      '대시보드 제공으로 실시간 비용 및 성과 모니터링'
+      'AI 기반 예측 정비로 유지보수 비용 60% 절감 (연간 6천만원)',
+      '최적화된 자재 공급망 관리로 물류비용 62% 감소 (월 2.7천만원)',
+      '인력 배치 최적화로 인건비 55% 절감 효과 (연간 1.2억원)',
+      '포토부스당 연간 운영비 57% 절감으로 업계 최고 수익성 달성'
+    ]
+  },
+  // AI 기술의 경제적 가치 도식화 슬라이드 (NEW)
+  {
+    id: 'business-areas-ai-value',
+    title: 'AI 기술의 경제적 가치',
+    subTitle: '투자 대비 수익으로 증명하는 기술력',
+    color: COLORS.RED,
+    sectionNumber: '2-2-1',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['유지보수 비용 절감', '운영 효율화', '수익성 향상', '신규 사업 기회'],
+      datasets: [
+        {
+          data: [35, 25, 30, 10],
+          backgroundColor: [
+            `${COLORS.RED}90`,
+            `${COLORS.BLUE}90`,
+            `${COLORS.GREEN}90`,
+            `${COLORS.YELLOW}90`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'AI 기술 투자 수익 분포(%)'
+        }
+      }
+    },
+    keyPoints: [
+      'AI 시스템 투자 대비 수익률(ROI) 486% 달성',
+      '투자 회수 기간: 평균 4.3개월',
+      '운영 효율화로 인한 연간 2.5억원 순이익 증가',
+      '예측 정비 시스템으로 장비 수명 38% 연장 효과'
     ]
   },
   // 사업 영역 서브 슬라이드 2-3: 콘텐츠 큐레이션
@@ -345,10 +479,73 @@ const SLIDES: SlideData[] = [
       }
     },
     keyPoints: [
-      'AI 기반 고객 선호도 분석으로 인기 콘텐츠 우선 제공',
-      '시즌별 테마 콘텐츠로 재방문율 24% 향상',
-      '브랜드 협업 콘텐츠로 추가 수익원 창출',
-      '대학별 맞춤 콘텐츠로 지역 특화 서비스 제공'
+      'AI 기반 콘텐츠 개인화로 고객 만족도 92% 달성',
+      '시즌별 테마 콘텐츠로 재방문율 24% 향상 (업계 평균 9%)',
+      '브랜드 협업 콘텐츠로 추가 매출 2.8억원/년 창출',
+      '위치별 맞춤 콘텐츠로 이용률 35% 증가'
+    ]
+  },
+  // 사업 영역 확장 로드맵 슬라이드 (NEW)
+  {
+    id: 'business-areas-expansion',
+    title: '사업 영역 확장 로드맵',
+    subTitle: '데이터와 AI 기술 기반의 미래 성장 전략',
+    color: COLORS.RED,
+    sectionNumber: '2-4',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['2024', '2025', '2026', '2027', '2028'],
+      datasets: [
+        {
+          label: '포토부스 운영',
+          data: [70, 60, 50, 45, 40],
+          backgroundColor: `${COLORS.RED}80`
+        },
+        {
+          label: 'AI 라이센싱',
+          data: [20, 25, 25, 25, 25],
+          backgroundColor: `${COLORS.BLUE}80`
+        },
+        {
+          label: '데이터 인사이트',
+          data: [5, 8, 10, 10, 10],
+          backgroundColor: `${COLORS.GREEN}80`
+        },
+        {
+          label: 'AR/VR 콘텐츠',
+          data: [5, 7, 10, 12, 15],
+          backgroundColor: `${COLORS.YELLOW}80`
+        },
+        {
+          label: '신규 사업',
+          data: [0, 0, 5, 8, 10],
+          backgroundColor: `${COLORS.BLUE}60`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: '매출 비중 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '포토부스 중심에서 데이터 기술 기업으로 점진적 전환',
+      'AI 운영 시스템 라이센싱으로 안정적 수익원 확보 (B2B)',
+      'MZ 트렌드 데이터 인사이트 서비스 개발 (2024년 출시)',
+      'AR/VR 기술 통합으로 메타버스 연계 차세대 콘텐츠 준비'
     ]
   },
   // 비즈니스 모델 메인 슬라이드
