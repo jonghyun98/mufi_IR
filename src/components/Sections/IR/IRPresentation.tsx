@@ -93,6 +93,11 @@ interface ProductDemoData extends BaseSlide {
 // 슬라이드 유니온 타입
 type SlideData = IntroSlideData | SectionIntroSlideData | ChartSlideData | ComparisonSlideData | LegacySlideData | ProductDemoData;
 
+// 기본 인터페이스 정의
+interface ColorProps {
+  color: string;
+}
+
 // 슬라이드 섹션 데이터
 const SLIDES: SlideData[] = [
   {
@@ -3087,4 +3092,106 @@ const Navigation = styled.div`
   backdrop-filter: blur(10px);
   z-index: 100;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const NavBackButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+  }
+  
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+`;
+
+const SlideIndicators = styled.div`
+  display: none;
+  
+  ${MEDIA_QUERIES.DESKTOP} {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+`;
+
+interface IndicatorProps {
+  active: boolean;
+  color: string;
+}
+
+const SlideIndicator = styled.div<IndicatorProps>`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: ${props => props.active ? props.color : 'rgba(255, 255, 255, 0.2)'};
+  cursor: pointer;
+  transition: all 0.3s;
+  
+  &:hover {
+    background-color: ${props => props.active ? props.color : 'rgba(255, 255, 255, 0.4)'};
+  }
+`;
+
+const SlideControls = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SlideCounter = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin: 0 1rem;
+`;
+
+const CurrentSlide = styled.span`
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+`;
+
+const TotalSlides = styled.span`
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 0.2rem;
+`;
+
+interface ButtonProps {
+  disabled: boolean;
+}
+
+const ControlButton = styled.button<ButtonProps>`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: ${props => props.disabled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  transition: all 0.3s;
+  
+  svg {
+    width: 24px;
+    height: 24px;
+    color: ${props => props.disabled ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.8)'};
+  }
+  
+  &:hover {
+    background-color: ${props => props.disabled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.2)'};
+  }
+  
+  &:active {
+    transform: ${props => props.disabled ? 'none' : 'scale(0.95)'};
+  }
 `;
