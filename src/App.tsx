@@ -7,6 +7,7 @@ import { PhotoBooth } from './components/Sections/PhotoBooth';
 import { AIAgent } from './components/Sections/AIAgent';
 import { Platform } from './components/Sections/Platform';
 import { IR } from './components/Sections/IR';
+import { IRPresentation } from './components/Sections/IR/IRPresentation';
 import { GlobalStyle } from './styles/GlobalStyle';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/ir" element={<IR />} />
+        <Route path="/presentation" element={<IRPresentation />} />
         <Route path="/" element={
           <main>
             <Hero />

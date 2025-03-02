@@ -13,6 +13,7 @@ import { AIAgentCaseStudy } from './AIAgentCaseStudy';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/colors';
 import { MEDIA_QUERIES } from '../../../constants/breakpoints';
+import { Link } from 'react-router-dom';
 
 // 각 섹션별 정보 (ID, 제목, 색상)
 const SECTIONS = [
@@ -231,6 +232,17 @@ export const IR: React.FC = () => {
         <Header>
           <Title>MUFI 사업 IR</Title>
           <Subtitle>투자자 및 파트너를 위한 정보</Subtitle>
+          
+          <SummaryButtonContainer>
+            <SummaryButton to="/presentation">
+              <SummaryButtonIcon>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7v-7zm4-3h2v10h-2V7zm4 6h2v4h-2v-4z" fill="currentColor"/>
+                </svg>
+              </SummaryButtonIcon>
+              IR 요약 보기
+            </SummaryButton>
+          </SummaryButtonContainer>
         </Header>
         
         {showAISubNav ? (
@@ -639,5 +651,38 @@ const SubNavItem = styled.div<{ active: boolean }>`
   ${MEDIA_QUERIES.MOBILE} {
     font-size: 0.7rem;
     padding: 0.3rem 0.5rem;
+  }
+`;
+
+const SummaryButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+`;
+
+const SummaryButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: ${COLORS.RED};
+  color: ${COLORS.WHITE};
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${COLORS.RED}20;
+  }
+`;
+
+const SummaryButtonIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    color: currentColor;
   }
 `; 
