@@ -2279,9 +2279,10 @@ const NavigationBar = styled.div`
   padding: 1rem;
   background-color: ${COLORS.WHITE};
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  position: relative; /* sticky에서 relative로 변경 */
-  z-index: 10; /* z-index 값 변경 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 70px; /* 메인 네비게이션 바 아래에 오도록 위치 조정 */
+  z-index: 50; /* 메인 네비게이션 바(z-index: 1000) 보다 낮게 설정 */
   transition: all 0.3s ease;
   overflow-x: auto;
   
@@ -2302,6 +2303,7 @@ const NavigationBar = styled.div`
   ${MEDIA_QUERIES.MOBILE} {
     justify-content: flex-start;
     padding: 0.75rem;
+    top: 60px; /* 모바일에서는 더 작은 위치 */
   }
 `;
 

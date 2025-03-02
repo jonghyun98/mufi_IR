@@ -17,6 +17,7 @@ export const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isIrPage = location.pathname === '/ir';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +58,7 @@ export const Navigation: React.FC = () => {
   };
 
   return (
-    <NavContainer isScrolled={isScrolled}>
+    <NavContainer isScrolled={isScrolled} isIrPage={isIrPage}>
       <NavLogo as={Link} to="/">
         MUFI
       </NavLogo>
@@ -71,28 +72,34 @@ export const Navigation: React.FC = () => {
             {item.label}
           </NavItem>
         ))}
-        <NavLink to="/ir">IR</NavLink>
+        {!isIrPage && <NavLink to="/ir">IR</NavLink>}
+        {isIrPage && <NavLink to="/">홈으로</NavLink>}
       </NavItems>
     </NavContainer>
   );
 };
 
-const NavContainer = styled.nav<{ isScrolled: boolean }>`
+const NavContainer = styled.nav<{ isScrolled: boolean; isIrPage: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 80px;
+  height: ${props => props.isIrPage ? '60px' : '80px'};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  background: ${props => props.isScrolled 
-    ? 'rgba(31, 31, 31, 0.95)'
-    : 'transparent'};
+  background: ${props => {
+    if (props.isIrPage) {
+      return props.isScrolled ? 'rgba(31, 31, 31, 0.85)' : 'rgba(31, 31, 31, 0.7)';
+    } else {
+      return props.isScrolled ? 'rgba(31, 31, 31, 0.95)' : 'transparent';
+    }
+  }};
   backdrop-filter: ${props => props.isScrolled ? 'blur(10px)' : 'none'};
   transition: all 0.3s ease;
   z-index: 1000;
+  box-shadow: ${props => props.isScrolled ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none'};
 `;
 
 const NavLogo = styled.div`

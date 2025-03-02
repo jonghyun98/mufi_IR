@@ -5,6 +5,7 @@ export const COLORS = {
   GREEN: '#34A853',
   YELLOW: '#FBBC05',
   WHITE: '#FFFFFF',
+  LIGHT_GRAY: '#F5F5F7',
   GRADIENT: {
     PRIMARY: 'linear-gradient(135deg, #6E7CF3 0%, #A5B0FF 100%)',
   },
