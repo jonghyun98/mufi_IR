@@ -5,9 +5,15 @@ import { MEDIA_QUERIES } from '../../../constants/breakpoints';
 
 interface AIAgentCaseStudyProps {
   mainNavVisible?: boolean;
+  hideNavigation?: boolean;
+  onSubsectionChange?: (subsectionId: string) => void;
 }
 
-export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisible = true }) => {
+export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ 
+  mainNavVisible = true, 
+  hideNavigation = false,
+  onSubsectionChange 
+}) => {
   const animationRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('introduction');
@@ -75,6 +81,10 @@ export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisib
         const section = document.getElementById(sections[i]);
         if (section && section.offsetTop <= scrollPosition) {
           setActiveSection(sections[i]);
+          // 부모 컴포넌트에 활성 섹션 변경 알림
+          if (onSubsectionChange) {
+            onSubsectionChange(sections[i]);
+          }
           break;
         }
       }
@@ -90,7 +100,7 @@ export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisib
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [onSubsectionChange]);
 
   // 특정 섹션으로 스크롤 이동 함수
   const scrollToSection = (sectionId: string) => {
@@ -104,6 +114,11 @@ export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisib
       });
       
       setActiveSection(sectionId);
+      
+      // 부모 컴포넌트에 알림
+      if (onSubsectionChange) {
+        onSubsectionChange(sectionId);
+      }
     }
   };
 
@@ -115,64 +130,66 @@ export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisib
         <HeadingLine />
       </SectionHeading>
       
-      <NavigationBar className="NavigationBar" mainNavVisible={mainNavVisible}>
-        <NavItem 
-          href="#introduction" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('introduction'); }}
-          active={activeSection === 'introduction'}
-        >
-          소개
-        </NavItem>
-        <NavItem 
-          href="#key-metrics" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('key-metrics'); }}
-          active={activeSection === 'key-metrics'}
-        >
-          핵심 지표
-        </NavItem>
-        <NavItem 
-          href="#challenges" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('challenges'); }}
-          active={activeSection === 'challenges'}
-        >
-          문제점
-        </NavItem>
-        <NavItem 
-          href="#solutions" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('solutions'); }}
-          active={activeSection === 'solutions'}
-        >
-          솔루션
-        </NavItem>
-        <NavItem 
-          href="#case-study" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('case-study'); }}
-          active={activeSection === 'case-study'}
-        >
-          적용 사례
-        </NavItem>
-        <NavItem 
-          href="#recursive-system" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('recursive-system'); }}
-          active={activeSection === 'recursive-system'}
-        >
-          자동화 개선
-        </NavItem>
-        <NavItem 
-          href="#testimonials" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('testimonials'); }}
-          active={activeSection === 'testimonials'}
-        >
-          파트너 피드백
-        </NavItem>
-        <NavItem 
-          href="#mbc-partnership" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('mbc-partnership'); }}
-          active={activeSection === 'mbc-partnership'}
-        >
-          MBC 협력
-        </NavItem>
-      </NavigationBar>
+      {!hideNavigation && (
+        <NavigationBar className="NavigationBar" mainNavVisible={mainNavVisible}>
+          <NavItem 
+            href="#introduction" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('introduction'); }}
+            active={activeSection === 'introduction'}
+          >
+            소개
+          </NavItem>
+          <NavItem 
+            href="#key-metrics" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('key-metrics'); }}
+            active={activeSection === 'key-metrics'}
+          >
+            핵심 지표
+          </NavItem>
+          <NavItem 
+            href="#challenges" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('challenges'); }}
+            active={activeSection === 'challenges'}
+          >
+            문제점
+          </NavItem>
+          <NavItem 
+            href="#solutions" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('solutions'); }}
+            active={activeSection === 'solutions'}
+          >
+            솔루션
+          </NavItem>
+          <NavItem 
+            href="#case-study" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('case-study'); }}
+            active={activeSection === 'case-study'}
+          >
+            적용 사례
+          </NavItem>
+          <NavItem 
+            href="#recursive-system" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('recursive-system'); }}
+            active={activeSection === 'recursive-system'}
+          >
+            자동화 개선
+          </NavItem>
+          <NavItem 
+            href="#testimonials" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('testimonials'); }}
+            active={activeSection === 'testimonials'}
+          >
+            파트너 피드백
+          </NavItem>
+          <NavItem 
+            href="#mbc-partnership" 
+            onClick={(e) => { e.preventDefault(); scrollToSection('mbc-partnership'); }}
+            active={activeSection === 'mbc-partnership'}
+          >
+            MBC 협력
+          </NavItem>
+        </NavigationBar>
+      )}
       
       <CaseStudyIntro id="introduction">
         <OverviewText>

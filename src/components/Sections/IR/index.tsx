@@ -28,10 +28,24 @@ const SECTIONS = [
   { id: 'contact', title: '문의하기', color: COLORS.RED },
 ];
 
+// AI 에이전트 하위 섹션 정보
+const AI_AGENT_SUBSECTIONS = [
+  { id: 'introduction', title: '소개' },
+  { id: 'key-metrics', title: '핵심 지표' },
+  { id: 'challenges', title: '문제점' },
+  { id: 'solutions', title: '솔루션' },
+  { id: 'case-study', title: '적용 사례' },
+  { id: 'recursive-system', title: '자동화 개선' },
+  { id: 'testimonials', title: '파트너 피드백' },
+  { id: 'mbc-partnership', title: 'MBC 협력' }
+];
+
 export const IR: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
   const [mainNavVisible, setMainNavVisible] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSubsection, setActiveSubsection] = useState<string>('introduction');
+  const [showAISubNav, setShowAISubNav] = useState(false);
   const sectionRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -58,6 +72,23 @@ export const IR: React.FC = () => {
         const section = sectionRefs.current[SECTIONS[i].id];
         if (section && section.offsetTop <= currentPosition) {
           setActiveSection(SECTIONS[i].id);
+          
+          // AI 에이전트 섹션인 경우 하위 메뉴 표시
+          if (SECTIONS[i].id === 'ai-agent') {
+            setShowAISubNav(true);
+            
+            // AI 에이전트 하위 섹션 감지
+            const subsections = AI_AGENT_SUBSECTIONS.map(sub => document.getElementById(sub.id)).filter(Boolean);
+            for (let j = subsections.length - 1; j >= 0; j--) {
+              const subsection = subsections[j];
+              if (subsection && subsection.getBoundingClientRect().top <= 150) {
+                setActiveSubsection(subsection.id);
+                break;
+              }
+            }
+          } else {
+            setShowAISubNav(false);
+          }
           break;
         }
       }
@@ -134,6 +165,26 @@ export const IR: React.FC = () => {
         top: offsetTop - 100, // 네비게이션 바 높이 고려
         behavior: 'smooth'
       });
+
+      // AI 에이전트 섹션이 아닌 경우 서브 네비게이션 숨김
+      if (sectionId !== 'ai-agent') {
+        setShowAISubNav(false);
+      }
+    }
+  };
+
+  // AI 에이전트 하위 섹션으로 스크롤 이동 함수
+  const scrollToSubsection = (subsectionId: string) => {
+    const subsection = document.getElementById(subsectionId);
+    if (subsection) {
+      const offsetTop = subsection.getBoundingClientRect().top + window.pageYOffset;
+      
+      setActiveSubsection(subsectionId);
+      
+      window.scrollTo({
+        top: offsetTop - 130, // 두 네비게이션 바 높이 고려
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -182,43 +233,99 @@ export const IR: React.FC = () => {
           <Subtitle>투자자 및 파트너를 위한 정보</Subtitle>
         </Header>
         
-        <IRNavigationBar 
-          activeColor={getActiveColor()}
-          mainNavVisible={mainNavVisible}
-        >
-          <NavigationArrow 
-            onClick={navigateToPrevSection} 
-            disabled={getActiveSectionIndex() === 1}
-            activeColor={getActiveColor()}
-          >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
-            </svg>
-          </NavigationArrow>
-          
-          <SectionIndicator>
-            <SectionNumber activeColor={getActiveColor()}>
-              {getActiveSectionIndex()} / {SECTIONS.length}
-            </SectionNumber>
-            <SectionTitle>{getActiveSectionTitle()}</SectionTitle>
-            <ProgressBar>
-              <ProgressIndicator 
-                progress={scrollProgress}
+        {showAISubNav ? (
+          // AI 에이전트 섹션일 때 표시되는 통합 네비게이션 바
+          <AINavContainer mainNavVisible={mainNavVisible}>
+            <IRNavigationBar 
+              activeColor={getActiveColor()}
+              mainNavVisible={mainNavVisible}
+            >
+              <NavigationArrow 
+                onClick={navigateToPrevSection} 
+                disabled={getActiveSectionIndex() === 1}
                 activeColor={getActiveColor()}
-              />
-            </ProgressBar>
-          </SectionIndicator>
-          
-          <NavigationArrow 
-            onClick={navigateToNextSection} 
-            disabled={getActiveSectionIndex() === SECTIONS.length}
+              >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+                </svg>
+              </NavigationArrow>
+              
+              <SectionIndicator>
+                <SectionNumber activeColor={getActiveColor()}>
+                  {getActiveSectionIndex()} / {SECTIONS.length}
+                </SectionNumber>
+                <SectionTitle>{getActiveSectionTitle()}</SectionTitle>
+                <ProgressBar>
+                  <ProgressIndicator 
+                    progress={scrollProgress}
+                    activeColor={getActiveColor()}
+                  />
+                </ProgressBar>
+              </SectionIndicator>
+              
+              <NavigationArrow 
+                onClick={navigateToNextSection} 
+                disabled={getActiveSectionIndex() === SECTIONS.length}
+                activeColor={getActiveColor()}
+              >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+                </svg>
+              </NavigationArrow>
+            </IRNavigationBar>
+            
+            <AISubNavigation>
+              {AI_AGENT_SUBSECTIONS.map(subsection => (
+                <SubNavItem 
+                  key={subsection.id} 
+                  active={activeSubsection === subsection.id}
+                  onClick={() => scrollToSubsection(subsection.id)}
+                >
+                  {subsection.title}
+                </SubNavItem>
+              ))}
+            </AISubNavigation>
+          </AINavContainer>
+        ) : (
+          // 일반 섹션일 때 표시되는 네비게이션 바
+          <IRNavigationBar 
             activeColor={getActiveColor()}
+            mainNavVisible={mainNavVisible}
           >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
-            </svg>
-          </NavigationArrow>
-        </IRNavigationBar>
+            <NavigationArrow 
+              onClick={navigateToPrevSection} 
+              disabled={getActiveSectionIndex() === 1}
+              activeColor={getActiveColor()}
+            >
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+              </svg>
+            </NavigationArrow>
+            
+            <SectionIndicator>
+              <SectionNumber activeColor={getActiveColor()}>
+                {getActiveSectionIndex()} / {SECTIONS.length}
+              </SectionNumber>
+              <SectionTitle>{getActiveSectionTitle()}</SectionTitle>
+              <ProgressBar>
+                <ProgressIndicator 
+                  progress={scrollProgress}
+                  activeColor={getActiveColor()}
+                />
+              </ProgressBar>
+            </SectionIndicator>
+            
+            <NavigationArrow 
+              onClick={navigateToNextSection} 
+              disabled={getActiveSectionIndex() === SECTIONS.length}
+              activeColor={getActiveColor()}
+            >
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+              </svg>
+            </NavigationArrow>
+          </IRNavigationBar>
+        )}
         
         <SectionContainer
           id="market-analysis"
@@ -253,7 +360,11 @@ export const IR: React.FC = () => {
           className="section-container ai-agent-section"
           data-index="4"
         >
-          <AIAgentCaseStudy mainNavVisible={mainNavVisible} />
+          <AIAgentCaseStudy 
+            mainNavVisible={mainNavVisible} 
+            hideNavigation={true} 
+            onSubsectionChange={setActiveSubsection}
+          />
         </SectionContainer>
         
         <SectionContainer
@@ -461,5 +572,72 @@ const SectionTitle = styled.div`
   
   ${MEDIA_QUERIES.MOBILE} {
     font-size: 0.9rem;
+  }
+`;
+
+// AI 에이전트 하위 네비게이션 스타일
+interface AINavContainerProps {
+  mainNavVisible: boolean;
+}
+
+const AINavContainer = styled.div<AINavContainerProps>`
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: ${props => props.mainNavVisible ? '70px' : '0'};
+  z-index: 60;
+  margin-bottom: 1.5rem;
+`;
+
+const AISubNavigation = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  background-color: ${COLORS.WHITE};
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  padding: 0.4rem 0.6rem;
+  gap: 0.3rem;
+  margin-top: -5px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  
+  &::-webkit-scrollbar {
+    height: 2px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${COLORS.RED};
+    border-radius: 10px;
+  }
+  
+  ${MEDIA_QUERIES.MOBILE} {
+    padding: 0.3rem 0.5rem;
+  }
+`;
+
+const SubNavItem = styled.div<{ active: boolean }>`
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: ${props => props.active ? COLORS.RED : 'transparent'};
+  color: ${props => props.active ? COLORS.WHITE : COLORS.BLACK};
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: ${props => props.active ? COLORS.RED : 'rgba(110, 124, 243, 0.1)'};
+    color: ${props => props.active ? COLORS.WHITE : COLORS.RED};
+    transform: translateY(-1px);
+  }
+  
+  ${MEDIA_QUERIES.MOBILE} {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
   }
 `; 
