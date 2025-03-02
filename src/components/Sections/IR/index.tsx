@@ -30,14 +30,7 @@ const SECTIONS = [
 
 export const IR: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
-  const sectionRefs = useRef<{[key: string]: React.RefObject<HTMLDivElement>}>({});
-
-  // 각 섹션에 대한 ref 초기화
-  useEffect(() => {
-    SECTIONS.forEach(section => {
-      sectionRefs.current[section.id] = React.createRef<HTMLDivElement>();
-    });
-  }, []);
+  const sectionRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
 
   // 스크롤 이벤트 처리 및 활성 섹션 설정
   useEffect(() => {
@@ -46,7 +39,7 @@ export const IR: React.FC = () => {
       
       // 각 섹션을 확인하고 현재 보이는 섹션을 활성화
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const section = sectionRefs.current[SECTIONS[i].id]?.current;
+        const section = sectionRefs.current[SECTIONS[i].id];
         if (section && section.offsetTop <= scrollPosition) {
           setActiveSection(SECTIONS[i].id);
           break;
@@ -58,7 +51,7 @@ export const IR: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     
     // 초기 실행
-    setTimeout(handleScroll, 300); // 페이지 로드 후 약간의 지연을 두고 실행
+    setTimeout(handleScroll, 500); // 페이지 로드 후 약간의 지연을 두고 실행
     
     // 클린업 함수
     return () => {
@@ -68,9 +61,9 @@ export const IR: React.FC = () => {
 
   // 특정 섹션으로 스크롤 이동 함수
   const scrollToSection = (sectionId: string) => {
-    const section = sectionRefs.current[sectionId]?.current;
+    const section = sectionRefs.current[sectionId];
     if (section) {
-      const offsetTop = section.getBoundingClientRect().top + window.pageYOffset;
+      const offsetTop = section.offsetTop;
       
       window.scrollTo({
         top: offsetTop - 80, // 네비게이션 바 높이 고려
@@ -113,6 +106,11 @@ export const IR: React.FC = () => {
     return SECTIONS.findIndex(section => section.id === activeSection) + 1;
   };
 
+  // 화면에 표시되는 진행 상태 콘솔에 출력 (디버깅용)
+  useEffect(() => {
+    console.log('현재 섹션:', activeSection, '인덱스:', getActiveSectionIndex());
+  }, [activeSection]);
+
   return (
     <Section>
       <Container>
@@ -150,49 +148,85 @@ export const IR: React.FC = () => {
           </NavigationArrow>
         </IRNavigationBar>
         
-        <Content ref={sectionRefs.current['market-analysis']}>
+        <SectionContainer
+          id="market-analysis"
+          ref={el => sectionRefs.current['market-analysis'] = el}
+        >
           <MarketAnalysis />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['business-areas']}>
+        <SectionContainer
+          id="business-areas"
+          ref={el => sectionRefs.current['business-areas'] = el}
+        >
           <BusinessAreas />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['business-model']}>
+        <SectionContainer
+          id="business-model"
+          ref={el => sectionRefs.current['business-model'] = el}
+        >
           <BusinessModel />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['ai-agent']}>
+        <SectionContainer
+          id="ai-agent"
+          ref={el => sectionRefs.current['ai-agent'] = el}
+        >
           <AIAgentCaseStudy />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['relationship']}>
+        <SectionContainer
+          id="relationship"
+          ref={el => sectionRefs.current['relationship'] = el}
+        >
           <RelationshipGraph />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['expansion']}>
+        <SectionContainer
+          id="expansion"
+          ref={el => sectionRefs.current['expansion'] = el}
+        >
           <ExpansionStrategy />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['financial']}>
+        <SectionContainer
+          id="financial"
+          ref={el => sectionRefs.current['financial'] = el}
+        >
           <FinancialPlan />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['investment']}>
+        <SectionContainer
+          id="investment"
+          ref={el => sectionRefs.current['investment'] = el}
+        >
           <InvestmentPlan />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['team']}>
+        <SectionContainer
+          id="team"
+          ref={el => sectionRefs.current['team'] = el}
+        >
           <TeamComposition />
-        </Content>
+        </SectionContainer>
         
-        <Content ref={sectionRefs.current['contact']}>
+        <SectionContainer
+          id="contact"
+          ref={el => sectionRefs.current['contact'] = el}
+        >
           <Contact />
-        </Content>
+        </SectionContainer>
       </Container>
     </Section>
   );
 };
+
+// 섹션 컨테이너 스타일
+const SectionContainer = styled.div`
+  margin-bottom: 4rem;
+  scroll-margin-top: 140px;
+`;
 
 // 네비게이션 바 스타일
 interface NavigationBarProps {
