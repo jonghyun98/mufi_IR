@@ -214,6 +214,828 @@ const SLIDES: SlideData[] = [
       'MUFI의 AI 기반 운영 최적화는 핵심 경쟁 우위 요소'
     ]
   },
+  // 사업 영역 메인 슬라이드
+  {
+    id: 'business-areas-main',
+    title: '사업 영역',
+    subTitle: '포토부스 운영과 AI 기반 최적화 솔루션',
+    color: COLORS.RED,
+    sectionNumber: '2',
+    type: 'section-intro'
+  },
+  // 사업 영역 서브 슬라이드 2-1: 포토부스 설치 및 운영
+  {
+    id: 'business-areas-photobooth',
+    title: '포토부스 설치 및 운영',
+    subTitle: '핵심 수익원인 포토부스 직접 운영',
+    color: COLORS.RED,
+    sectionNumber: '2-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['대학가', '쇼핑몰', '카페', '관광지', '기타'],
+      datasets: [
+        {
+          label: '설치 비중(%)',
+          data: [35, 25, 20, 15, 5],
+          backgroundColor: `${COLORS.RED}90`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '설치 위치별 포토부스 분포'
+        }
+      }
+    },
+    keyPoints: [
+      '1차 타겟: 유동인구 많은 대학가 중심 배치 (35%)',
+      '프리미엄 모델: 쇼핑몰, 고급 카페 위주 설치',
+      '계절별 전략: 관광지 성수기 집중 배치 운영',
+      '원격 관리: AI 기반 모니터링으로 효율적 운영'
+    ]
+  },
+  // 사업 영역 서브 슬라이드 2-2: AI 최적화 플랫폼
+  {
+    id: 'business-areas-ai',
+    title: 'AI 최적화 플랫폼',
+    subTitle: '운영 효율화 및 유지보수 비용 절감',
+    color: COLORS.RED,
+    sectionNumber: '2-2',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['설치', '유지보수', '물류비용', '인건비', '자재비'],
+      datasets: [
+        {
+          label: '일반 운영 비용',
+          data: [100, 75, 68, 85, 60],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}30`,
+          tension: 0.1
+        },
+        {
+          label: 'AI 최적화 후 비용',
+          data: [100, 30, 26, 40, 35],
+          borderColor: `${COLORS.RED}`,
+          backgroundColor: `${COLORS.RED}30`,
+          tension: 0.1
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '비용 지수 (일반 설치비용=100 기준)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      'AI 기반 예측 정비로 유지보수 비용 60% 절감',
+      '최적화된 자재 공급망 관리로 물류비용 62% 감소',
+      '인력 배치 최적화로 인건비 55% 절감 효과',
+      '대시보드 제공으로 실시간 비용 및 성과 모니터링'
+    ]
+  },
+  // 사업 영역 서브 슬라이드 2-3: 콘텐츠 큐레이션
+  {
+    id: 'business-areas-content',
+    title: '콘텐츠 큐레이션',
+    subTitle: '사용자 경험을 극대화하는 차별화된 콘텐츠',
+    color: COLORS.RED,
+    sectionNumber: '2-3',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['스탠다드', '프리미엄', '시즌 테마', '브랜드 콜라보', '커스텀'],
+      datasets: [
+        {
+          data: [30, 25, 20, 15, 10],
+          backgroundColor: [
+            `${COLORS.BLUE}90`,
+            `${COLORS.RED}90`,
+            `${COLORS.GREEN}90`,
+            `${COLORS.YELLOW}90`,
+            `${COLORS.BLUE}60`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '콘텐츠 카테고리별 사용 비중'
+        }
+      }
+    },
+    keyPoints: [
+      'AI 기반 고객 선호도 분석으로 인기 콘텐츠 우선 제공',
+      '시즌별 테마 콘텐츠로 재방문율 24% 향상',
+      '브랜드 협업 콘텐츠로 추가 수익원 창출',
+      '대학별 맞춤 콘텐츠로 지역 특화 서비스 제공'
+    ]
+  },
+  // 비즈니스 모델 메인 슬라이드
+  {
+    id: 'business-model-main',
+    title: '비즈니스 모델',
+    subTitle: '수익 다각화를 통한 안정적 사업 구조',
+    color: COLORS.GREEN,
+    sectionNumber: '3',
+    type: 'section-intro'
+  },
+  // 비즈니스 모델 서브 슬라이드 3-1: 수익 다각화
+  {
+    id: 'business-model-revenue',
+    title: '수익 다각화 구조',
+    subTitle: '4가지 수익 모델로 안정적인 비즈니스 운영',
+    color: COLORS.GREEN,
+    sectionNumber: '3-1',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['포토부스 이용료', 'AI 라이센싱', '광고 수익', '데이터 분석 서비스'],
+      datasets: [
+        {
+          data: [55, 25, 15, 5],
+          backgroundColor: [
+            `${COLORS.GREEN}90`,
+            `${COLORS.BLUE}90`,
+            `${COLORS.RED}90`,
+            `${COLORS.YELLOW}90`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '수익원 구성 비율 (%)'
+        }
+      }
+    },
+    keyPoints: [
+      '포토부스 이용료: 현재 전체 수익의 55%, 안정적 캐시카우',
+      'AI 라이센싱: 타 운영사에 최적화 시스템 제공, 고성장 예상',
+      '광고 플랫폼: 포토부스 내 디지털 광고 서비스, 브랜드 협업',
+      '데이터 분석: 트렌드 리포트 판매, 향후 성장 주력 분야'
+    ]
+  },
+  // 비즈니스 모델 서브 슬라이드 3-2: 수익성 예측
+  {
+    id: 'business-model-profitability',
+    title: '수익성 예측',
+    subTitle: '시간 경과에 따른 매출 및 이익률 성장',
+    color: COLORS.GREEN,
+    sectionNumber: '3-2',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['1년차', '2년차', '3년차', '4년차', '5년차'],
+      datasets: [
+        {
+          label: '매출(억원)',
+          data: [15, 35, 65, 90, 120],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}30`,
+          yAxisID: 'y',
+          tension: 0.1
+        },
+        {
+          label: '영업이익률(%)',
+          data: [5, 12, 18, 23, 28],
+          borderColor: `${COLORS.GREEN}`,
+          backgroundColor: `${COLORS.GREEN}30`,
+          yAxisID: 'y1',
+          tension: 0.1
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: '매출(억원)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: '영업이익률(%)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '3년차부터 영업이익률 18% 이상 달성 예상',
+      '5년차 매출 120억원, 영업이익률 28% 목표',
+      'AI 라이센싱 수익 비중 증가로 수익성 지속 개선',
+      '초기 투자 회수 시점: 운영 16개월 차'
+    ]
+  },
+  // 비즈니스 모델 서브 슬라이드 3-3: 경쟁 우위 요소
+  {
+    id: 'business-model-advantage',
+    title: '경쟁 우위 요소',
+    subTitle: 'AI 기술 기반 차별화 전략',
+    color: COLORS.GREEN,
+    sectionNumber: '3-3',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['운영 효율성', '콘텐츠 다양성', '위치 최적화', '고객 경험', '비용 절감'],
+      datasets: [
+        {
+          label: '기존 업체 평균',
+          data: [50, 65, 60, 70, 55],
+          backgroundColor: `${COLORS.BLUE}70`
+        },
+        {
+          label: 'MUFI',
+          data: [90, 85, 95, 85, 85],
+          backgroundColor: `${COLORS.GREEN}70`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: '역량 점수 (100점 만점)'
+          }
+        }
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: '경쟁사 대비 우위 요소'
+        }
+      }
+    },
+    keyPoints: [
+      'AI 기반 위치 최적화로 타 업체 대비 58% 높은 수익률',
+      '자동화된 운영 시스템으로 80% 이상 비용 절감 효과',
+      '데이터 주도 의사결정으로 대응 속도 90% 향상',
+      '지속적인 알고리즘 개선으로 경쟁 우위 유지'
+    ]
+  },
+  // AI 에이전트 메인 슬라이드
+  {
+    id: 'ai-agent-main',
+    title: 'AI 에이전트',
+    subTitle: '포토부스 운영 최적화를 위한 인공지능 솔루션',
+    color: COLORS.RED,
+    sectionNumber: '4',
+    type: 'section-intro'
+  },
+  // AI 에이전트 서브 슬라이드 4-1: 핵심 기술 구성
+  {
+    id: 'ai-agent-technology',
+    title: 'AI 에이전트 핵심 기술',
+    subTitle: '운영 전 영역을 최적화하는 인공지능 시스템',
+    color: COLORS.RED,
+    sectionNumber: '4-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['수요 예측', '위치 최적화', '물류 자동화', '예측 정비', '인력 배치'],
+      datasets: [
+        {
+          label: '정확도 (%)',
+          data: [92, 95, 89, 87, 93],
+          backgroundColor: `${COLORS.RED}80`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: '알고리즘 정확도 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '위치 최적화 알고리즘: 95% 정확도로 최적 설치 위치 예측',
+      '수요 예측 엔진: 92% 정확도로 시간대별 수요 예측',
+      '인력 배치 최적화: 93% 효율성으로 작업자 배치 자동화',
+      '물류 및 자재 자동화: 89% 정확도로 최적 보급 일정 계산'
+    ]
+  },
+  // AI 에이전트 서브 슬라이드 4-2: 효과 분석
+  {
+    id: 'ai-agent-impact',
+    title: 'AI 도입 효과 분석',
+    subTitle: '운영 비용 절감 및 고객 만족도 향상',
+    color: COLORS.RED,
+    sectionNumber: '4-2',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['도입 전', '1개월 후', '3개월 후', '6개월 후', '12개월 후'],
+      datasets: [
+        {
+          label: '운영 비용 (만원/대)',
+          data: [175, 120, 95, 85, 75],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}20`,
+          yAxisID: 'y',
+          tension: 0.1
+        },
+        {
+          label: '고객 만족도 (%)',
+          data: [67, 75, 82, 88, 94],
+          borderColor: `${COLORS.GREEN}`,
+          backgroundColor: `${COLORS.GREEN}20`,
+          yAxisID: 'y1',
+          tension: 0.1
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: '월간 운영 비용 (만원/대)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: '고객 만족도 (%)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '월간 운영 비용 57% 감소 (175만원 → 75만원)',
+      '고객 만족도 27%p 향상 (67% → 94%)',
+      '문제 대응 시간 87% 단축 (36.8분 → 4.2분)',
+      '가동률 15%p 향상 (82% → 97%)'
+    ]
+  },
+  // AI 에이전트 서브 슬라이드 4-3: 미래 로드맵
+  {
+    id: 'ai-agent-roadmap',
+    title: 'AI 에이전트 로드맵',
+    subTitle: '자율 개선 시스템으로 진화',
+    color: COLORS.RED,
+    sectionNumber: '4-3',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['2024', '2025', '2026', '2027'],
+      datasets: [
+        {
+          label: '자율 개선 수준',
+          data: [2, 3, 4, 4.5],
+          backgroundColor: [
+            `${COLORS.BLUE}80`,
+            `${COLORS.GREEN}80`,
+            `${COLORS.RED}80`,
+            `${COLORS.YELLOW}80`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 5,
+          title: {
+            display: true,
+            text: '자율 개선 수준 (5점 만점)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '현재(2024): 예측형 최적화 (데이터 기반 비용/효율 최적화)',
+      '2025: 지능형 조정 (환경 변화에 자율 대응)',
+      '2026: 제한적 자기진화 (알고리즘 스스로 개선)',
+      '2027: 완전 자율 운영 (인간 감독 하 자율 의사결정)'
+    ]
+  },
+  // 확장 전략 메인 슬라이드
+  {
+    id: 'expansion-main',
+    title: '확장 전략',
+    subTitle: '지역 및 사업 영역 확장을 통한 성장 계획',
+    color: COLORS.GREEN,
+    sectionNumber: '5',
+    type: 'section-intro'
+  },
+  // 확장 전략 서브 슬라이드 5-1: 지역 확장 계획
+  {
+    id: 'expansion-regions',
+    title: '지역 확장 계획',
+    subTitle: '대학가에서 쇼핑몰, 관광지로 확장',
+    color: COLORS.GREEN,
+    sectionNumber: '5-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['2024', '2025', '2026', '2027', '2028'],
+      datasets: [
+        {
+          label: '대학가',
+          data: [25, 50, 75, 100, 120],
+          backgroundColor: `${COLORS.BLUE}80`
+        },
+        {
+          label: '쇼핑몰',
+          data: [5, 15, 35, 60, 90],
+          backgroundColor: `${COLORS.RED}80`
+        },
+        {
+          label: '관광지',
+          data: [0, 10, 25, 45, 70],
+          backgroundColor: `${COLORS.GREEN}80`
+        },
+        {
+          label: '기타',
+          data: [2, 8, 20, 35, 50],
+          backgroundColor: `${COLORS.YELLOW}80`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: '설치 포토부스 수'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '1차 목표(2024): 주요 대학가 중심 32개 거점 확보',
+      '2차 목표(2025-26): 쇼핑몰, 상권 중심 93개 지점 추가',
+      '3차 목표(2027-28): 관광지, 복합문화공간으로 115개 확장',
+      '5년 내 누적 330개 포토부스 운영 목표'
+    ]
+  },
+  // 확장 전략 서브 슬라이드 5-2: 글로벌 시장 진출
+  {
+    id: 'expansion-global',
+    title: '글로벌 시장 진출',
+    subTitle: '동남아시아 및 북미 시장 단계적 확장',
+    color: COLORS.GREEN,
+    sectionNumber: '5-2',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['국내', '동남아시아', '북미', '기타'],
+      datasets: [
+        {
+          data: [60, 25, 10, 5],
+          backgroundColor: [
+            `${COLORS.RED}80`,
+            `${COLORS.BLUE}80`,
+            `${COLORS.GREEN}80`,
+            `${COLORS.YELLOW}80`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '5년차 매출 비중 목표 (%)'
+        }
+      }
+    },
+    keyPoints: [
+      '베트남, 태국, 말레이시아 중심 동남아 진출 (2025~)',
+      '미국 대학가 거점 진출 (2026~)',
+      '글로벌 프랜차이즈 모델로 빠른 확장',
+      '현지화된 콘텐츠 및 AI 모델 적용'
+    ]
+  },
+  // 확장 전략 서브 슬라이드 5-3: 사업 다각화
+  {
+    id: 'expansion-diversification',
+    title: '사업 다각화',
+    subTitle: '기술 기반 신규 사업 영역 확장',
+    color: COLORS.GREEN,
+    sectionNumber: '5-3',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['포토부스', 'AI 라이센싱', 'AR 콘텐츠', '메타버스 연동', '데이터 비즈니스'],
+      datasets: [
+        {
+          label: '2024',
+          data: [90, 10, 0, 0, 0],
+          backgroundColor: `${COLORS.BLUE}60`
+        },
+        {
+          label: '2026',
+          data: [60, 20, 10, 5, 5],
+          backgroundColor: `${COLORS.GREEN}60`
+        },
+        {
+          label: '2028',
+          data: [40, 25, 15, 10, 10],
+          backgroundColor: `${COLORS.RED}60`
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: '매출 비중 (%)'
+          }
+        }
+      }
+    },
+    keyPoints: [
+      'AR 기반 확장 콘텐츠 개발 (2025~)',
+      '메타버스 연동 포토부스 경험 구축 (2026~)',
+      '데이터 기반 트렌드 분석 서비스 (2025~)',
+      '운영 최적화 AI 라이센싱 확대 (진행 중)'
+    ]
+  },
+  // 재무 계획 메인 슬라이드
+  {
+    id: 'financial-main',
+    title: '재무 계획',
+    subTitle: '안정적 성장과 수익성 확보 전략',
+    color: COLORS.YELLOW,
+    sectionNumber: '6',
+    type: 'section-intro'
+  },
+  // 재무 계획 서브 슬라이드 6-1: 손익 계획
+  {
+    id: 'financial-profit',
+    title: '손익 계획',
+    subTitle: '매출 성장 및 수익성 개선 계획',
+    color: COLORS.YELLOW,
+    sectionNumber: '6-1',
+    type: 'chart',
+    chartType: 'bar',
+    chartData: {
+      labels: ['1년차', '2년차', '3년차', '4년차', '5년차'],
+      datasets: [
+        {
+          label: '매출(억원)',
+          data: [15, 35, 65, 90, 120],
+          backgroundColor: `${COLORS.BLUE}70`,
+          yAxisID: 'y',
+          order: 2
+        },
+        {
+          label: '영업이익(억원)',
+          data: [0.75, 4.2, 11.7, 20.7, 33.6],
+          backgroundColor: `${COLORS.GREEN}70`,
+          yAxisID: 'y',
+          order: 1
+        },
+        {
+          label: '영업이익률(%)',
+          data: [5, 12, 18, 23, 28],
+          borderColor: `${COLORS.RED}`,
+          backgroundColor: `${COLORS.RED}30`,
+          type: 'line',
+          yAxisID: 'y1',
+          order: 0
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: '금액(억원)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: '비율(%)'
+          },
+          min: 0,
+          max: 30,
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '5년 내 매출 120억원, 영업이익 33.6억원 달성 목표',
+      '영업이익률 연 평균 5%p 이상 개선',
+      '3년차부터 누적 현금흐름 흑자 전환',
+      'AI 기술 고도화로 수익성 지속 개선'
+    ]
+  },
+  // 재무 계획 서브 슬라이드 6-2: 투자 및 자금조달
+  {
+    id: 'financial-investment',
+    title: '투자 및 자금조달',
+    subTitle: '단계적 투자 유치 및 자금 활용 계획',
+    color: COLORS.YELLOW,
+    sectionNumber: '6-2',
+    type: 'chart',
+    chartType: 'pie',
+    chartData: {
+      labels: ['기술개발', '마케팅/영업', '인프라 구축', '운영자금'],
+      datasets: [
+        {
+          data: [40, 30, 20, 10],
+          backgroundColor: [
+            `${COLORS.BLUE}80`,
+            `${COLORS.RED}80`,
+            `${COLORS.GREEN}80`,
+            `${COLORS.YELLOW}80`
+          ]
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: '자금 사용 계획 (%)'
+        }
+      }
+    },
+    keyPoints: [
+      'Seed 투자: 2억원 (2023, 자체조달)',
+      'Series A: 10억원 (2024, 외부투자 진행 중)',
+      'Series B: 30억원 (2026, 계획)',
+      '기술개발에 40% 집중 투자로 경쟁력 강화'
+    ]
+  },
+  // 재무 계획 서브 슬라이드 6-3: 투자 수익성
+  {
+    id: 'financial-roi',
+    title: '투자 수익성',
+    subTitle: '높은 ROI와 안정적 성장 모델',
+    color: COLORS.YELLOW,
+    sectionNumber: '6-3',
+    type: 'chart',
+    chartType: 'line',
+    chartData: {
+      labels: ['6개월', '12개월', '18개월', '24개월', '36개월', '48개월', '60개월'],
+      datasets: [
+        {
+          label: '누적 투자(억원)',
+          data: [5, 8, 12, 15, 25, 35, 40],
+          borderColor: `${COLORS.BLUE}`,
+          backgroundColor: `${COLORS.BLUE}20`,
+          yAxisID: 'y',
+          tension: 0.1
+        },
+        {
+          label: '누적 수익(억원)',
+          data: [0, 0.75, 3, 7, 19, 39, 73],
+          borderColor: `${COLORS.GREEN}`,
+          backgroundColor: `${COLORS.GREEN}20`,
+          yAxisID: 'y',
+          tension: 0.1
+        },
+        {
+          label: 'ROI(%)',
+          data: [-100, -91, -75, -53, -24, 11, 82],
+          borderColor: `${COLORS.RED}`,
+          backgroundColor: `${COLORS.RED}20`,
+          yAxisID: 'y1',
+          tension: 0.1
+        }
+      ]
+    },
+    chartOptions: {
+      animation: true,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: '금액(억원)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: 'ROI(%)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    },
+    keyPoints: [
+      '손익분기점: 운영 16개월 차(누적 기준)',
+      '투자 대비 수익 흑자전환: 38개월 차',
+      '5년차 ROI: 82%',
+      '포토부스 한 대당 평균 회수 기간: 1.7년'
+    ]
+  },
+  // 여기에 다른 슬라이드들 계속...
   {
     id: 'business-areas',
     title: '사업 영역',
