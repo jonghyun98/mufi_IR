@@ -2283,20 +2283,20 @@ const NavigationBar = styled.div<NavigationBarProps>`
   flex-wrap: nowrap;
   justify-content: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1rem;
   background-color: ${COLORS.WHITE};
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: ${props => props.mainNavVisible ? '140px' : '70px'}; /* 메인 네비게이션 바 표시 여부에 따라 위치 조정 */
   z-index: 40; /* IR 네비게이션 바(z-index: 60)보다 낮게 설정 */
   transition: all 0.3s ease;
   overflow-x: auto;
-  border-left: 3px solid ${COLORS.RED}; /* 왼쪽 테두리로 구분 */
+  border-left: 2px solid ${COLORS.RED}; /* 왼쪽 테두리로 구분 */
   
   &::-webkit-scrollbar {
-    height: 3px;
+    height: 2px;
   }
   
   &::-webkit-scrollbar-track {
@@ -2311,19 +2311,19 @@ const NavigationBar = styled.div<NavigationBarProps>`
   
   ${MEDIA_QUERIES.MOBILE} {
     justify-content: flex-start;
-    padding: 0.75rem;
+    padding: 0.5rem 0.8rem;
     top: ${props => props.mainNavVisible ? '130px' : '60px'}; /* 모바일에서는 더 작은 위치 */
   }
 `;
 
 const NavItem = styled.a<{ active?: boolean }>`
   display: inline-block;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.8rem;
   background-color: ${props => props.active ? COLORS.RED : COLORS.WHITE};
   color: ${props => props.active ? COLORS.WHITE : COLORS.BLACK};
   border: 1px solid ${props => props.active ? COLORS.RED : 'rgba(0, 0, 0, 0.1)'};
-  border-radius: 8px;
-  font-size: 0.875rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -2333,7 +2333,7 @@ const NavItem = styled.a<{ active?: boolean }>`
     background-color: ${props => props.active ? COLORS.RED : 'rgba(110, 124, 243, 0.1)'};
     color: ${props => props.active ? COLORS.WHITE : COLORS.RED};
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
   }
   
   &:active {
@@ -2341,8 +2341,8 @@ const NavItem = styled.a<{ active?: boolean }>`
   }
   
   ${MEDIA_QUERIES.MOBILE} {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
     white-space: nowrap;
   }
 `;

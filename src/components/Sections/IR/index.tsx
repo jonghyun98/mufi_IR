@@ -354,19 +354,19 @@ const IRNavigationBar = styled.div<NavigationBarProps>`
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
-  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.25rem;
   background-color: ${COLORS.WHITE};
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: ${props => props.mainNavVisible ? '70px' : '0'}; /* 메인 네비게이션 바 표시 여부에 따라 위치 조정 */
   z-index: 60; /* AI 에이전트 네비게이션 바보다 높게 설정 */
   transition: all 0.3s ease;
-  border-top: 3px solid ${props => props.activeColor};
+  border-top: 2px solid ${props => props.activeColor};
   
   ${MEDIA_QUERIES.MOBILE} {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.8rem;
     top: ${props => props.mainNavVisible ? '60px' : '0'}; /* 모바일에서는 더 작은 위치 */
   }
 `;
@@ -374,10 +374,10 @@ const IRNavigationBar = styled.div<NavigationBarProps>`
 // 진행 상태 표시 바
 const ProgressBar = styled.div`
   width: 80%;
-  height: 3px;
+  height: 2px;
   background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
-  margin-top: 0.5rem;
+  border-radius: 2px;
+  margin-top: 0.3rem;
   overflow: hidden;
 `;
 
@@ -400,8 +400,8 @@ interface ArrowProps {
 }
 
 const NavigationArrow = styled.div<ArrowProps>`
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -413,21 +413,21 @@ const NavigationArrow = styled.div<ArrowProps>`
   
   &:hover {
     background-color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.05)' : `${props.activeColor}20`};
-    transform: ${props => props.disabled ? 'none' : 'scale(1.1)'};
+    transform: ${props => props.disabled ? 'none' : 'scale(1.05)'};
   }
   
   svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
   
   ${MEDIA_QUERIES.MOBILE} {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     
     svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 `;
@@ -439,6 +439,7 @@ const SectionIndicator = styled.div`
   justify-content: center;
   text-align: center;
   flex: 1;
+  padding: 0.2rem 0;
 `;
 
 interface SectionNumberProps {
@@ -446,19 +447,19 @@ interface SectionNumberProps {
 }
 
 const SectionNumber = styled.div<SectionNumberProps>`
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: ${props => props.activeColor};
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
 `;
 
 const SectionTitle = styled.div`
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 700;
   color: ${COLORS.BLACK};
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   
   ${MEDIA_QUERIES.MOBILE} {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `; 
