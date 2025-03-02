@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Header, Title, Subtitle, Content, Section } from './styles';
+import { Container, Header, Title, Subtitle, Section } from './styles';
 import { RelationshipGraph } from './RelationshipGraph';
 import { BusinessAreas } from './BusinessAreas';
 import { MarketAnalysis } from './MarketAnalysis';
@@ -33,8 +33,20 @@ export const IR: React.FC = () => {
   const sectionRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // IntersectionObserver 설정 및 활성 섹션 감지
+  // 각 섹션 참조 설정 후 Observer 초기화
   useEffect(() => {
+    console.log('섹션 참조:', Object.keys(sectionRefs.current));
+    
+    // 약간 지연시켜 모든 요소가 DOM에 렌더링되도록 함
+    const timer = setTimeout(() => {
+      initializeObserver();
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // IntersectionObserver 초기화 함수
+  const initializeObserver = () => {
     // 이전 observer 제거
     if (observerRef.current) {
       observerRef.current.disconnect();
@@ -43,6 +55,11 @@ export const IR: React.FC = () => {
     // 새 observer 생성
     const observer = new IntersectionObserver(
       (entries) => {
+        // 교차 항목 디버깅
+        entries.forEach(entry => {
+          console.log(`섹션 ${entry.target.id}: ${entry.isIntersecting ? '보임' : '안보임'}, 비율: ${entry.intersectionRatio.toFixed(2)}`);
+        });
+        
         // visibility가 가장 높은 섹션 찾기
         const visibleSections = entries
           .filter(entry => entry.isIntersecting)
@@ -58,24 +75,23 @@ export const IR: React.FC = () => {
       },
       {
         root: null, // viewport 기준
-        rootMargin: '-100px 0px -300px 0px', // 상단 100px, 하단 300px 마진 적용
-        threshold: [0.1, 0.2, 0.3, 0.4, 0.5] // 10%, 20%, 30%, 40%, 50% 가시성 기준점
+        rootMargin: '-50px 0px -50px 0px', // 여백 조정
+        threshold: [0.05, 0.1, 0.2, 0.3, 0.4, 0.5] // 더 낮은 threshold 추가
       }
     );
 
-    // 각 섹션 관찰
-    Object.values(sectionRefs.current).forEach(section => {
-      if (section) {
-        observer.observe(section);
+    // 모든 섹션 관찰하기
+    Object.entries(sectionRefs.current).forEach(([id, element]) => {
+      if (element) {
+        observer.observe(element);
+        console.log(`섹션 관찰 시작: ${id}`);
+      } else {
+        console.warn(`섹션 참조 없음: ${id}`);
       }
     });
 
     observerRef.current = observer;
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  };
 
   // 특정 섹션으로 스크롤 이동 함수
   const scrollToSection = (sectionId: string) => {
@@ -170,6 +186,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="market-analysis"
           ref={el => sectionRefs.current['market-analysis'] = el}
+          className="section-container"
         >
           <MarketAnalysis />
         </SectionContainer>
@@ -177,6 +194,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="business-areas"
           ref={el => sectionRefs.current['business-areas'] = el}
+          className="section-container"
         >
           <BusinessAreas />
         </SectionContainer>
@@ -184,6 +202,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="business-model"
           ref={el => sectionRefs.current['business-model'] = el}
+          className="section-container"
         >
           <BusinessModel />
         </SectionContainer>
@@ -191,6 +210,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="ai-agent"
           ref={el => sectionRefs.current['ai-agent'] = el}
+          className="section-container ai-agent-section"
         >
           <AIAgentCaseStudy />
         </SectionContainer>
@@ -198,6 +218,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="relationship"
           ref={el => sectionRefs.current['relationship'] = el}
+          className="section-container"
         >
           <RelationshipGraph />
         </SectionContainer>
@@ -205,6 +226,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="expansion"
           ref={el => sectionRefs.current['expansion'] = el}
+          className="section-container"
         >
           <ExpansionStrategy />
         </SectionContainer>
@@ -212,6 +234,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="financial"
           ref={el => sectionRefs.current['financial'] = el}
+          className="section-container"
         >
           <FinancialPlan />
         </SectionContainer>
@@ -219,6 +242,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="investment"
           ref={el => sectionRefs.current['investment'] = el}
+          className="section-container"
         >
           <InvestmentPlan />
         </SectionContainer>
@@ -226,6 +250,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="team"
           ref={el => sectionRefs.current['team'] = el}
+          className="section-container"
         >
           <TeamComposition />
         </SectionContainer>
@@ -233,6 +258,7 @@ export const IR: React.FC = () => {
         <SectionContainer
           id="contact"
           ref={el => sectionRefs.current['contact'] = el}
+          className="section-container"
         >
           <Contact />
         </SectionContainer>
@@ -245,7 +271,15 @@ export const IR: React.FC = () => {
 const SectionContainer = styled.div`
   margin-bottom: 4rem;
   scroll-margin-top: 140px;
-  min-height: 400px; /* 최소 높이 설정하여 작은 컨텐츠도 감지되도록 함 */
+  min-height: 300px; /* 최소 높이 설정하여 작은 컨텐츠도 감지되도록 함 */
+  padding-top: 1.5rem;
+  
+  &.ai-agent-section {
+    /* AI 에이전트 섹션 내부의 NavigationBar와 충돌 방지를 위한 스타일 */
+    .NavigationBar {
+      top: 140px !important; /* 메인 IR 네비게이션 바 아래에 위치하도록 조정 */
+    }
+  }
 `;
 
 // 네비게이션 바 스타일
@@ -266,7 +300,7 @@ const IRNavigationBar = styled.div<NavigationBarProps>`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 70px; /* 메인 네비게이션 바 아래에 오도록 위치 조정 */
-  z-index: 50; /* 메인 네비게이션 바(z-index: 1000) 보다 낮게 설정 */
+  z-index: 60; /* AI 에이전트 네비게이션 바보다 높게 설정 */
   transition: all 0.3s ease;
   border-top: 3px solid ${props => props.activeColor};
   

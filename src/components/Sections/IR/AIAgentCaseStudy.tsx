@@ -111,7 +111,7 @@ export const AIAgentCaseStudy: React.FC = () => {
         <HeadingLine />
       </SectionHeading>
       
-      <NavigationBar>
+      <NavigationBar className="NavigationBar">
         <NavItem 
           href="#introduction" 
           onClick={(e) => { e.preventDefault(); scrollToSection('introduction'); }}
@@ -2279,12 +2279,13 @@ const NavigationBar = styled.div`
   padding: 1rem;
   background-color: ${COLORS.WHITE};
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: sticky;
-  top: 70px; /* 메인 네비게이션 바 아래에 오도록 위치 조정 */
-  z-index: 50; /* 메인 네비게이션 바(z-index: 1000) 보다 낮게 설정 */
+  top: 140px; /* IR 네비게이션 바 아래에 오도록 위치 조정 */
+  z-index: 40; /* IR 네비게이션 바(z-index: 60)보다 낮게 설정 */
   transition: all 0.3s ease;
   overflow-x: auto;
+  border-left: 3px solid ${COLORS.RED}; /* 왼쪽 테두리로 구분 */
   
   &::-webkit-scrollbar {
     height: 3px;
@@ -2303,7 +2304,7 @@ const NavigationBar = styled.div`
   ${MEDIA_QUERIES.MOBILE} {
     justify-content: flex-start;
     padding: 0.75rem;
-    top: 60px; /* 모바일에서는 더 작은 위치 */
+    top: 130px; /* 모바일에서는 더 작은 위치 */
   }
 `;
 
