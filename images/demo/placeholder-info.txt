@@ -1,0 +1,16 @@
+이 폴더에는 다음과 같은 placeholder 이미지가 필요합니다:
+
+1. placeholder-1.jpg: 포토부스 UI 메인 화면 (터치스크린 인터페이스)
+2. placeholder-2.jpg: 포토부스 AI 얼굴 인식 및 포즈 가이드 화면
+3. placeholder-3.jpg: 포토부스 AR 필터 및 테마 선택 화면
+
+4. placeholder-4.jpg: AI 대시보드 - 실시간 매출 모니터링 화면
+5. placeholder-5.jpg: AI 대시보드 - 위치별 매출 예측 및 인력 배치 화면
+6. placeholder-6.jpg: AI 대시보드 - 이상 징후 감지 및 유지보수 화면
+
+7. placeholder-7.jpg: 사용자 경험 - 접근 단계
+8. placeholder-8.jpg: 사용자 경험 - 선택 단계
+9. placeholder-9.jpg: 사용자 경험 - 촬영 단계
+0. placeholder-0.jpg: 사용자 경험 - 공유 단계
+
+이미지가 준비되면 이 파일을 위 경로에 저장하고, 실제 이미지를 해당 이름으로 추가하십시오. 
