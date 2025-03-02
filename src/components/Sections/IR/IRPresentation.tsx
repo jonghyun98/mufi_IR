@@ -83,8 +83,15 @@ interface SectionIntroSlideData extends BaseSlide {
   type: 'section-intro';
 }
 
+// 제품 데모 슬라이드 타입 정의 (NEW)
+interface ProductDemoData extends BaseSlide {
+  type: 'product-demo';
+  demoImages: string[];
+  descriptions: string[];
+}
+
 // 슬라이드 유니온 타입
-type SlideData = IntroSlideData | SectionIntroSlideData | ChartSlideData | ComparisonSlideData | LegacySlideData;
+type SlideData = IntroSlideData | SectionIntroSlideData | ChartSlideData | ComparisonSlideData | LegacySlideData | ProductDemoData;
 
 // 슬라이드 섹션 데이터
 const SLIDES: SlideData[] = [
@@ -1800,123 +1807,91 @@ const SLIDES: SlideData[] = [
       '코어 리스크 헷지: 다양한 수익 모델과 지역 다변화로 안정성 확보'
     ]
   },
-  // 기존 legacy 타입 슬라이드
+  // 제품 데모: 포토부스 UI 슬라이드 (NEW)
   {
-    id: 'business-areas',
-    title: '사업 영역',
-    subTitle: '포토부스 운영 및 AI 기반 운영 최적화 플랫폼',
-    color: COLORS.RED,
-    type: 'legacy',
-    key: [
-      '포토부스 설치 및 운영',
-      'AI 기반 운영 최적화 시스템',
-      '파트너십을 통한 유통망 확장',
-      '콘텐츠 큐레이션 및 제작'
-    ]
-  },
-  {
-    id: 'business-model',
-    title: '비즈니스 모델',
-    subTitle: '수익 다각화를 통한 안정적 사업 구조',
-    color: COLORS.GREEN,
-    type: 'legacy',
-    key: [
-      '직접 운영 수익: 포토부스 이용료',
-      '광고 수익: 디지털 광고 플랫폼',
-      '라이센싱: AI 운영 시스템 제공',
-      '데이터 수익: 소비자 트렌드 분석'
-    ]
-  },
-  {
-    id: 'ai-agent',
-    title: 'AI 에이전트',
-    subTitle: '운영 최적화 및 자동화 시스템',
-    color: COLORS.RED,
-    type: 'legacy',
-    key: [
-      '물류 비용 62% 절감 (월 26만원/대)',
-      '업무 효율성 93%로 향상',
-      '유통망 최적화로 설치 적합성 95% 달성',
-      '투자 회수 기간 4.3개월'
-    ]
-  },
-  {
-    id: 'relationship',
-    title: '사업 구조도',
-    subTitle: '다양한 파트너십 기반의 사업 생태계',
+    id: 'product-demo-photobooth',
+    title: 'MUFI 포토부스',
+    subTitle: '사용자 중심의 직관적인 인터페이스와 프리미엄 경험',
     color: COLORS.BLUE,
-    type: 'legacy',
-    key: [
-      '카페, 쇼핑몰 등 설치 파트너',
-      '광고주 및 브랜드 협력',
-      '기술 개발 파트너',
-      'MBC 등 콘텐츠 파트너십'
+    sectionNumber: '7-1',
+    type: 'product-demo',
+    demoImages: [
+      '/images/demo/photobooth-ui-1.jpg',
+      '/images/demo/photobooth-ui-2.jpg',
+      '/images/demo/photobooth-ui-3.jpg'
+    ],
+    descriptions: [
+      '직관적인 UI로 누구나 쉽게 이용할 수 있는 터치스크린 인터페이스',
+      'AI 기반 얼굴 인식 및 최적화 기술로 완벽한 포즈와 표정 가이드',
+      '실시간 AR 필터와 다양한 프리미엄 테마 제공'
+    ],
+    keyPoints: [
+      '사용자 평균 체류 시간: 8분 32초, 평균 사진 촬영 수: 22장',
+      '재방문율: 일반 포토부스 대비 32% 향상, NPS 점수: 82점',
+      '평균 이용 금액: 6,500원 (업계 평균 대비 30% 높음)',
+      '사용성 테스트 만족도: 94% (500명 대상 설문 결과)'
     ]
   },
+  // 제품 데모: AI 대시보드 슬라이드 (NEW)
   {
-    id: 'expansion',
-    title: '확장 전략',
-    subTitle: '지역 확장 및 신규 사업 영역 개척',
+    id: 'product-demo-dashboard',
+    title: 'AI 대시보드',
+    subTitle: '포토부스 전체 운영을 한눈에 모니터링하는 관제 시스템',
+    color: COLORS.RED,
+    sectionNumber: '7-2',
+    type: 'product-demo',
+    demoImages: [
+      '/images/demo/ai-dashboard-1.jpg',
+      '/images/demo/ai-dashboard-2.jpg',
+      '/images/demo/ai-dashboard-3.jpg'
+    ],
+    descriptions: [
+      '실시간 매출, 이용객 수, 인기 테마 등 핵심 지표 모니터링',
+      '위치별 매출 예측 및 최적 인력 배치 자동 스케줄링',
+      '이상 징후 자동 감지 및 유지보수 일정 최적화'
+    ],
+    keyPoints: [
+      '대시보드 사용으로 매장 관리 시간 78% 감소 (일평균 3.2시간 → 0.7시간)',
+      '실시간 이슈 대응으로 가동률 97.8% 달성 (업계 평균 85% 대비 우수)',
+      '데이터 기반 의사결정으로 매장별 수익성 21% 향상',
+      'SaaS 모델로 외부 고객에게 라이센싱 (월 구독료: 기기당 50만원)'
+    ]
+  },
+  // 제품 데모: 사용자 경험 시뮬레이션 (NEW)
+  {
+    id: 'product-demo-ux',
+    title: '사용자 경험 여정',
+    subTitle: 'MUFI 포토부스와 함께하는 특별한 순간',
     color: COLORS.GREEN,
-    type: 'legacy',
-    key: [
-      '주요 대학가 중심 초기 진출',
-      '쇼핑몰, 관광지로 2차 확장',
-      '글로벌 시장 진출: 동남아, 미국',
-      '신기술 접목: AR 콘텐츠 및 메타버스 연동'
+    sectionNumber: '7-3',
+    type: 'product-demo',
+    demoImages: [
+      '/images/demo/user-journey-1.jpg',
+      '/images/demo/user-journey-2.jpg',
+      '/images/demo/user-journey-3.jpg',
+      '/images/demo/user-journey-4.jpg'
+    ],
+    descriptions: [
+      '① 접근: AI 위치 최적화로 유동인구가 많은 곳에 배치',
+      '② 선택: 직관적 UI로 다양한 테마와 옵션 제공',
+      '③ 촬영: AI 가이드로 완벽한 사진 촬영 경험',
+      '④ 공유: 즉시 SNS 공유 및 클라우드 저장 옵션'
+    ],
+    keyPoints: [
+      '각 단계별 고객 만족도: 접근 91%, 선택 95%, 촬영 97%, 공유 92%',
+      '전체 사용자 중 68%가 촬영 후 SNS에 공유, 브랜드 노출 효과 극대화',
+      '사용자 평균 체류 시간 8분 32초, 대기 시간 감소로 회전율 38% 향상',
+      '이탈률: 기존 포토부스 대비 52% 감소 (25% → 12%)'
     ]
   },
+  // 마무리 슬라이드 추가
   {
-    id: 'financial',
-    title: '재무 계획',
-    subTitle: '안정적인 성장과 수익성 확보',
-    color: COLORS.YELLOW,
-    type: 'legacy',
-    key: [
-      '초기 투자: 5억원 (설비 및 시스템 개발)',
-      '손익분기점: 운영 16개월 차',
-      '5년차 매출 120억, 영업이익률 28%',
-      '누적 현금흐름 흑자 전환: 3년차'
-    ]
-  },
-  {
-    id: 'investment',
-    title: '투자 계획',
-    subTitle: '단계별 자금 조달 및 활용 방안',
+    id: 'closing',
+    title: 'Thank You',
+    subTitle: 'MUFI와 함께 새로운 포토부스 시대를 열어갈 파트너를 기다립니다',
     color: COLORS.RED,
-    type: 'legacy',
-    key: [
-      'Seed: 2억원 (2023 자체조달)',
-      'Series A: 10억원 (2024 외부투자)',
-      'Series B: 30억원 (2026 예정)',
-      '주요 사용처: 기술개발 40%, 마케팅 30%, 인프라 30%'
-    ]
-  },
-  {
-    id: 'team',
-    title: '팀 구성',
-    subTitle: '다양한 배경과 전문성을 갖춘 창업팀',
-    color: COLORS.BLUE,
-    type: 'legacy',
-    key: [
-      '포토부스 운영 5년 경력 보유',
-      'AI 및 데이터 분석 전문가',
-      '미디어 콘텐츠 전문가',
-      '전략 및 사업개발 전문가'
-    ]
-  },
-  {
-    id: 'contact',
-    title: '문의하기',
-    subTitle: '투자 및 협력 문의를 환영합니다',
-    color: COLORS.RED,
-    type: 'legacy',
-    key: [
-      '이메일: invest@mufi.co.kr',
-      '전화: 02-123-4567',
-      '홈페이지: www.mufi.co.kr',
-      '주소: 서울시 강남구 테헤란로 123'
-    ]
+    type: 'intro',
+    bgImage: '/images/closing-bg.jpg'
   }
 ];
 
@@ -2000,47 +1975,53 @@ export const IRPresentation: React.FC = () => {
 
   // 차트 렌더링 컴포넌트
   const renderChart = (slide: ChartSlideData, index: number) => {
+    const chartKey = `chart-${slide.id}-${index}`;
+    
     switch (slide.chartType) {
       case 'bar':
         return (
-          <ChartContainer>
-            <Bar 
-              ref={(el: any) => chartRefs.current[index] = el} 
-              data={slide.chartData} 
-              options={slide.chartOptions as ChartOptions<'bar'>} 
+          <ChartWrapper>
+            <Bar
+              key={chartKey}
+              data={slide.chartData}
+              options={slide.chartOptions}
             />
-          </ChartContainer>
+          </ChartWrapper>
         );
+      
       case 'pie':
         return (
-          <ChartContainer>
-            <Pie 
-              ref={(el: any) => chartRefs.current[index] = el} 
-              data={slide.chartData} 
-              options={slide.chartOptions as ChartOptions<'pie'>} 
+          <ChartWrapper>
+            <Pie
+              key={chartKey}
+              data={slide.chartData}
+              options={slide.chartOptions}
             />
-          </ChartContainer>
+          </ChartWrapper>
         );
+      
       case 'line':
         return (
-          <ChartContainer>
-            <Line 
-              ref={(el: any) => chartRefs.current[index] = el} 
-              data={slide.chartData} 
-              options={slide.chartOptions as ChartOptions<'line'>} 
+          <ChartWrapper>
+            <Line
+              key={chartKey}
+              data={slide.chartData}
+              options={slide.chartOptions}
             />
-          </ChartContainer>
+          </ChartWrapper>
         );
+      
       case 'radar':
         return (
-          <ChartContainer>
-            <Radar 
-              ref={(el: any) => chartRefs.current[index] = el} 
-              data={slide.chartData} 
-              options={slide.chartOptions as ChartOptions<'radar'>} 
+          <ChartWrapper>
+            <Radar
+              key={chartKey}
+              data={slide.chartData}
+              options={slide.chartOptions}
             />
-          </ChartContainer>
+          </ChartWrapper>
         );
+      
       default:
         return null;
     }
@@ -2173,6 +2154,41 @@ export const IRPresentation: React.FC = () => {
               </KeyPointsContainer>
             </ComparisonContent>
           </ComparisonSlide>
+        );
+      
+      case 'product-demo':
+        // 새로운 제품 데모 슬라이드 렌더링
+        const demoSlide = slide as ProductDemoData;
+        return (
+          <ProductDemoSlide>
+            <SlideHeader>
+              <SectionDetailNumber color={demoSlide.color}>{demoSlide.sectionNumber}</SectionDetailNumber>
+              <SlideTitle color={demoSlide.color}>{demoSlide.title}</SlideTitle>
+              <SlideSubtitle>{demoSlide.subTitle}</SlideSubtitle>
+            </SlideHeader>
+            
+            <DemoContent>
+              <DemoImagesContainer>
+                {demoSlide.demoImages && demoSlide.demoImages.map((imgSrc, i) => (
+                  <DemoImageWrapper key={i} delay={i * 0.15}>
+                    <DemoImage src={imgSrc} alt={`Demo ${i+1}`} />
+                    {demoSlide.descriptions && demoSlide.descriptions[i] && (
+                      <DemoImageCaption>{demoSlide.descriptions[i]}</DemoImageCaption>
+                    )}
+                  </DemoImageWrapper>
+                ))}
+              </DemoImagesContainer>
+              
+              <KeyPointsContainer>
+                {demoSlide.keyPoints && demoSlide.keyPoints.map((point, i) => (
+                  <KeyPoint key={i} delay={i * 0.1 + 0.5}>
+                    <KeyPointNumber color={demoSlide.color}>{i + 1}</KeyPointNumber>
+                    <KeyPointText>{point}</KeyPointText>
+                  </KeyPoint>
+                ))}
+              </KeyPointsContainer>
+            </DemoContent>
+          </ProductDemoSlide>
         );
       
       default:
@@ -2770,6 +2786,30 @@ const ChartSlide = styled.div`
   padding: 3rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle at center, rgba(93, 122, 255, 0.03) 0%, rgba(10, 10, 20, 0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle at center, rgba(255, 93, 115, 0.03) 0%, rgba(10, 10, 20, 0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+  }
 `;
 
 const ChartContent = styled.div`
@@ -2777,16 +2817,28 @@ const ChartContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
-const ChartContainer = styled.div`
+const ChartWrapper = styled.div`
   width: 100%;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 400px;
+  margin-bottom: 2rem;
+  position: relative;
+  background-color: rgba(20, 20, 35, 0.5);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.3s;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  @media (max-width: 768px) {
+    height: 300px;
+  }
 `;
 
 const ComparisonSlide = styled.div`
@@ -2808,7 +2860,7 @@ const ComparisonContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -2902,4 +2954,118 @@ const SectionDetailNumber = styled.div<ColorProps>`
   ${MEDIA_QUERIES.DESKTOP} {
     font-size: 1.2rem;
   }
-`; 
+`;
+
+// 제품 데모 슬라이드 스타일
+const ProductDemoSlide = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 30%;
+    height: 60%;
+    background: radial-gradient(ellipse at center, rgba(93, 255, 170, 0.05) 0%, rgba(93, 255, 170, 0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+`;
+
+const DemoContent = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DemoImagesContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  margin-bottom: 2rem;
+`;
+
+interface DemoImageProps {
+  delay: number;
+}
+
+const DemoImageWrapper = styled.div<DemoImageProps>`
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transition: all 0.5s ease;
+  position: relative;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: ${props => props.delay}s;
+  opacity: 0;
+  transform: translateY(30px);
+  background-color: rgba(20, 20, 35, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  &:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 32px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    
+    &::after {
+      opacity: 1;
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 2px ${COLORS.BLUE};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+`;
+
+const DemoImage = styled.img`
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+`;
+
+const DemoImageCaption = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  color: white;
+  padding: 1.5rem 1rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+`;
