@@ -30,19 +30,54 @@ const SECTIONS = [
 
 export const IR: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
+  const [mainNavVisible, setMainNavVisible] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // 각 섹션 참조 설정 후 Observer 초기화
+  // 각 섹션 참조 설정 후 Observer 초기화 및 스크롤 이벤트 추가
   useEffect(() => {
+    // 스크롤 이벤트 처리 함수
+    const handleScroll = () => {
+      // 스크롤 진행률 계산 (0-1 사이의 값)
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = Math.max(0, Math.min(1, window.scrollY / windowHeight));
+      setScrollProgress(scrolled);
+
+      // 메인 네비게이션 바 표시 여부 감지 (window 객체로부터 직접 계산)
+      const mainNav = document.querySelector('nav');
+      if (mainNav) {
+        const mainNavVisible = window.getComputedStyle(mainNav).transform !== 'matrix(1, 0, 0, 1, 0, -60)' && 
+                               window.getComputedStyle(mainNav).opacity !== '0';
+        setMainNavVisible(mainNavVisible);
+      }
+
+      // 각 섹션 보임 여부 직접 계산
+      const currentPosition = window.scrollY + 100;
+      for (let i = SECTIONS.length - 1; i >= 0; i--) {
+        const section = sectionRefs.current[SECTIONS[i].id];
+        if (section && section.offsetTop <= currentPosition) {
+          setActiveSection(SECTIONS[i].id);
+          break;
+        }
+      }
+    };
+
+    // 스크롤 이벤트 리스너 추가
+    window.addEventListener('scroll', handleScroll);
+
     console.log('섹션 참조:', Object.keys(sectionRefs.current));
     
     // 약간 지연시켜 모든 요소가 DOM에 렌더링되도록 함
     const timer = setTimeout(() => {
       initializeObserver();
+      handleScroll(); // 초기 상태 설정
     }, 500);
     
-    return () => clearTimeout(timer);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   // IntersectionObserver 초기화 함수
@@ -55,11 +90,6 @@ export const IR: React.FC = () => {
     // 새 observer 생성
     const observer = new IntersectionObserver(
       (entries) => {
-        // 교차 항목 디버깅
-        entries.forEach(entry => {
-          console.log(`섹션 ${entry.target.id}: ${entry.isIntersecting ? '보임' : '안보임'}, 비율: ${entry.intersectionRatio.toFixed(2)}`);
-        });
-        
         // visibility가 가장 높은 섹션 찾기
         const visibleSections = entries
           .filter(entry => entry.isIntersecting)
@@ -68,15 +98,15 @@ export const IR: React.FC = () => {
         if (visibleSections.length > 0) {
           const targetId = visibleSections[0].target.id;
           if (targetId) {
-            console.log('섹션 변경:', targetId);
+            console.log('섹션 변경 (Observer):', targetId);
             setActiveSection(targetId);
           }
         }
       },
       {
         root: null, // viewport 기준
-        rootMargin: '-50px 0px -50px 0px', // 여백 조정
-        threshold: [0.05, 0.1, 0.2, 0.3, 0.4, 0.5] // 더 낮은 threshold 추가
+        rootMargin: '-20px 0px -20px 0px', // 여백 최소화
+        threshold: [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5] // 매우 낮은 threshold 추가
       }
     );
 
@@ -85,8 +115,6 @@ export const IR: React.FC = () => {
       if (element) {
         observer.observe(element);
         console.log(`섹션 관찰 시작: ${id}`);
-      } else {
-        console.warn(`섹션 참조 없음: ${id}`);
       }
     });
 
@@ -143,8 +171,8 @@ export const IR: React.FC = () => {
 
   // 화면에 표시되는 진행 상태 콘솔에 출력 (디버깅용)
   useEffect(() => {
-    console.log('활성 섹션 변경:', activeSection, '인덱스:', getActiveSectionIndex());
-  }, [activeSection]);
+    console.log('활성 섹션 변경:', activeSection, '인덱스:', getActiveSectionIndex(), '진행률:', scrollProgress.toFixed(2));
+  }, [activeSection, scrollProgress]);
 
   return (
     <Section>
@@ -154,7 +182,10 @@ export const IR: React.FC = () => {
           <Subtitle>투자자 및 파트너를 위한 정보</Subtitle>
         </Header>
         
-        <IRNavigationBar activeColor={getActiveColor()}>
+        <IRNavigationBar 
+          activeColor={getActiveColor()}
+          mainNavVisible={mainNavVisible}
+        >
           <NavigationArrow 
             onClick={navigateToPrevSection} 
             disabled={getActiveSectionIndex() === 1}
@@ -170,6 +201,12 @@ export const IR: React.FC = () => {
               {getActiveSectionIndex()} / {SECTIONS.length}
             </SectionNumber>
             <SectionTitle>{getActiveSectionTitle()}</SectionTitle>
+            <ProgressBar>
+              <ProgressIndicator 
+                progress={scrollProgress}
+                activeColor={getActiveColor()}
+              />
+            </ProgressBar>
           </SectionIndicator>
           
           <NavigationArrow 
@@ -187,6 +224,7 @@ export const IR: React.FC = () => {
           id="market-analysis"
           ref={el => sectionRefs.current['market-analysis'] = el}
           className="section-container"
+          data-index="1"
         >
           <MarketAnalysis />
         </SectionContainer>
@@ -195,6 +233,7 @@ export const IR: React.FC = () => {
           id="business-areas"
           ref={el => sectionRefs.current['business-areas'] = el}
           className="section-container"
+          data-index="2"
         >
           <BusinessAreas />
         </SectionContainer>
@@ -203,6 +242,7 @@ export const IR: React.FC = () => {
           id="business-model"
           ref={el => sectionRefs.current['business-model'] = el}
           className="section-container"
+          data-index="3"
         >
           <BusinessModel />
         </SectionContainer>
@@ -211,14 +251,16 @@ export const IR: React.FC = () => {
           id="ai-agent"
           ref={el => sectionRefs.current['ai-agent'] = el}
           className="section-container ai-agent-section"
+          data-index="4"
         >
-          <AIAgentCaseStudy />
+          <AIAgentCaseStudy mainNavVisible={mainNavVisible} />
         </SectionContainer>
         
         <SectionContainer
           id="relationship"
           ref={el => sectionRefs.current['relationship'] = el}
           className="section-container"
+          data-index="5"
         >
           <RelationshipGraph />
         </SectionContainer>
@@ -227,6 +269,7 @@ export const IR: React.FC = () => {
           id="expansion"
           ref={el => sectionRefs.current['expansion'] = el}
           className="section-container"
+          data-index="6"
         >
           <ExpansionStrategy />
         </SectionContainer>
@@ -235,6 +278,7 @@ export const IR: React.FC = () => {
           id="financial"
           ref={el => sectionRefs.current['financial'] = el}
           className="section-container"
+          data-index="7"
         >
           <FinancialPlan />
         </SectionContainer>
@@ -243,6 +287,7 @@ export const IR: React.FC = () => {
           id="investment"
           ref={el => sectionRefs.current['investment'] = el}
           className="section-container"
+          data-index="8"
         >
           <InvestmentPlan />
         </SectionContainer>
@@ -251,6 +296,7 @@ export const IR: React.FC = () => {
           id="team"
           ref={el => sectionRefs.current['team'] = el}
           className="section-container"
+          data-index="9"
         >
           <TeamComposition />
         </SectionContainer>
@@ -259,6 +305,7 @@ export const IR: React.FC = () => {
           id="contact"
           ref={el => sectionRefs.current['contact'] = el}
           className="section-container"
+          data-index="10"
         >
           <Contact />
         </SectionContainer>
@@ -273,18 +320,32 @@ const SectionContainer = styled.div`
   scroll-margin-top: 140px;
   min-height: 300px; /* 최소 높이 설정하여 작은 컨텐츠도 감지되도록 함 */
   padding-top: 1.5rem;
+  position: relative;
   
-  &.ai-agent-section {
-    /* AI 에이전트 섹션 내부의 NavigationBar와 충돌 방지를 위한 스타일 */
-    .NavigationBar {
-      top: 140px !important; /* 메인 IR 네비게이션 바 아래에 위치하도록 조정 */
-    }
+  /* 섹션 번호 표시 (디버깅용) */
+  &::before {
+    content: attr(data-index);
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    opacity: 0.5;
   }
 `;
 
 // 네비게이션 바 스타일
 interface NavigationBarProps {
   activeColor: string;
+  mainNavVisible: boolean;
 }
 
 const IRNavigationBar = styled.div<NavigationBarProps>`
@@ -299,15 +360,38 @@ const IRNavigationBar = styled.div<NavigationBarProps>`
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
-  top: 70px; /* 메인 네비게이션 바 아래에 오도록 위치 조정 */
+  top: ${props => props.mainNavVisible ? '70px' : '0'}; /* 메인 네비게이션 바 표시 여부에 따라 위치 조정 */
   z-index: 60; /* AI 에이전트 네비게이션 바보다 높게 설정 */
   transition: all 0.3s ease;
   border-top: 3px solid ${props => props.activeColor};
   
   ${MEDIA_QUERIES.MOBILE} {
     padding: 0.75rem 1rem;
-    top: 60px; /* 모바일에서는 더 작은 위치 */
+    top: ${props => props.mainNavVisible ? '60px' : '0'}; /* 모바일에서는 더 작은 위치 */
   }
+`;
+
+// 진행 상태 표시 바
+const ProgressBar = styled.div`
+  width: 80%;
+  height: 3px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+`;
+
+interface ProgressIndicatorProps {
+  progress: number;
+  activeColor: string;
+}
+
+const ProgressIndicator = styled.div<ProgressIndicatorProps>`
+  height: 100%;
+  width: ${props => props.progress * 100}%;
+  background-color: ${props => props.activeColor};
+  border-radius: 3px;
+  transition: width 0.3s ease;
 `;
 
 interface ArrowProps {
@@ -372,6 +456,7 @@ const SectionTitle = styled.div`
   font-size: 1.125rem;
   font-weight: 700;
   color: ${COLORS.BLACK};
+  margin-bottom: 0.5rem;
   
   ${MEDIA_QUERIES.MOBILE} {
     font-size: 1rem;

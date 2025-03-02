@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { COLORS } from '../../../constants/colors';
 import { MEDIA_QUERIES } from '../../../constants/breakpoints';
 
-export const AIAgentCaseStudy: React.FC = () => {
+interface AIAgentCaseStudyProps {
+  mainNavVisible?: boolean;
+}
+
+export const AIAgentCaseStudy: React.FC<AIAgentCaseStudyProps> = ({ mainNavVisible = true }) => {
   const animationRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('introduction');
@@ -111,7 +115,7 @@ export const AIAgentCaseStudy: React.FC = () => {
         <HeadingLine />
       </SectionHeading>
       
-      <NavigationBar className="NavigationBar">
+      <NavigationBar className="NavigationBar" mainNavVisible={mainNavVisible}>
         <NavItem 
           href="#introduction" 
           onClick={(e) => { e.preventDefault(); scrollToSection('introduction'); }}
@@ -2270,7 +2274,11 @@ const VisionQuote = styled.blockquote`
 `;
 
 // 네비게이션 관련 스타일 컴포넌트
-const NavigationBar = styled.div`
+interface NavigationBarProps {
+  mainNavVisible?: boolean;
+}
+
+const NavigationBar = styled.div<NavigationBarProps>`
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
@@ -2281,7 +2289,7 @@ const NavigationBar = styled.div`
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: sticky;
-  top: 140px; /* IR 네비게이션 바 아래에 오도록 위치 조정 */
+  top: ${props => props.mainNavVisible ? '140px' : '70px'}; /* 메인 네비게이션 바 표시 여부에 따라 위치 조정 */
   z-index: 40; /* IR 네비게이션 바(z-index: 60)보다 낮게 설정 */
   transition: all 0.3s ease;
   overflow-x: auto;
@@ -2304,7 +2312,7 @@ const NavigationBar = styled.div`
   ${MEDIA_QUERIES.MOBILE} {
     justify-content: flex-start;
     padding: 0.75rem;
-    top: 130px; /* 모바일에서는 더 작은 위치 */
+    top: ${props => props.mainNavVisible ? '130px' : '60px'}; /* 모바일에서는 더 작은 위치 */
   }
 `;
 
