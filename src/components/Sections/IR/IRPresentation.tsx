@@ -2221,14 +2221,14 @@ export const IRPresentation: React.FC = () => {
     <PresentationContainer>
       <SlidesWrapper style={{ transform: `translateY(-${currentSlide * 100}%)` }}>
         {SLIDES.map((slide, index) => (
-          <SlideSection 
+          <SlideContainer 
             key={slide.id} 
             ref={el => slidesRef.current[index] = el}
             color={slide.color}
             bgImage={slide.bgImage}
           >
             {renderSlideContent(slide, index)}
-          </SlideSection>
+          </SlideContainer>
         ))}
       </SlidesWrapper>
       
@@ -2286,7 +2286,8 @@ const PresentationContainer = styled.div`
   height: 100vh;
   overflow: hidden;
   position: relative;
-  background-color: ${COLORS.BLACK};
+  background-color: #0a0a14;
+  color: #fff;
 `;
 
 const SlidesWrapper = styled.div`
@@ -2300,28 +2301,28 @@ interface SlideProps {
   bgImage?: string;
 }
 
-const SlideSection = styled.div<SlideProps>`
+const SlideContainer = styled.div<SlideProps>`
+  position: relative;
   width: 100%;
   height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background-color: #0a0a14;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${COLORS.WHITE};
-  position: relative;
-  overflow: hidden;
   
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-image: ${props => props.bgImage ? `url(${props.bgImage})` : 'none'};
     background-size: cover;
     background-position: center;
-    opacity: ${props => props.bgImage ? 0.7 : 0};
+    opacity: ${props => props.bgImage ? 0.4 : 0};
     z-index: 0;
   }
   
@@ -2330,11 +2331,12 @@ const SlideSection = styled.div<SlideProps>`
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%);
+    right: 0;
+    bottom: 0;
+    background: ${props => props.bgImage ? 
+      `linear-gradient(135deg, rgba(10, 10, 20, 0.7) 0%, rgba(10, 10, 20, 0.9) 100%)` : 
+      'linear-gradient(135deg, rgba(10, 10, 20, 0.3) 0%, rgba(10, 10, 20, 0.1) 100%)'};
     z-index: 1;
-    opacity: ${props => props.bgImage ? 1 : 0};
   }
 `;
 
@@ -2347,433 +2349,127 @@ const IntroSlide = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
+  text-align: center;
   padding: 2rem;
+  
+  ::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200vw;
+    height: 200vh;
+    background: radial-gradient(circle at center, rgba(93, 122, 255, 0.05) 0%, rgba(10, 10, 20, 0) 50%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: pulse 8s infinite ease-in-out;
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+  }
 `;
 
 const IntroLogo = styled.div`
-  font-size: 3rem;
+  font-size: 4.5rem;
   font-weight: 800;
-  color: ${COLORS.RED};
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  color: white;
+  background: linear-gradient(to right, ${COLORS.BLUE}, ${COLORS.RED});
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 10px 30px rgba(93, 122, 255, 0.3);
   letter-spacing: 0.5rem;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 5rem;
-  }
-`;
-
-const IntroTitle = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: ${COLORS.BLACK};
-  margin-bottom: 1rem;
-  text-align: center;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 3.5rem;
-  }
-`;
-
-const IntroSubtitle = styled.h2`
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
-  text-align: center;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.5rem;
-  }
-`;
-
-const ScrollIndicator = styled.div`
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: bounce 2s infinite;
-  
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0) translateX(-50%);
-    }
-    40% {
-      transform: translateY(-20px) translateX(-50%);
-    }
-    60% {
-      transform: translateY(-10px) translateX(-50%);
-    }
-  }
-`;
-
-const ScrollText = styled.span`
-  font-size: 0.9rem;
-  color: ${COLORS.BLACK};
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
-`;
-
-const ScrollIcon = styled.div`
-  width: 24px;
-  height: 24px;
-  
-  svg {
-    width: 100%;
-    height: 100%;
-    color: ${COLORS.BLACK};
-    opacity: 0.7;
-  }
-`;
-
-const ContentSlide = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  padding: 3rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const SlideHeader = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-interface ColorProps {
-  color: string;
-}
-
-const SlideNumber = styled.div<ColorProps>`
-  font-size: 1rem;
-  font-weight: 700;
-  color: ${props => props.color};
-  margin-bottom: 0.5rem;
-  opacity: 0.8;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.2rem;
-  }
-`;
-
-const SlideTitle = styled.h2<ColorProps>`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: ${props => props.color};
-  margin-bottom: 1rem;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 3rem;
-  }
-`;
-
-const SlideSubtitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.5rem;
-  }
-`;
-
-const SlideContent = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const KeyPointsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  width: 100%;
-  
-  ${MEDIA_QUERIES.TABLET} {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    width: 80%;
-  }
-`;
-
-interface KeyPointProps {
-  delay: number;
-}
-
-const KeyPoint = styled.div<KeyPointProps>`
-  display: flex;
-  align-items: flex-start;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  animation: fadeIn 0.8s ease forwards;
-  animation-delay: ${props => props.delay}s;
+  transform: translateY(-20px);
   opacity: 0;
-  transform: translateY(20px);
+  animation: fadeInDown 1s ease forwards;
   
-  @keyframes fadeIn {
+  @keyframes fadeInDown {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+`;
+
+const IntroTitle = styled.h1`
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  max-width: 800px;
+  line-height: 1.2;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.2s;
   
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
-const KeyPointNumber = styled.div<ColorProps>`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: ${props => props.color};
-  color: ${COLORS.WHITE};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-right: 1rem;
-  flex-shrink: 0;
-`;
-
-const KeyPointText = styled.p`
-  font-size: 1rem;
+const IntroSubtitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 700px;
   line-height: 1.5;
-  font-weight: 500;
-  color: ${COLORS.BLACK};
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.1rem;
-  }
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.4s;
 `;
 
-// Navigation Components
-const Navigation = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  z-index: 10;
-`;
-
-const NavBackButton = styled(Link)`
-  display: flex;
-  align-items: center;
-  color: ${COLORS.BLACK};
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  opacity: 0.7;
-  transition: opacity 0.3s;
-  
-  svg {
-    width: 20px;
-    height: 20px;
-    margin-right: 0.5rem;
-  }
-  
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-const SlideIndicators = styled.div`
-  display: none;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-`;
-
-interface IndicatorProps {
-  active: boolean;
-  color: string;
-}
-
-const SlideIndicator = styled.div<IndicatorProps>`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: ${props => props.active ? props.color : 'rgba(0, 0, 0, 0.2)'};
-  cursor: pointer;
-  transition: all 0.3s;
-  
-  &:hover {
-    background-color: ${props => props.active ? props.color : 'rgba(0, 0, 0, 0.4)'};
-  }
-`;
-
-const SlideControls = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const SlideCounter = styled.div`
-  display: flex;
-  align-items: baseline;
-  margin: 0 1rem;
-`;
-
-const CurrentSlide = styled.span`
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: ${COLORS.BLACK};
-`;
-
-const TotalSlides = styled.span`
-  font-size: 0.9rem;
-  color: ${COLORS.BLACK};
-  opacity: 0.6;
-  margin-left: 0.2rem;
-`;
-
-interface ButtonProps {
-  disabled: boolean;
-}
-
-const ControlButton = styled.button<ButtonProps>`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.2)'};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  transition: all 0.3s;
-  
-  svg {
-    width: 24px;
-    height: 24px;
-    color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.3)' : COLORS.BLACK};
-  }
-  
-  &:hover {
-    background-color: ${props => props.disabled ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.3)'};
-  }
-  
-  &:active {
-    transform: ${props => props.disabled ? 'none' : 'scale(0.95)'};
-  }
-`;
-
-const SectionIntroSlide = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  padding: 2rem;
-`;
-
-const SectionNumber = styled.div<ColorProps>`
-  font-size: 1rem;
-  font-weight: 700;
-  color: ${props => props.color};
-  margin-bottom: 0.5rem;
-  opacity: 0.8;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.2rem;
-  }
-`;
-
-const SectionIntroTitle = styled.h2<ColorProps>`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: ${props => props.color};
-  margin-bottom: 1rem;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 3rem;
-  }
-`;
-
-const SectionIntroSubtitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.5rem;
-  }
-`;
-
-const SectionContinueIndicator = styled.div`
+const ScrollIndicator = styled.div`
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 3rem;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  animation: fadeIn 1s ease forwards 1.5s;
+  opacity: 0;
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const ScrollText = styled.div`
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1rem;
+`;
+
+const ScrollIcon = styled.div`
+  width: 2rem;
+  height: 2rem;
   animation: bounce 2s infinite;
   
   @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0) translateX(-50%);
+    0%, 100% {
+      transform: translateY(0);
     }
-    40% {
-      transform: translateY(-20px) translateX(-50%);
-    }
-    60% {
-      transform: translateY(-10px) translateX(-50%);
+    50% {
+      transform: translateY(10px);
     }
   }
-`;
-
-const ContinueText = styled.span`
-  font-size: 0.9rem;
-  color: ${COLORS.BLACK};
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
-`;
-
-const ContinueIcon = styled.div`
-  width: 24px;
-  height: 24px;
   
   svg {
     width: 100%;
     height: 100%;
-    color: ${COLORS.BLACK};
-    opacity: 0.7;
   }
 `;
 
+// 차트 슬라이드
 const ChartSlide = styled.div`
   width: 100%;
   height: 100%;
@@ -2839,8 +2535,16 @@ const ChartWrapper = styled.div`
   @media (max-width: 768px) {
     height: 300px;
   }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
+// 경쟁사 비교 슬라이드
 const ComparisonSlide = styled.div`
   width: 100%;
   height: 100%;
@@ -2866,20 +2570,24 @@ const ComparisonContent = styled.div`
 
 const CompetitorsContainer = styled.div`
   width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 `;
 
 const CompetitorCard = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  background-color: rgba(20, 20, 35, 0.5);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const CompetitorHeader = styled.div`
@@ -2887,27 +2595,31 @@ const CompetitorHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.8rem;
 `;
 
 const CompetitorName = styled.h3`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${COLORS.BLACK};
+  color: white;
 `;
 
 const CompetitorShare = styled.span`
   font-size: 1rem;
   font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
+  color: ${COLORS.BLUE};
+  background-color: rgba(93, 122, 255, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
 `;
 
 const CompetitorDescription = styled.p`
   font-size: 1rem;
   font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.2rem;
 `;
 
 const CompetitorSection = styled.div`
@@ -2916,44 +2628,44 @@ const CompetitorSection = styled.div`
 `;
 
 const CompetitorSectionTitle = styled.h4`
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: ${COLORS.BLACK};
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 2px;
+    background-color: ${COLORS.RED};
+    margin-right: 0.5rem;
+  }
 `;
 
 const CompetitorList = styled.ul`
   list-style: none;
-  padding-left: 0;
+  padding-left: 0.5rem;
 `;
 
 const CompetitorListItem = styled.li`
-  font-size: 1rem;
-  font-weight: 500;
-  color: ${COLORS.BLACK};
-  opacity: 0.8;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
 `;
 
 const CompetitorListBullet = styled.span<ColorProps>`
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background-color: ${props => props.color};
   display: inline-block;
   margin-right: 0.5rem;
-`;
-
-const SectionDetailNumber = styled.div<ColorProps>`
-  font-size: 1rem;
-  font-weight: 700;
-  color: ${props => props.color};
-  margin-bottom: 0.5rem;
-  opacity: 0.8;
-  
-  ${MEDIA_QUERIES.DESKTOP} {
-    font-size: 1.2rem;
-  }
 `;
 
 // 제품 데모 슬라이드 스타일
@@ -3062,10 +2774,317 @@ const DemoImageCaption = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  background: linear-gradient(to top, rgba(10, 10, 20, 0.9), rgba(10, 10, 20, 0));
   color: white;
   padding: 1.5rem 1rem 1rem;
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.4;
+`;
+
+// 일반 콘텐츠 슬라이드
+const ContentSlide = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: -20%;
+    width: 50%;
+    height: 70%;
+    background: radial-gradient(ellipse at center, rgba(93, 122, 255, 0.05) 0%, rgba(93, 122, 255, 0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+`;
+
+// 기본 슬라이드 요소
+const SlideHeader = styled.div`
+  width: 100%;
+  margin-bottom: 2.5rem;
+  position: relative;
+`;
+
+const SlideNumber = styled.div<ColorProps>`
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: ${props => props.color};
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const SectionDetailNumber = styled.div<ColorProps>`
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: ${props => props.color};
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+  display: flex;
+  align-items: center;
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 3px;
+    background-color: ${props => props.color};
+    margin-right: 8px;
+    border-radius: 1.5px;
+  }
+`;
+
+// 섹션 인트로 슬라이드
+const SectionIntroSlide = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  
+  ::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(93, 122, 255, 0.05) 0%, rgba(10, 10, 20, 0) 60%);
+    z-index: -1;
+  }
+`;
+
+const SectionNumber = styled.div<ColorProps>`
+  font-size: 10rem;
+  font-weight: 900;
+  color: ${props => props.color};
+  opacity: 0.08;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  letter-spacing: -0.5rem;
+  animation: fadeIn 2s ease forwards;
+`;
+
+const SectionContinueIndicator = styled.div`
+  position: absolute;
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  animation: fadeIn 1s ease forwards 1s;
+  opacity: 0;
+`;
+
+const ContinueText = styled.div`
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+`;
+
+const ContinueIcon = styled.div`
+  width: 2rem;
+  height: 2rem;
+  animation: bounce 2s infinite;
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const SlideContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+`;
+
+// 섹션 제목 및 부제목 스타일 추가
+const SectionIntroTitle = styled.h2<ColorProps>`
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: fadeInDown 1s ease forwards;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background-color: ${props => props.color};
+    border-radius: 2px;
+  }
+`;
+
+const SectionIntroSubtitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 700px;
+  line-height: 1.5;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.3s;
+`;
+
+// 슬라이드 제목 및 부제목 스타일 추가
+const SlideTitle = styled.h3<ColorProps>`
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.8rem;
+  line-height: 1.2;
+  transform: translateY(-15px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.1s;
+  
+  &::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 3px;
+    background-color: ${props => props.color};
+    margin-top: 0.8rem;
+    border-radius: 1.5px;
+    transition: width 1.5s ease;
+    animation: expandWidth 1.5s ease forwards 0.6s;
+    
+    @keyframes expandWidth {
+      to {
+        width: 80px;
+      }
+    }
+  }
+`;
+
+const SlideSubtitle = styled.h4`
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0;
+  transform: translateY(15px);
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards 0.2s;
+`;
+
+// 키포인트 스타일 추가
+const KeyPointsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+interface KeyPointProps {
+  delay: number;
+}
+
+const KeyPoint = styled.div<KeyPointProps>`
+  display: flex;
+  align-items: flex-start;
+  background-color: rgba(20, 20, 35, 0.5);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: ${props => props.delay}s;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: rgba(30, 30, 50, 0.6);
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  }
+`;
+
+const KeyPointNumber = styled.div<ColorProps>`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: ${props => props.color};
+  color: #0a0a14;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-right: 1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+`;
+
+const KeyPointText = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+`;
+
+// 네비게이션 컴포넌트
+const Navigation = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  background-color: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 `;
